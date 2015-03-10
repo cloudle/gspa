@@ -1,0 +1,2 @@
+export MONGO_URL=mongodb://gera.vn/gspa
+sudo mount --bind /home/vagrant/gspa/local/ /vagrant/gspa/.meteor/local/ & cd /vagrant/gspa
