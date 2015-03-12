@@ -5,6 +5,7 @@
 # but you can also edit it by hand.
 
 meteor-platform
+accounts-password
 autopublish
 insecure
 
@@ -17,3 +18,4 @@ zimme:iron-router-active
 multiply:iron-router-progress
 
 lemon-icon
+matb33:collection-hooks

@@ -1,0 +1,1 @@
+Model.UserOption = new Meteor.Collection 'userOptions'

@@ -1,0 +1,1 @@
+Model.UserProfile = new Meteor.Collection 'userProfiles'

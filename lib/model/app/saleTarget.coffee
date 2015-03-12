@@ -1,0 +1,1 @@
+Model.SaleTarget = new Meteor.Collection 'saleTargets'
