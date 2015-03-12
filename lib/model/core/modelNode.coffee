@@ -1,0 +1,1 @@
+Model.ModelNode = new Meteor.Collection 'modelNodes'

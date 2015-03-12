@@ -1,1 +1,0 @@
-Model.Buget = new Meteor.Collection 'bugets'

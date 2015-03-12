@@ -1,0 +1,11 @@
+template(name="apiDocumentation")
+  .dual-layout
+    .detail-wrapper
+      .dual-detail
+        h1 Đây là API!
+        h2 Nơi khách hàng cập nhật,
+    .dual-addon
+      each apiNodes
+        .item {{name}}
+      each apiLeaves
+        .item {{name}}
