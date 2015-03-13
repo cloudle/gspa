@@ -18,5 +18,12 @@ Wings.Component.bindingElements = (context) ->
     context.ui[name] = item
     context.ui["$#{name}"] = $(item)
 
+Wings.Component.initializeApp = ->
+  Wings.Component.arrangeLayout()
+
+Wings.Component.arrangeLayout = ->
+  newHeight = $(window).height() - 51
+  $("#container").css('height', newHeight)
+
 #-------------------------------------------------------------
 bindingToolTip = (context) -> $("[data-toggle='tooltip']").tooltip({container: 'body'})

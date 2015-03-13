@@ -1,4 +1,9 @@
-addon-size = 250px
+@require '../wings.import.styl'
+
+nav .branding
+  width left-pane-size
+  background-color #3e313c
+  color #fff
 
 .dual-layout
   clearfix()
@@ -7,10 +12,10 @@ addon-size = 250px
   .detail-wrapper
     float left; width 100%; height 100%
     .dual-detail
-      margin-left addon-size; padding 0 10px
+      margin-left left-pane-size; padding 0 10px
       height 100%; overflow hidden
 
   .dual-addon
     float left
-    width addon-size; height 100%; overflow hidden
+    width left-pane-size; height 100%; overflow hidden
     margin-left -100%

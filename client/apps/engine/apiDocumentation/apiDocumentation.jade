@@ -1,11 +1,17 @@
 template(name="apiDocumentation")
-  .dual-layout
+  .dual-layout#api
     .detail-wrapper
       .dual-detail
         h1 Đây là API!
         h2 Nơi khách hàng cập nhật,
     .dual-addon
-      each apiNodes
-        .item {{name}}
-      each apiLeaves
-        .item {{name}}
+      ul
+        each apiNodes
+          +apiNode
+
+template(name="apiNode")
+  li {{name}}
+  if childNodes.length
+    ul
+      each childNodes
+        +apiNode nodeDetails
