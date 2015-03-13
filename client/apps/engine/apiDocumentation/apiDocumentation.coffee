@@ -1,6 +1,7 @@
-Wings.defineApp 'apiNode',
-  nodeDetails: ->
-    console.log Model, @
-#    console.log Model.ApiNode.findOne()
-    Model.ApiNode.findOne(@toString())
-#    return {name: "cloud"}
+Wings.defineApp 'apiDocumentation',
+  events:
+    "keypress input[name='apiFilter']": (event, template)->
+      if event.which is 13
+        $target = $(event.currentTarget)
+        Wings.Api.insertNode($target.val())
+        $target.val('')

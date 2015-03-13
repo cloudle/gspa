@@ -1,0 +1,1 @@
+Template.registerHelper 'nodeDetails', -> Model.ApiNode.findOne(@toString())
