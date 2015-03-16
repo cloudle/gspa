@@ -12,7 +12,7 @@ template(name="apiDocumentation")
           +apiNode
 
 template(name="apiNode")
-  li {{name}}
+  li.api-node(class="{{nodeActiveClass}}") {{name}}
   if childNodes.length
     ul
       each childNodes
