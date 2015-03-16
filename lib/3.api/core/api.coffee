@@ -4,8 +4,8 @@ Wings.Api.isValidNode = (nodeObj) ->
   if !nodeObj.name || nodeObj.name.length < 1
     return { valid: false, message: "invalid node name!" }
 
-  if Meteor.isServer
-    return { valid: false } if Model.ApiNode.findOne({name: nodeObj.name})
+#  if Meteor.isServer
+#    return { valid: false } if Model.ApiNode.findOne({name: nodeObj.name})
 
   return { valid: true }
 

@@ -1,4 +1,6 @@
 Wings.defineApp 'apiDocumentation',
+  currentNode: -> Session.get('currentApiNode')
+
   events:
     "keypress input[name='apiFilter']": (event, template)->
       if event.which is 13
@@ -13,4 +15,4 @@ Wings.defineApp 'apiDocumentation',
           $target.val('')
 
 
-    "click li": (event, template) -> Session.set "currentApiNode", @
+    "click li.api-node": (event, template) -> Session.set "currentApiNode", @

@@ -2,8 +2,17 @@ template(name="apiDocumentation")
   .dual-layout#api
     .detail-wrapper
       .dual-detail
-        h1 Đây là API!
-        h2 Nơi khách hàng cập nhật,
+        .api-machine
+          .header
+            h1 {{currentNode.name}}
+            h3 {{currentNode.description}}
+          .members
+            h1 Members
+            input(type="button" value="add")
+          .methods
+            h1 Methods
+            input(type="button" value="add")
+
     .dual-addon
       .filter.icon-search-8
         input(name='apiFilter' type="text" placeholder="tìm kiếm..")
