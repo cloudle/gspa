@@ -1,15 +1,15 @@
-Meteor.users.after.insert (userId, doc) ->
-  Model.UserProfile.insert {account: userId, createdAt: new Date(), gender: true}
-  Model.UserOption.insert  {account: userId, createdAt: new Date()}
-  Model.UserSession.insert {account: userId, createdAt: new Date()}
+Model.User.after.insert (userId, doc) ->
+  Model.UserProfile.insert {user: userId, gender: true}
+  Model.UserOption.insert  {user: userId}
+  Model.UserSession.insert {user: userId}
 
-Meteor.users.after.remove (userId, doc) ->
-  Model.UserProfile.remove {account: doc._id}
-  Model.UserOption.remove  {account: doc._id}
-  Model.UserProfile.remove {account: doc._id}
+Model.User.after.remove (userId, doc) ->
+  Model.UserProfile.remove {user: doc._id}
+  Model.UserOption.remove  {user: doc._id}
+  Model.UserProfile.remove {user: doc._id}
 
 
-Meteor.users.allow
-  insert: (userId, user)-> true
-  update: (userId, user)-> true
-  remove: (userId, user)-> true
+Model.User.allow
+  insert: (userId, doc)-> true if userId
+  update: (userId, doc)-> true if userId
+  remove: (userId, doc)-> true if userId

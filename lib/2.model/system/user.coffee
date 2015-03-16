@@ -1,0 +1,1 @@
+Model.User = Meteor.users
