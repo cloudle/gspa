@@ -1,3 +1,4 @@
-Wings.User.allowUpdate = (accountId) -> true
-Wings.User.allowRemove = (accountId) -> true
+Wings.User.allowInsert = (userId) -> true
+Wings.User.allowUpdate = (userId) -> true
+Wings.User.allowRemove = (userId) -> true
 
