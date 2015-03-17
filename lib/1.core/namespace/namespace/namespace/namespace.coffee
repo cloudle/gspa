@@ -1,6 +1,7 @@
 @Wings = {}
 @Model = {}
 
+Wings.Enum = {}
 Wings.Helper = {}
 Wings.Dependency = {}
 Wings.Component = {}

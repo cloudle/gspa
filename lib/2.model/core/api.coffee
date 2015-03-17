@@ -1,2 +1,3 @@
 Model.ApiNode = new Meteor.Collection 'apiNodes'
-Model.ApiLeaf = new Meteor.Collection 'apiLeaves'
+Model.ApiMachineLeaf = new Meteor.Collection 'apiMachineLeaves'
+Model.ApiHumanLeaf = new Meteor.Collection 'apiHumanLeaves'

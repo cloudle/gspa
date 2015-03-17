@@ -8,5 +8,6 @@ Wings.Router.add
   data: ->
     return {
       apiNodes: Model.ApiNode.find({parent: {$exists: false}})
-      apiLeaves: Model.ApiLeaf.find({})
+      apiTechLeaves: Model.ApiMachineLeaf.find({})
+      apiBizLeaves: Model.ApiHumanLeaf.find({})
     }

@@ -1,7 +1,7 @@
 Wings.Api = {}
 
 Wings.Api.isValidNode = (nodeObj) ->
-  if !nodeObj.name || nodeObj.name.length < 1
+  if Match.test(nodeObj.name, String) and nodeObj.name.length < 1
     return { valid: false, message: "invalid node name!" }
 
 #  if Meteor.isServer
@@ -21,5 +21,3 @@ Wings.Api.insertNode = (name, parentId) ->
   childId = Model.ApiNode.insert(newChild)
   Model.ApiNode.update(parentId, {$push: {childNodes: childId}}) if parentId
 
-Wings.Api.insertLeaf = (name) ->
-  Model.ApiLeaf.insert({name: name})

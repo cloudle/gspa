@@ -1,4 +1,6 @@
 Model.Sale.before.insert (userId, doc) ->
+  delete doc.buyer if !doc.buyer
+  doc.seller = userId if doc.seller
   doc.creator = userId
   doc.createdAt = new Date()
 

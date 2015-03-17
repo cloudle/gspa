@@ -3,14 +3,8 @@ Model.Price.before.insert (userId, doc) ->
   doc.createdAt = new Date()
 
 Model.Price.before.update (userId, doc, fieldNames, modifier, options) ->
-  console.log 'before Update'
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
-
-Model.Price.after.update (userId, doc, fieldNames, modifier, options) ->
-  console.log 'after Update'
-
-
 
 Model.Price.allow
   insert: (userId, doc)-> true if userId
