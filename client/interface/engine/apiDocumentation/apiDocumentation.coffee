@@ -16,5 +16,15 @@ Wings.defineApp 'apiDocumentation',
 
     "click li.api-node": (event, template) -> Session.set "currentApiNode", @
     "click .remove-node": (event, template) ->
-      Session.set "currentApiNode" if @_id is Session.get("currentApiNode")._id
+      smartEmptyCurrentSelection(@) if Session.get("currentApiNode")
       Wings.Api.removeNode(@_id)
+
+#----------------------------------------------
+smartEmptyCurrentSelection = (instance) ->
+  currentNode = Session.get("currentApiNode")
+  loop
+    (Session.set "currentApiNode"; console.log "session cleaned"; break) if currentNode._id == instance._id
+    break if !currentNode.parent
+
+    currentNode = Model.ApiNode.findOne(currentNode.parent)
+    break if !currentNode

@@ -16,9 +16,10 @@ template(name="apiDocumentation")
     .dual-addon
       .filter
         input(name='apiFilter' type="text" placeholder="Tìm Documentation")
-      ul.api-docs
-        each apiNodes
-          +apiNode
+      .nano: .nano-content
+        ul.api-docs
+          each apiNodes
+            +apiNode
 
 template(name="apiNode")
   li.api-node(class="{{nodeActiveClass}}")

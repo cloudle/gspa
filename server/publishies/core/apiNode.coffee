@@ -1,19 +1,14 @@
-removeChildNodes = (childNodes)->
-  Model.ApiNode.find({_id: {$in:childNodes}}).forEach(
-    (apiNode)->
-      console.log apiNode.name
-      Model.ApiNode.remove apiNode._id
-      if apiNode.childNodes
-        removeChildNodes(apiNode.childNodes)
-  )
+recursiveRemoveChild = (childNodes)->
+  Model.ApiNode.find({_id: {$in:childNodes}}).forEach (apiNode) ->
+    Model.ApiNode.remove apiNode._id
+    Model.ApiHumanLeaf.remove({parent: apiNode._id})
+    Model.ApiMachineLeaf.remove({parent: apiNode._id})
 
+    recursiveRemoveChild(apiNode.childNodes) if apiNode.childNodes
 
 Model.ApiNode.after.remove (userId, doc) ->
   Model.ApiNode.update(doc.parent, {$pull: {childNodes: doc._id}}) if doc.parent
-  removeChildNodes(doc.childNodes) if doc.childNodes
-
-  #TODO Remove related leaves
-
+  recursiveRemoveChild(doc.childNodes) if doc.childNodes
 
 Model.ApiNode.allow
   insert: (userId, apiNode) -> Wings.Api.isValidNode(apiNode).valid
