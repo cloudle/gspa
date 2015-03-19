@@ -5,13 +5,35 @@
     background-color #4D394B
     color #fff
     .filter
-      margin 10px 10px 5px 10px
+      margin 10px 15px
       input
         border-radius 2px; border none
         width 100%; font-size 18px
         padding 5px 10px
 
-  .api-node
-    cursor pointer
-    &.active
-      color red
+  .api-docs
+    padding-left 15px; margin 0
+    ul
+      padding-left 10px
+    li.api-node
+      position relative
+      cursor pointer
+      list-style none
+      padding-bottom 7px
+      user-select none
+      &.active
+        color red
+      &:hover
+        span
+          border-color rgba(255,255,255,0.3)
+        .remove-node
+          display inherit
+
+      .remove-node
+        display none
+        color #fff !important
+        absolute top 0 right 12px
+        border-radius 50%
+
+  .api-docs > ul { padding-left: 15px; }
+  .api-docs > li { font-weight: 700; font-size: 18px }

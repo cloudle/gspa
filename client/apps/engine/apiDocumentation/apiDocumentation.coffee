@@ -14,5 +14,7 @@ Wings.defineApp 'apiDocumentation',
           Wings.Api.insertNode($target.val(), Session.get("currentApiNode")._id)
           $target.val('')
 
-
     "click li.api-node": (event, template) -> Session.set "currentApiNode", @
+    "click .remove-node": (event, template) ->
+      Session.set "currentApiNode" if @_id is Session.get("currentApiNode")._id
+      Wings.Api.removeNode(@_id)

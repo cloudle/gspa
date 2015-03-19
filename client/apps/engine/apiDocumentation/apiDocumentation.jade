@@ -21,7 +21,9 @@ template(name="apiDocumentation")
           +apiNode
 
 template(name="apiNode")
-  li.api-node(class="{{nodeActiveClass}}"): span.link-hover {{name}}
+  li.api-node(class="{{nodeActiveClass}}")
+    span.link-hover {{name}}
+    .remove-node.icon-cancel-circled-4
   if childNodes.length
     ul
       each childNodes
