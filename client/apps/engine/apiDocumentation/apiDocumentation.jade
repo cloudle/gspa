@@ -14,14 +14,14 @@ template(name="apiDocumentation")
             input(type="button" value="add")
 
     .dual-addon
-      .filter.icon-search-8
-        input(name='apiFilter' type="text" placeholder="tìm kiếm..")
-      ul
+      .filter
+        input(name='apiFilter' type="text" placeholder="Tìm Documentation")
+      ul.api-docs
         each apiNodes
           +apiNode
 
 template(name="apiNode")
-  li.api-node(class="{{nodeActiveClass}}") {{name}}
+  li.api-node(class="{{nodeActiveClass}}"): span.link-hover {{name}}
   if childNodes.length
     ul
       each childNodes

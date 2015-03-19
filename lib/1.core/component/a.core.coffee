@@ -22,7 +22,7 @@ Wings.Component.initializeApp = ->
   Wings.Component.arrangeLayout()
 
 Wings.Component.arrangeLayout = ->
-  newHeight = $(window).height() - 51
+  newHeight = $(window).height()# - 51
   $("#container").css('height', newHeight)
 
 #-------------------------------------------------------------
