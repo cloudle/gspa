@@ -9,6 +9,7 @@ Wings.metaTest =
       min: 1
       error: "Quá ngắn"
     ]
+
   age:
     type: Match.Integer
     optional: true
