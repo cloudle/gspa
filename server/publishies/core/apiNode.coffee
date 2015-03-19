@@ -7,5 +7,8 @@ Model.ApiNode.after.remove (userId, doc) ->
 
 Model.ApiNode.allow
   insert: (userId, apiNode) -> Wings.Api.isValidNode(apiNode).valid
-  update: (userId, apiNode)-> true
+  update: (userId, apiNode, fieldNames, modifier)->
+    if _.contains(fieldNames, "childNodes")
+      if Model.ApiNode.findOne(modifier.$push.childNodes) then return true else return false
+    return true
   remove: (userId, apiNode)-> true
