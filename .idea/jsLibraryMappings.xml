@@ -3,5 +3,6 @@
   <component name="JavaScriptLibraryMappings">
     <file url="jar://$APPLICATION_HOME_DIR$/plugins/Meteor/lib/Meteor.jar!/tsMeteorStubs/meteor-v0.9.4.d.ts" libraries="{Node.js Globals}" />
     <includedPredefinedLibrary name="Meteor project library" />
+    <includedPredefinedLibrary name="Node.js Globals" />
   </component>
 </project>

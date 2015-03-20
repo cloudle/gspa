@@ -1,11 +1,11 @@
-Wings.Warehouse = {}
+Warehouse = Wings.Warehouse
 
-Wings.Warehouse.insert = (name, description)->
+Warehouse.insert = (name, description)->
 #  if Meteor.userId() and name
 #    if Wings.Warehouse.allowInsert()
 #      Model.Warehouse.insert({name: name})
 
-Wings.Warehouse.update = (option, warehouseId)->
+Warehouse.update = (option, warehouseId)->
   if Meteor.userId()
     if warehouse = Model.Warehouse.findOne()
       if Wings.Warehouse.allowUpdate()
@@ -25,7 +25,7 @@ Wings.Warehouse.update = (option, warehouseId)->
         Model.Warehouse.update warehouse._id, $set: optionUpdate if _.keys(optionUpdate).length > 0
 
 
-Wings.Warehouse.remove = (warehouseId)->
+Warehouse.remove = (warehouseId)->
 #  if Meteor.userId() and warehouseId
 #      if Wings.Warehouse.allowRemove()
 #        Model.Warehouse.remove warehouseId
