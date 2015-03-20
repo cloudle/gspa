@@ -11,3 +11,8 @@ Wings.Component = {}
 
 Wings.logics = {}
 Wings.setups = {}
+
+Wings.Account   = {}
+Wings.Warehouse = {}
+Wings.Product   = {}
+Wings.Sale      = {}

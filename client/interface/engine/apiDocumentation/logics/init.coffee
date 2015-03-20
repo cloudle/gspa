@@ -7,7 +7,7 @@ Wings.Router.add
   path: '/api'
   data: ->
     return {
-      apiNodes: Model.ApiNode.find({parent: {$exists: false}})
+      apiNodes: Model.ApiNode.find({parent: {$exists: false}}, {sort:{name: 1}} )
       apiTechLeaves: Model.ApiMachineLeaf.find({})
       apiBizLeaves: Model.ApiHumanLeaf.find({})
     }
