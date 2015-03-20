@@ -1,5 +1,10 @@
 @require '../wings.import.styl'
 
+max-font-size = 40px
+for size in (0..10)
+  .s{size}
+    font-size max-font-size - (size * 3)
+
 .link-hover
   border-bottom solid 2px transparent
   transition all 250ms cubic-bezier(.2,.3,.25,.9)

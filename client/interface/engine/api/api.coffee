@@ -1,8 +1,12 @@
-Wings.defineApp 'apiDocumentation',
+Wings.defineApp 'api',
   currentNode: -> Session.get('currentApiNode')
+  created: ->
+    console.log 'doc created'
+  rendered: ->
+    console.log 'doc rendered'
 
   events:
-    "keypress input[name='apiFilter']": (event, template)->
+    "keypress input[name='apiFilter']": (event, template) ->
       if event.which is 13
         $target = $(event.currentTarget)
         if (!Session.get("currentApiNode") || event.shiftKey)

@@ -1,11 +1,17 @@
 Wings.Router = {}
 Wings.Router.routes = []
+Wings.Router.setupHistories = []
 
 Wings.Router.Base =
   layoutTemplate: 'defaultLayout'
   loadingTemplate: 'silentLoadingLayout'
   onAfterAction: ->
     Wings.Helper.animateUsing("#container", 'fadeInDown')
+
+Wings.Router.setup = (scope, initializers, appName) ->
+  return if !initializers or !Array.isArray(initializers) or _.contains(Wings.Router.setupHistories, appName)
+  init(scope) for init in initializers when typeof(init) is 'function'
+  Wings.Router.setupHistories.push appName if appName
 
 Wings.Router.add = (routes, baseRoute = Wings.Router.Base) ->
   routes = [routes] unless Array.isArray(routes)

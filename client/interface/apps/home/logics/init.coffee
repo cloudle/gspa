@@ -1,5 +1,5 @@
-scope = Wings.logics.home = {}
-Wings.setups.homeInit = []
+scope = logics.home = {}
+setups.homeInit = []
 
 #----------------------------------------
 Wings.Router.add

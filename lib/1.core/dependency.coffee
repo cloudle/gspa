@@ -1,5 +1,4 @@
 Wings.dependencies = []
-Wings.setupHistories = []
 
 recursiveResolve = (nextDependency, currentDependencies = []) ->
   for dep in nextDependency

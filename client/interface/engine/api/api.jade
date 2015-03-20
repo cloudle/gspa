@@ -1,16 +1,17 @@
-template(name="apiDocumentation")
+template(name="api")
   .dual-layout#api
     .detail-wrapper
       .dual-detail
         .api-machine
           .header
-            h1 {{currentNode.name}}
-            h3 {{currentNode.description}}
+            +wingsEditable(size="s2" model=currentNode field="name" label="tên node")
+            +wingsEditable(size="s6" model=currentNode field="description")
           .members
             h1 Members
-            input(type="button" value="add")
+          .wings-insert: .dashed-bar
           .methods
             h1 Methods
+          .leaf-commands
             input(type="button" value="add")
 
     .dual-addon
