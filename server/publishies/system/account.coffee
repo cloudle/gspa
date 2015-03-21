@@ -8,7 +8,6 @@ Model.Account.after.remove (userId, doc) ->
   Model.UserOption.remove  {user: doc._id}
   Model.UserProfile.remove {user: doc._id}
 
-
 Model.Account.allow
   insert: (userId, doc)-> true if userId
   update: (userId, doc)-> true if userId
