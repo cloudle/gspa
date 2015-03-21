@@ -8,11 +8,20 @@ template(name="api")
             +wingsEditable(size="s6" model=currentNode field="description")
           .members
             h1 Members
-          .wings-insert: .dashed-bar
+
+            if insertingMember
+              .insert-member
+                .wings-editable: input.s7
+            else
+              .wings-insert.member.click-command: .dashed-bar
           .methods
             h1 Methods
-          .leaf-commands
-            input(type="button" value="add")
+
+            if insertingMethod
+              .insert-method
+                .wings-editable: input.s7
+            else
+              .wings-insert.method.click-command: .dashed-bar
 
     .dual-addon
       .filter

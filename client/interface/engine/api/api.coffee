@@ -1,9 +1,9 @@
+scope = logics.api
+
 Wings.defineApp 'api',
   currentNode: -> Session.get('currentApiNode')
-  created: ->
-    console.log 'doc created'
-  rendered: ->
-    console.log 'doc rendered'
+  insertingMember: -> scope.insertingMember.get()
+  insertingMethod: -> scope.insertingMethod.get()
 
   events:
     "keypress input[name='apiFilter']": (event, template) ->
@@ -22,6 +22,9 @@ Wings.defineApp 'api',
     "click .remove-node": (event, template) ->
       smartEmptyCurrentSelection(@) if Session.get("currentApiNode")
       Wings.Api.removeNode(@_id)
+
+    "click .wings-insert.member": -> scope.insertingMember.set(true)
+    "click .wings-insert.method": -> scope.insertingMethod.set(true)
 
 #----------------------------------------------
 smartEmptyCurrentSelection = (instance) ->
