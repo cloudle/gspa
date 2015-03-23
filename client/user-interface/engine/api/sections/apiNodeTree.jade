@@ -18,12 +18,12 @@ template(name="apiNode")
         unless isEmptyCollection machineMembers
           li.api-tree-leaf-title Members
           each machineMembers
-            li.api-leaf.member {{name}}
+            li.api-leaf.member: span.link-hover {{name}}
       ul
         unless isEmptyCollection machineMethods
           li.api-tree-leaf-title Methods
           each machineMethods
-            li.api-leaf.method {{name}}
+            li.api-leaf.method: span.link-hover {{name}}
 
   if childNodes.length
     ul

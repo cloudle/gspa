@@ -6,7 +6,7 @@ colors = ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', 'lime
 generateRandomIndex = -> Math.floor(Math.random() * colors.length)
 colorGenerateHistory = []
 
-Wings.Helper.RandomColor = ->
+Wings.Helper.randomColor = ->
   colorGenerateHistory = [] if colorGenerateHistory.length >= colors.length
 
   while true
