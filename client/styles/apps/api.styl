@@ -22,7 +22,7 @@
       padding-bottom 7px
       user-select none
       &.active > span
-        color #779c34
+        border-color rgba(255,255,255,0.3)
       &:hover
         span
           border-color rgba(255,255,255,0.3)
@@ -46,6 +46,11 @@
           user-select none; list-style none
           cursor pointer
           padding-left 8px
+          font-weight 500
+          &.member
+            color nephritis
+          &.method
+            color carrot
 
   .api-docs > ul { padding-left: 15px; }
   .api-docs > li { font-weight: 700; font-size: 18px }
