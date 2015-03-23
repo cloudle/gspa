@@ -22,4 +22,3 @@ Wings.Api.insertNode = (name, parentId) ->
   Model.ApiNode.update(parentId, {$push: {childNodes: childId}}) if parentId
 
 Wings.Api.removeNode = (nodeId) -> Model.ApiNode.remove(nodeId)
-

@@ -2,10 +2,9 @@
 @Model = {}
 
 Wings.Enum = {}
-Wings.Validation = {}
+Wings.Validators = {}
 Wings.CRUD = {}
 Wings.Helper = {}
-
 
 Wings.Dependency = {}
 Wings.Component = {}
