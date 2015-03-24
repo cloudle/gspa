@@ -62,19 +62,41 @@
       font-size 30px; font-weight 500
       color #779c34; padding 10px 0 5px 0
     .wings-insert
-      margin 13px -10px 0 -10px
+      margin 39px -10px 0px -10px
 
     .insert-input
-      width 100%; padding 7px 9px 6px 9px
-      border 2px solid rgba(0,39,59,.2)
-      border-radius 4px
+      width 100%; padding 7px 9px 2px 13px
+      border none; margin-bottom 14px
+      border-bottom 2px solid rgba(0,39,59,.2)
       font-family open-sans
-      font-weight 700
+      font-size 25px; font-weight 700
+
+      /*background #f9f9f5*/
+      /*border-left solid 5px #efefeb*/
 
     .leaf-detail
       background-color #f9f9f5
       border-left solid 5px #efefeb
-      padding 4px 16px
+      padding 10px 8px
       margin-bottom 10px
-      .name
+      .leaf-name
+        font-family open-sans
         font-size 25px; font-weight 700
+        .signature
+          font-weight 400
+        .return-icon
+          font-size 18px
+          color #adada8
+          &:before { margin: 0; }
+        .return-signature
+          font-size 22px; color #adada8
+          background-color #edede8
+          border-radius 20px
+          padding 2px 8px 4px 8px
+      input.insert-param
+        background-color #f9f9f5
+        border none; border-bottom 1px solid rgba(0,39,59,.2)
+        width 100%; font-family open-sans; font-size 18px; font-weight 700
+        margin 13px 0 15px 0
+      .wings-insert
+        margin-top 25px

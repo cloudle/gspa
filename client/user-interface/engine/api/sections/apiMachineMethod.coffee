@@ -1,0 +1,16 @@
+Wings.defineHyper 'apiMachineMethod',
+  events:
+    "keyup [name='insertParamInput']": (event, template) ->
+      if event.which is 13
+        template.ui.$insertParamInput.val('')
+      else if event.which is 27
+        template.ui.$insertParamInput.blur()
+
+    "click .wings-insert": (event, template) ->
+      template.ui.$insertParamWrapper.removeClass('hide')
+      template.ui.$insertParamCommand.addClass('hide')
+      template.ui.$insertParamInput.focus()
+
+    "blur [name=insertParamInput]": (event, template) ->
+      template.ui.$insertParamWrapper.addClass('hide')
+      template.ui.$insertParamCommand.removeClass('hide')

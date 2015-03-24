@@ -19,6 +19,8 @@ Wings.defineApp 'api',
           template.ui.$insertMemberInput.val('')
         else
           console.log insertResult.error
+      else if event.which is 27
+        template.ui.$insertMemberInput.blur()
 
     "keyup [name='insertMethodInput']": (event, template) ->
       if event.which is 13
@@ -31,9 +33,10 @@ Wings.defineApp 'api',
           template.ui.$insertMethodInput.val('')
         else
           console.log insertResult.error
+      else if event.which is 27
+        template.ui.$insertMethodInput.blur()
 
     "click .wings-insert.member": (event, template)->
-#      scope.insertingMember.set(true)
       template.ui.$insertMemberWrapper.removeClass('hide')
       template.ui.$insertMemberCommand.addClass('hide')
       template.ui.$insertMemberInput.focus()
@@ -43,7 +46,6 @@ Wings.defineApp 'api',
       template.ui.$insertMemberCommand.removeClass('hide')
 
     "click .wings-insert.method": (event, template)->
-#      scope.insertingMethod.set(true)
       template.ui.$insertMethodWrapper.removeClass('hide')
       template.ui.$insertMethodCommand.addClass('hide')
       template.ui.$insertMethodInput.focus()

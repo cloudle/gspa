@@ -238,7 +238,8 @@
 .icon-pencil-1:before { content: '\e8ec'; } /* '' */
 .icon-pencil-neg:before { content: '\e8ed'; } /* '' */
 .icon-pencil-alt:before { content: '\e8ee'; } /* '' */
-.icon-gamepad:before { content: '\e8ef'; } /* '' */
+.icon-right-circle:before { content: '\e8ef'; } /* '' */
+.icon-left-circle:before { content: '\e8f0'; } /* '' */
 .icon-emo-happy:before { content: '\f027'; } /* '' */
 .icon-emo-wink:before { content: '\f028'; } /* '' */
 .icon-emo-wink2:before { content: '\f029'; } /* '' */

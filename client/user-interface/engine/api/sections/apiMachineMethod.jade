@@ -1,3 +1,10 @@
 template(name="apiMachineMethod")
   .leaf-detail.method
-    .name {{name}}
+    .leaf-name {{name}}
+      span.signature (arrayLikeObject)
+      span.return-icon.icon-right-circle
+      span.return-signature {void}
+
+    .hide(name="insertParamWrapper")
+      input.insert-param(name="insertParamInput" placeholder="params, phân cách bởi dấu phẩy")
+    .wings-insert.click-command(name="insertParamCommand"): .dashed-bar

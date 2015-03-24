@@ -1,0 +1,2 @@
+class Wings.Api.ApiMethodInterface
+
