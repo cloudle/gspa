@@ -20,3 +20,5 @@ Wings.Api.insertMachineLeaf = (name, nodeType, returnType, parentId) ->
   (console.log validation.message; return ) if !validation.valid
 
   Model.ApiMachineLeaf.insert(newLeaf)
+
+Wings.Api.insertLeafParam = (param) ->

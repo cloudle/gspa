@@ -1,8 +1,3 @@
-simulateModel = (context, template) ->
-  simulatedModel = _(context.model).clone()
-  simulatedModel[context.field] = $(template.find("[field='#{context.field}']")).val()
-  return simulatedModel
-
 Wings.defineWidget 'wingsEditable',
   fieldValue: -> @model?[@field]
   saveRemainingClass: -> if Template.instance().saveRemaining.get() then 'save-remaining' else ''
@@ -15,8 +10,8 @@ Wings.defineWidget 'wingsEditable',
   events:
     "keyup input": (event, template) ->
       if event.which is 13
-        model = simulateModel(@, template)
-        updateResult = Wings.CRUD.updateField(Model.ApiNode, model, @field, Wings.validatorTest)
+        newValue = $(template.find("[field='#{@field}']")).val()
+        updateResult = Wings.CRUD.setField(Model.ApiNode, @model, @field, newValue, Wings.validatorTest)
         Template.instance().saveRemaining.set(!updateResult.valid)
       else if event.which is 27
         $(event.currentTarget).val(@model[@field])

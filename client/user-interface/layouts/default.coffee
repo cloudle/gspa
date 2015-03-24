@@ -1,8 +1,10 @@
+resizeAction = ->
+  Wings.Component.arrangeLayout()
+  $(".nano").nanoScroller()
+
 Wings.defineWidget "defaultLayout",
   rendered: ->
-    $(window).resize ->
-      Wings.Component.arrangeLayout()
-      $(".nano").nanoScroller()
+    $(window).resize -> resizeAction()
 
   destroyed: ->
     $(window).off("resize")

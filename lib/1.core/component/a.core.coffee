@@ -24,6 +24,9 @@ Wings.Component.initializeApp = ->
 Wings.Component.arrangeLayout = ->
   newHeight = $(window).height()# - 51
   $("#container").css('height', newHeight)
+  Meteor.setTimeout ->
+    $(".nano").nanoScroller()
+  , 1000
 
 #-------------------------------------------------------------
 bindingToolTip = (context) -> $("[data-toggle='tooltip']").tooltip({container: 'body'})

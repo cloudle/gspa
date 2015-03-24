@@ -1,7 +1,15 @@
 Wings.defineHyper 'apiMachineMethod',
+  paramCommas: ->
+    result = ''
+    result += "#{param.name}, " for param in @params
+    result.substring(0, result.length - 2)
   events:
     "keyup [name='insertParamInput']": (event, template) ->
       if event.which is 13
+        paramString = template.ui.$insertParamInput.val()
+        return if paramString.trim() is ''
+        params = Wings.Api.Param.fromString(paramString)
+        Model.ApiMachineLeaf.update(@_id, {$push: {params: {$each: params}}})
         template.ui.$insertParamInput.val('')
       else if event.which is 27
         template.ui.$insertParamInput.blur()
