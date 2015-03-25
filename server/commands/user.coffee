@@ -1,5 +1,5 @@
 Meteor.methods
-  createNewUser: (option)->
+  createNewAccount: (option)->
 #    if Meteor.userId()
     userId = Accounts.createUser option
     return userId

@@ -1,6 +1,7 @@
 Model.CustomerGroup.before.insert (userId, doc) ->
-  doc.creator = userId
-  doc.createdAt = new Date()
+  doc.creator      = userId if userId
+  doc.createdAt    = new Date()
+  doc.customerList = []
 
 Model.CustomerGroup.before.update (userId, doc, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
@@ -8,6 +9,6 @@ Model.CustomerGroup.before.update (userId, doc, fieldNames, modifier, options) -
 
 
 Model.CustomerGroup.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, customerGroup)-> true
+  update: (userId, customerGroup, fieldNames, modifier)-> true
+  remove: (userId, customerGroup)-> true

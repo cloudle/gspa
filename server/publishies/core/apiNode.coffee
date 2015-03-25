@@ -8,6 +8,8 @@ recursiveRemoveChild = (childNodes)->
 
 Model.ApiNode.after.remove (userId, doc) ->
   Model.ApiNode.update(doc.parent, {$pull: {childNodes: doc._id}}) if doc.parent
+  Model.ApiHumanLeaf.remove({parent: doc._id})
+  Model.ApiMachineLeaf.remove({parent: doc._id})
   recursiveRemoveChild(doc.childNodes) if doc.childNodes
 
 Model.ApiNode.allow

@@ -1,13 +1,13 @@
-Model.Order.before.insert (userId, doc) ->
-  doc.creator = userId
-  doc.createdAt = new Date()
+Model.Order.before.insert (userId, order) ->
+  order.creator = userId if userId
+  order.createdAt = new Date()
 
-Model.Order.before.update (userId, doc, fieldNames, modifier, options) ->
+Model.Order.before.update (userId, order, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 
 Model.Order.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, order)-> true
+  update: (userId, order, fieldNames, modifier)-> true
+  remove: (userId, order)-> true

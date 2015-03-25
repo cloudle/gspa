@@ -1,5 +1,5 @@
 Model.Delivery.before.insert (userId, doc) ->
-  doc.creator = userId
+  doc.creator = userId if userId
   doc.createdAt = new Date()
 
 Model.Delivery.before.update (userId, doc, fieldNames, modifier, options) ->
@@ -8,6 +8,6 @@ Model.Delivery.before.update (userId, doc, fieldNames, modifier, options) ->
 
 
 Model.Delivery.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, delivery)-> true
+  update: (userId, delivery, fieldNames, modifier)-> true
+  remove: (userId, delivery)-> true

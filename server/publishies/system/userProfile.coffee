@@ -1,14 +1,14 @@
-Model.UserProfile.before.insert (userId, doc) ->
-  doc.createdAt = new Date()
+Model.UserProfile.before.insert (userId, userProfile) ->
+  userProfile.createdAt = new Date()
 
-Model.UserProfile.before.update (userId, doc, fieldNames, modifier, options) ->
+Model.UserProfile.before.update (userId, userProfile, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 Model.UserProfile.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, userProfile)-> true
+  update: (userId, userProfile, fieldNames, modifier)-> true
+  remove: (userId, userProfile)-> true
 
 
 
