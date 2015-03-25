@@ -1321,6 +1321,18 @@
       "src": "iconic"
     },
     {
+      "uid": "a263473d2d406881ea08f991c1b38694",
+      "css": "left-circle",
+      "code": 59632,
+      "src": "iconic"
+    },
+    {
+      "uid": "ccee648b9e12a533f6957967e29ebdef",
+      "css": "right-circle",
+      "code": 59631,
+      "src": "iconic"
+    },
+    {
       "uid": "97var6sq7rzo72ktzg1c6ph46u9pftbr",
       "css": "pencil-alt",
       "code": 59630,

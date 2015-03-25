@@ -1,11 +1,8 @@
-#model param must be the simulatedModel AFTER updated!
-Wings.CRUD.updateField = (collection, model, field, validator, extraChecks...) ->
-  return {valid: false, error: "Unable to update, #{field} is missing."} if !model[field]
-
-  isValidModel = Wings.CRUD.validate(model, validator)
-
+Wings.CRUD.setField = (collection, model, field, value, validator = {}, extraChecks...) ->
+  simulate = _(model).clone(); simulate[field] = value
+  isValidModel = Wings.CRUD.validate(simulate, validator)
   return {valid: false, error: isValidModel.error} unless isValidModel.valid
-  updateOptions = {}; updateOptions[field] = model[field]
+  updateOptions = {}; updateOptions[field] = value
   collection.update(model._id, {$set: updateOptions})
   return {valid: true}
 
