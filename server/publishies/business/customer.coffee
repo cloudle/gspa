@@ -1,5 +1,5 @@
 Model.Customer.before.insert (userId, doc) ->
-  doc.creator = userId
+  doc.creator = userId if userId
   doc.createdAt = new Date()
 
 Model.Customer.before.update (userId, doc, fieldNames, modifier, options) ->
@@ -8,6 +8,6 @@ Model.Customer.before.update (userId, doc, fieldNames, modifier, options) ->
 
 
 Model.Customer.allow
-  insert: (userId, user)-> true
-  update: (userId, user)-> true
-  remove: (userId, user)-> true
+  insert: (userId, customer)-> true
+  update: (userId, customer, fieldNames, modifier)-> true
+  remove: (userId, customer)-> true

@@ -1,44 +1,49 @@
-ProductGroup = Wings.Product.ProductGroup = {}
+Wings.Product.Group = {}
 
-ProductGroup.insertProductGroup = (name, productGroupCode, warehouseId = null)->
-  if Meteor.userId() and name
-    Model.ProductGroup.insert({name: name, productCode: productCode, warehouse: warehouseId})
+Wings.Product.Group.insert = (name, warehouse = null)->
+  newGroup = {name: name}
+  newGroup.warehouse = warehouse if warehouse
 
-ProductGroup.updateProductGroup = (option, productId)->
-  if Meteor.userId() and typeof option is 'object'
-    if product = Model.ProductGroup.findOne(productId)
-      optionUpdate = {}
+  insertResult = Wings.CRUD.insert(Model.ProductGroup, newGroup, Wings.Validators.productGroupCreate)
+  console.log insertResult.error unless insertResult.valid
+  return insertResult
 
-      if option.name
-        if typeof option.name is 'string' and option.name.length > 0
-          optionUpdate.name = option.name
-        else
-          console.log 'name is error'
+Wings.Product.Group.update = (option, groupId = undefined)->
+  fields = ['name', 'description']
+  updateResult = Wings.CRUD.update(Model.ProductGroup, groupId, option, fields, Wings.Validators.productGroupUpdate)
+  console.log updateResult.error unless updateResult.valid
+  return updateResult
 
-      if option.description
-        if typeof option.description is 'string'
-          optionUpdate.description = option.description
-        else
+Wings.Product.Group.remove = (groupId)->
+  removeResult = Wings.CRUD.remove(Model.ProductGroup, groupId)
+  return removeResult
 
-      if option.image
-        if typeof option.image is 'string'
-          optionUpdate.image = option.image
-        else
+Wings.Product.Group.addProduct = (productLists, groupId = undefined)->
+  if _.isArray(productLists) then arrayProduct = productLists else arrayProduct = [productLists]
 
-      Model.ProductGroup.update product._id, $set: optionUpdate if _.keys(optionUpdate).length > 0
+  if Match.test(arrayProduct, [String])
+    return {valid: false, error: "productLists is required."} if arrayProduct.length < 1
+  else
+    return {valid: false, error: "productLists is required."}
 
-ProductGroup.removeProductGroup = (productId)->
-  if Meteor.userId() and productId
-    Model.ProductGroup.remove productId
+  if (Model.ProductGroup.update groupId, $addToSet: {productList: {$each: arrayProduct}})
+    (Model.Product.update productId, $addToSet: {productGroup: groupId}) for productId in arrayProduct
+    return {valid: true}
+  else
+    return {valid: false, error: 'productGroupId is not valid.'}
 
-#Group.insertGroup = (productList, productGroupId)->
-#  if Meteor.userId() and productGroupId
-#    if Match.test(productList, Match.OneOf(String, [String]))
-#      if productGroup = Model.GroupGroup.findOne(productGroupId)
-#        Model.GroupGroup.update productGroup._id, $addToSet: {productList: productList}
-#
-#Group.removeGroup = (productList, productGroupId)->
-#  if Meteor.userId() and productGroupId
-#    if Match.test(productList, Match.OneOf(String, [String]))
-#      if productGroup = Model.GroupGroup.findOne(productGroupId)
-#        Model.GroupGroup.update productGroup._id, $addToSet: {productList: productList}
+
+Wings.Product.Group.removeProduct = (productLists = undefined, groupId = undefined)->
+  if _.isArray(productLists) then arrayProduct = productLists else arrayProduct = [productLists]
+
+  if Match.test(arrayProduct, [String])
+    return {valid: false, error: "productLists is required."} if arrayProduct.length < 1
+  else
+    return {valid: false, error: "productLists is required."}
+
+  for productId in arrayProduct
+    if (Model.ProductGroup.update groupId, $pull: {productList: productId})
+      Model.Product.update productId, $pull: {productGroup: groupId}
+    else
+      return {valid: false, error: "productGroupId is not valid."}
+  return {valid: true}

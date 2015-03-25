@@ -1,11 +1,11 @@
-Model.UserOption.before.insert (userId, doc) ->
-  doc.createdAt = new Date()
+Model.UserOption.before.insert (userId, userOption) ->
+  userOption.createdAt = new Date()
 
-Model.UserOption.before.update (userId, doc, fieldNames, modifier, options) ->
+Model.UserOption.before.update (userId, userOption, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 Model.UserOption.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, userOption)-> true
+  update: (userId, userOption, fieldNames, modifier)-> true
+  remove: (userId, userOption)-> true

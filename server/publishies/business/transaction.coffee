@@ -1,13 +1,13 @@
-Model.Transaction.before.insert (userId, doc) ->
-  doc.creator = userId
-  doc.createdAt = new Date()
+Model.Transaction.before.insert (userId, transaction) ->
+  transaction.creator = userId if userId
+  transaction.createdAt = new Date()
 
-Model.Transaction.before.update (userId, doc, fieldNames, modifier, options) ->
+Model.Transaction.before.update (userId, transaction, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 
 Model.Transaction.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, transaction)-> true
+  update: (userId, transaction, fieldNames, modifier)-> true
+  remove: (userId, transaction)-> true

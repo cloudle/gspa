@@ -1,15 +1,15 @@
-Model.Sale.before.insert (userId, doc) ->
-  delete doc.buyer if !doc.buyer
-  doc.seller = userId if doc.seller
-  doc.creator = userId
-  doc.createdAt = new Date()
+Model.Sale.before.insert (userId, sale) ->
+  delete sale.buyer if !sale.buyer
+  sale.seller = userId if sale.seller
+  sale.creator = userId if userId
+  sale.createdAt = new Date()
 
-Model.Sale.before.update (userId, doc, fieldNames, modifier, options) ->
+Model.Sale.before.update (userId, sale, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 
 Model.Sale.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, sale)-> true
+  update: (userId, sale, fieldNames, modifier)-> true
+  remove: (userId, sale)-> true

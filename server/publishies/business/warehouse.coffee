@@ -1,13 +1,13 @@
-Model.Warehouse.before.insert (userId, doc) ->
-  doc.creator = userId
-  doc.createdAt = new Date()
+Model.Warehouse.before.insert (userId, warehouse) ->
+  warehouse.creator = userId if userId
+  warehouse.createdAt = new Date()
 
-Model.Warehouse.before.update (userId, doc, fieldNames, modifier, options) ->
+Model.Warehouse.before.update (userId, warehouse, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 
 Model.Warehouse.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, warehouse)-> true
+  update: (userId, warehouse, fieldNames, modifier)-> true
+  remove: (userId, warehouse)-> true

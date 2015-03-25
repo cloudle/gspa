@@ -1,14 +1,21 @@
-Staff = Wings.Account.Staff = {}
+Wings.Account = {}
 
-Staff.insert = (staffObj)->
-  result = createAccount(staffObj)
-  if result.error then result
-  else
-    Meteor.call 'createNewAccount', result.detail, (error, userId)->
-      if error then console.log error
-      else console.log userId
+Wings.Account.insert = (option)->
+  newAccount = {password: option.password}
+  newAccount.email    = option.email  if option.email
+  newAccount.username = option.username if option.username
 
-Staff.update = (option, userId)->
+  if !newAccount.username and !newAccount.email or !newAccount.password
+    if newAccount.password then console.log 'username or email is required' else console.log 'password is required'
+    return {valid: false}
+
+  isValidModel = Wings.CRUD.validate(newAccount, Wings.Validators.accountCreate)
+  (console.log isValidModel.error; return isValidModel) unless isValidModel.valid
+
+  Meteor.call 'createNewAccount', (error, userId)-> if error then console.log error else console.log userId
+
+
+Wings.Account.update = (option, userId)->
   if Meteor.userId() and typeof option is 'object'
     if userProfile = Model.UserProfile.findOne({user: userId ? Meteor.userId()})
       optionUpdate = {}
@@ -61,41 +68,5 @@ Staff.update = (option, userId)->
 
       Model.UserProfile.update userProfile._id, $set: optionUpdate if _.keys(optionUpdate).length > 0
 
-Staff.remove = (staffId)->
-  Model.Account.remove staffId if Meteor.userId() and Meteor.userId() isnt staffId
-
-
-createAccount = (option)->
-  userOption = {}
-  result = {error: true, message:null, detail: null}
-
-  if typeof option is 'object'
-    userOption.username = option.username if typeof option.username is 'string'
-    userOption.email    = option.email if typeof option.email is 'string'
-    userOption.password = option.password if typeof option.password is 'string'
-
-    if (userOption.username or userOption.email) and userOption.password
-      if userOption.username and !userOption.email
-        result.message = "username is length < 10" if userOption.username.length < 10
-
-      if userOption.email and !userOption.username
-        result.message = "email is length < 10" if userOption.email.length < 10
-
-      if userOption.password and userOption.password.length < 10
-        result.message = "password is length > 10"
-
-      result.error = false; result.detail = userOption
-
-    else if userOption.password
-      result.message = "username or email is empty"
-
-    else if userOption.username or userOption.email
-      result.message = "password is empty"
-
-    else
-      result.message = "option is empty 1"
-
-  else
-    result.message = "option is undefined"
-
-  return result
+Wings.Account.remove = (staffId)->
+  Model.Wings.Account.remove staffId if Meteor.userId() and Meteor.userId() isnt staffId

@@ -1,12 +1,12 @@
-Model.Return.before.insert (userId, doc) ->
-  doc.createdAt = new Date()
+Model.Return.before.insert (userId, returnObj) ->
+  returnObj.createdAt = new Date()
 
-Model.Return.before.update (userId, doc, fieldNames, modifier, options) ->
+Model.Return.before.update (userId, returnObj, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 
 Model.Return.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, returnObj)-> true
+  update: (userId, returnObj, fieldNames, modifier)-> true
+  remove: (userId, returnObj)-> true

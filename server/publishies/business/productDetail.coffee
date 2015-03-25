@@ -1,13 +1,13 @@
-Model.ProductDetail.before.insert (userId, doc) ->
-  doc.creator = userId
-  doc.createdAt = new Date()
+Model.ProductDetail.before.insert (userId, productDetail) ->
+  productDetail.creator = userId if userId
+  productDetail.createdAt = new Date()
 
-Model.ProductDetail.before.update (userId, doc, fieldNames, modifier, options) ->
+Model.ProductDetail.before.update (userId, productDetail, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 
 Model.ProductDetail.allow
-  insert: (userId, doc)-> true if userId
-  update: (userId, doc)-> true if userId
-  remove: (userId, doc)-> true if userId
+  insert: (userId, productDetail)-> true
+  update: (userId, productDetail, fieldNames, modifier)-> true
+  remove: (userId, productDetail)-> true
