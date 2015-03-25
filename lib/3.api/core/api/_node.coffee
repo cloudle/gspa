@@ -1,5 +1,10 @@
 Wings.Api = {}
 
+Wings.Enum.nodeTypes =
+  property: 1
+  method  : 2
+  example : 3
+
 Wings.Api.isValidNode = (nodeObj) ->
   if Match.test(nodeObj.name, String) and nodeObj.name.length < 1
     return { valid: false, message: "invalid node name!" }

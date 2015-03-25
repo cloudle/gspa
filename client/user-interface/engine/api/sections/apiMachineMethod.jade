@@ -5,22 +5,25 @@ template(name="apiMachineMethod")
       span.return-icon.icon-right-circle
       span.return-signature {void}
     .leaf-doc
-      h3 doc..
-    .leaf-params
-      if params
-        table
-          tr
-            th.param Param
-            th Types
-          each params
-            tr
-              td: span {{name}}
-              td
-                if type
-                  each type
-                    span {{name}}
-                else
-                  span Any
+      .doc-editor.wings-editor(contenteditable="true" placeholder="Description..")
+    if params
+      table.leaf-params
+        tr
+          th.param-header.name Param
+          th.param-header.types Types
+          th.param-header Descriptions
+        each params
+          tr.param-row
+            td.param-name
+              span {{name}}
+              .remove-command.icon-cancel-circled-4
+            td
+              if type
+                each type
+                  span {{name}}
+              else
+                span Any*
+            td {{description}}
 
     .hide(name="insertParamWrapper")
       input.insert-param(name="insertParamInput" placeholder="params, phân cách bởi dấu phẩy")

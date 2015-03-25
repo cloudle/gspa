@@ -18,6 +18,9 @@ Wings.Component.bindingElements = (context) ->
     context.ui[name] = item
     context.ui["$#{name}"] = $(item)
 
+Wings.Component.registerEditors = (context) ->
+  Wings.Editor.register $(editor) for editor in context.findAll(".wings-editor")
+
 Wings.Component.initializeApp = ->
   Wings.Component.arrangeLayout()
 

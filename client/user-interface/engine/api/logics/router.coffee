@@ -7,7 +7,6 @@ Wings.Router.add
       Wings.Router.setup(scope, setups.apiInits, "apiDocumentation")
       @next()
   data: ->
-    console.log 'fired!'
     Wings.Router.setup(scope, setups.apiReactives)
     return {
       apiNodes: Model.ApiNode.find({parent: {$exists: false}}, {sort: {name: 1}})

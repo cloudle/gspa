@@ -6,7 +6,9 @@ Wings.defineApp 'api',
 #  insertingMethod: -> scope.insertingMethod.get()
 #  machineMethods: -> Model.ApiMachineLeaf.find {parent: Session.get('currentApiNode')?._id, leafType: Wings.Enum.nodeTypes.method}
 #  machineMembers: -> Model.ApiMachineLeaf.find {parent: Session.get('currentApiNode')?._id, leafType: Wings.Enum.nodeTypes.property}
-
+  isEditing: -> Wings.Editor.isActive.get()
+  boldCommand: -> Wings.Editor.commands.bold.isActive.get()
+  italicCommand: -> Wings.Editor.commands.italic.isActive.get()
   events:
     "keyup [name='insertMemberInput']": (event, template) ->
       if event.which is 13

@@ -1,6 +1,6 @@
 Wings.defineHyper 'apiMachineMethod',
   paramCommas: ->
-    result = ''
+    result = ''; return result unless @params
     result += "#{param.name}, " for param in @params
     result.substring(0, result.length - 2)
   events:
@@ -8,8 +8,8 @@ Wings.defineHyper 'apiMachineMethod',
       if event.which is 13
         paramString = template.ui.$insertParamInput.val()
         return if paramString.trim() is ''
-        params = Wings.Api.Param.fromString(paramString)
-        Model.ApiMachineLeaf.update(@_id, {$push: {params: {$each: params}}})
+
+        Wings.Api.Leaf.addParams(@_id, paramString)
         template.ui.$insertParamInput.val('')
       else if event.which is 27
         template.ui.$insertParamInput.blur()
@@ -22,3 +22,6 @@ Wings.defineHyper 'apiMachineMethod',
     "blur [name=insertParamInput]": (event, template) ->
       template.ui.$insertParamWrapper.addClass('hide')
       template.ui.$insertParamCommand.removeClass('hide')
+
+    "click .remove-command": ->
+      Wings.Api.Leaf.removeParam(Template.parentData()._id, @name)

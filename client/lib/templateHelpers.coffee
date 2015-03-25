@@ -9,3 +9,5 @@ Template.registerHelper 'machineMembers', -> Model.ApiMachineLeaf.find {parent: 
 
 Template.registerHelper 'booleanDisplayClass', (visibility) -> if visibility then '' else 'hide'
 Template.registerHelper 'booleanHideClass', (visibility) -> if visibility then 'hide' else ''
+
+Template.registerHelper 'reactiveVar', (source) -> source?.get()

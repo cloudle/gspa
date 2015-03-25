@@ -32,4 +32,5 @@ Wings.defineHyper = (source, destination) ->
   source.rendered = ->
     Wings.Component.customBinding(destination.ui, @) if destination.ui
     Wings.Component.autoBinding(@)
+    Wings.Component.registerEditors(@)
     Wings.Component.invokeIfNecessary(destination.rendered, @)
