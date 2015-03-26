@@ -4,25 +4,25 @@ Wings.Sale.PricePolicy.insert = (name, description = undefined)->
   newPricePolicy = {name: name}
   newPricePolicy.description = description if description
 
-  insertResult = Wings.CRUD.insert(Model.PricePolicy, newPricePolicy, Wings.Validators.pricePolicyCreate)
+  insertResult = Wings.IRUS.insert(Model.PricePolicy, newPricePolicy, Wings.Validators.pricePolicyCreate)
   console.log insertResult.error unless insertResult.valid
   return insertResult
 
 Wings.Sale.PricePolicy.update = (option, pricePolicyId)->
   fields = ['name', 'description']
-  updateResult = Wings.CRUD.update(Model.PricePolicy, pricePolicyId, option, fields, Wings.Validators.pricePolicyUpdate)
+  updateResult = Wings.IRUS.update(Model.PricePolicy, pricePolicyId, option, fields, Wings.Validators.pricePolicyUpdate)
   console.log updateResult.error unless updateResult.valid
   return updateResult
 
 Wings.Sale.PricePolicy.remove = (pricePolicyId)->
-  removeResult = Wings.CRUD.remove(Model.PricePolicy, pricePolicyId)
+  removeResult = Wings.IRUS.remove(Model.PricePolicy, pricePolicyId)
   console.log removeResult.error unless removeResult.valid
   return removeResult
 
 Wings.Sale.PricePolicy.addProduct = (productLists = undefined, pricePolicyId = undefined)->
   if _.isArray(productLists) then arrayProduct = productLists else arrayProduct = [productLists]
 
-  isValidModel = Wings.CRUD.validate(productLists, Wings.Validators.pricePolicyUpdateProductPrice, true)
+  isValidModel = Wings.IRUS.validate(productLists, Wings.Validators.pricePolicyUpdateProductPrice, true)
   return isValidModel unless isValidModel.valid
 
   for item in arrayProduct

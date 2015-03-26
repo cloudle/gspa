@@ -9,4 +9,5 @@ template(name="apiMachineMember")
           span {void}
       span.remove-command.icon-cancel-circled-4
     .leaf-doc
-      .doc-editor.wings-editor(contenteditable="true" placeholder="Ghi chú...")
+      //.doc-editor.wings-editor(field="description" contenteditable="true" placeholder="Ghi chú...")
+      +wingsEditor(model=this field="description" placeholder="Ghi chú.." class="doc-editor")

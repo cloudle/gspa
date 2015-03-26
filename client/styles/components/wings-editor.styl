@@ -1,34 +1,25 @@
 @require '../wings.import.styl'
 
-.wings-editable
-  position relative
-  padding-top 10px
+.wings-editor-wrapper
+  padding-bottom 25px
+  .wings-editor
+    cursor pointer
+  .commands
+    display none
+  &.active, &.save-remaining
+    padding-bottom 0
+    .commands
+      display inherit
 
-  input
-    border none
-    width 100%
+  .commands
+    margin-top 5px
+    border-top solid 1px #E4E4E4
+  &.save-remaining .commands
+    background-color lime
 
-  .label
-    absolute left 15px top 0
-    visibility hidden
-    font-size 14px; color #ccc
-    user-select none
-
-  &:hover
-    &:before, .label
-      visibility visible
-    &:not(.active)
-      &:before, .label
-        color lighten(editable-color, 15)
-
-  &.save-remaining:before, &.active:before
-    visibility visible
-
-  &:before
-    visibility hidden
-    font-family 'lemon'
-    content '\E8ED'
-    font-size 16px; color editable-color
-    absolute left -5px top 0
-  &.save-remaining:before
-    color save-remaining-color
+.wings-editor-pane
+  display none
+  &.active
+    display inherit
+  .button.active
+    font-weight bolder

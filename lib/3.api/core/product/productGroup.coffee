@@ -4,18 +4,18 @@ Wings.Product.Group.insert = (name, warehouse = null)->
   newGroup = {name: name}
   newGroup.warehouse = warehouse if warehouse
 
-  insertResult = Wings.CRUD.insert(Model.ProductGroup, newGroup, Wings.Validators.productGroupCreate)
+  insertResult = Wings.IRUS.insert(Model.ProductGroup, newGroup, Wings.Validators.productGroupCreate)
   console.log insertResult.error unless insertResult.valid
   return insertResult
 
 Wings.Product.Group.update = (option, groupId = undefined)->
   fields = ['name', 'description']
-  updateResult = Wings.CRUD.update(Model.ProductGroup, groupId, option, fields, Wings.Validators.productGroupUpdate)
+  updateResult = Wings.IRUS.update(Model.ProductGroup, groupId, option, fields, Wings.Validators.productGroupUpdate)
   console.log updateResult.error unless updateResult.valid
   return updateResult
 
 Wings.Product.Group.remove = (groupId)->
-  removeResult = Wings.CRUD.remove(Model.ProductGroup, groupId)
+  removeResult = Wings.IRUS.remove(Model.ProductGroup, groupId)
   return removeResult
 
 Wings.Product.Group.addProduct = (productLists, groupId = undefined)->

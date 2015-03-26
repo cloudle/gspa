@@ -9,7 +9,7 @@ Wings.Account.insert = (option)->
     if newAccount.password then console.log 'username or email is required' else console.log 'password is required'
     return {valid: false}
 
-  isValidModel = Wings.CRUD.validate(newAccount, Wings.Validators.accountCreate)
+  isValidModel = Wings.IRUS.validate(newAccount, Wings.Validators.accountCreate)
   (console.log isValidModel.error; return isValidModel) unless isValidModel.valid
 
   Meteor.call 'createNewAccount', (error, userId)-> if error then console.log error else console.log userId

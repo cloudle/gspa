@@ -3,7 +3,7 @@
 
 Wings.Enum = {}
 Wings.Validators = {}
-Wings.CRUD = {}
+Wings.IRUS = {}
 Wings.Helper = {}
 
 Wings.Dependency = {}

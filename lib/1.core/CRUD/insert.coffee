@@ -1,6 +1,6 @@
-Wings.CRUD.insert = (collection, model, validator = {}, extraChecks) ->
+Wings.IRUS.insert = (collection, model, validator = {}, extraChecks) ->
   console.log model
-  isValidModel = Wings.CRUD.validate(model, validator)
+  isValidModel = Wings.IRUS.validate(model, validator)
 
   return {valid: false, error: isValidModel.error} unless isValidModel.valid
   console.log isValidModel

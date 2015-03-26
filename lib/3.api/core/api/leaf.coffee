@@ -15,7 +15,7 @@ Wings.Api.Leaf =
   insertMembers: (leafId, methods) ->
     members = @splitTypes(methods) if typeof methods is 'string'
     _(members).map (obj) -> obj.parent = leafId; obj.leafType = Wings.Enum.nodeTypes.property
-    Wings.CRUD.insert(Model.ApiMachineLeaf, member, Wings.Validators.leafCreate) for member in members
+    Wings.IRUS.insert(Model.ApiMachineLeaf, member, Wings.Validators.leafCreate) for member in members
 
   remove: (leafId) -> Model.ApiMachineLeaf.remove(leafId)
 

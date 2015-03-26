@@ -8,7 +8,7 @@ template(name="api")
               +wingsEditable(size="s2" model=currentNode field="name" label="tên node")
               +wingsEditable(size="s6" model=currentNode field="description")
             .subsection-wrapper
-              .subsection-title Members {{isEditing}}, B: {{boldCommand}}, I: {{italicCommand}}
+              .subsection-title Members
 
               each machineMembers
                 +apiMachineMember this

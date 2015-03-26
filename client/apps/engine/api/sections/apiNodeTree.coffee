@@ -4,7 +4,11 @@ Wings.defineWidget 'apiNodeTree',
   events:
     "click li.api-node": (event, template) ->
       Session.set "currentApiNode", @;
-      Session.set "currentApiRoot", @ unless @parent
+      if !@parent
+        if Session.get("currentApiRoot")?._id is @_id
+          Session.set("apiTreeCollapse", !Session.get("apiTreeCollapse"))
+        else
+          Session.set "currentApiRoot", @
       event.stopPropagation()
     "click .remove-node": (event, template) ->
       smartEmptyCurrentSelection(@) if Session.get("currentApiNode")

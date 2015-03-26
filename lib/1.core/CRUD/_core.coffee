@@ -38,7 +38,7 @@ customMetaCheck = (source, key, obj) ->
 
   return {valid: true}
 
-Wings.CRUD.validate = (source, validator, isArray = false) ->
+Wings.IRUS.validate = (source, validator, isArray = false) ->
   pattern = {}
 
   for key, obj of validator
@@ -62,7 +62,7 @@ Wings.CRUD.validate = (source, validator, isArray = false) ->
   result.error = "Structure of your data is not valid." if !result.valid
   return result
 
-Wings.CRUD.generateObj = (option, fields)->
+Wings.IRUS.generateObj = (option, fields)->
   Obj = {}
   for item in fields
     Obj[item] = option[item] if option[item] or option[item] is "" or option[item] is false
