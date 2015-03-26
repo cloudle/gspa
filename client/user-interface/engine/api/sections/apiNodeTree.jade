@@ -26,7 +26,7 @@ template(name="apiNode")
           each machineMethods
             li.api-leaf.method: span.link-hover {{name}}
 
-  if childNodes.length
+  if renderNodeChilds
     ul
       each childNodes
         +apiNode nodeDetails
