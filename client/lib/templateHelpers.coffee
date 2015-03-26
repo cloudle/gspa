@@ -12,3 +12,4 @@ Template.registerHelper 'booleanDisplayClass', (visibility) -> if visibility the
 Template.registerHelper 'booleanHideClass', (visibility) -> if visibility then 'hide' else ''
 
 Template.registerHelper 'reactiveVar', (source) -> source?.get()
+Template.registerHelper 'brackets', (source) -> "{#{source}}"

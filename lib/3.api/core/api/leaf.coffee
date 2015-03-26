@@ -1,34 +1,40 @@
 Wings.Api.Leaf =
-  addParamType: (source, type) ->
+  insertParamType: (source, type) ->
     if !source.type then source.type = [type] else source.type.push type unless _(source.type).findWhere({name: type.name}) > 0
 
   removeParamType: (source, type) ->
     return if !Array.isArray(source.type)
     @type.splice(source.type.indexOf(_(source.type).findWhere({name: name})), 1)
 
+  insertParams: (leafId, params) ->
+    params = @splitTypes(params) if typeof params is 'string'
+    _(params).map (obj) -> obj.type = [obj.type]
+    Model.ApiMachineLeaf.update(leafId, {$push: {params: {$each: params}}}) if Array.isArray(params)
   removeParam: (leafId, name) -> Model.ApiMachineLeaf.update(leafId, {$pull: {params: {name: name}}})
 
-  addParams: (leafId, params) ->
-    params = @generateParams(params) if typeof params is 'string'
-    Model.ApiMachineLeaf.update(leafId, {$push: {params: {$each: params}}}) if Array.isArray(params)
+  insertMembers: (leafId, methods) ->
+    members = @splitTypes(methods) if typeof methods is 'string'
+    _(members).map (obj) -> obj.parent = leafId; obj.leafType = Wings.Enum.nodeTypes.property
+    Wings.CRUD.insert(Model.ApiMachineLeaf, member, Wings.Validators.leafCreate) for member in members
 
-  generateParams: (source) ->
+  remove: (leafId) -> Model.ApiMachineLeaf.remove(leafId)
+
+  splitTypes: (sourceString) ->
     results = []
-    params = source.split(',')
-    for param in params
-      param = param.trim()
-      typeSeparatorIndex = param.indexOf(":")
-
-      if typeSeparatorIndex > 0
-        namePart = param.substring(0, typeSeparatorIndex)
-        typePart = param.substring(typeSeparatorIndex+1)
-        result = {name: namePart, type: [{name: typePart}]}
+    sources = sourceString.split(',')
+    for source in sources
+      separatorIndex = source.indexOf(":")
+      if separatorIndex > 0
+        result =
+          name: source.substr(0, separatorIndex)
+          type: {name: source.substr(separatorIndex+1)}
       else
-        result = {name: param}
+        result = {name: source}
 
       results.push result
 
     results
+
 
 #Wings.Api.isValidMachineLeaf = (leafOjb) ->
 #  if Match.test(leafOjb.name, String) and leafOjb.name.length < 1

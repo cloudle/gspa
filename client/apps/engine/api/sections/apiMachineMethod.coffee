@@ -9,7 +9,7 @@ Wings.defineHyper 'apiMachineMethod',
         paramString = template.ui.$insertParamInput.val()
         return if paramString.trim() is ''
 
-        Wings.Api.Leaf.addParams(@_id, paramString)
+        Wings.Api.Leaf.insertParams(@_id, paramString)
         template.ui.$insertParamInput.val('')
       else if event.which is 27
         template.ui.$insertParamInput.blur()

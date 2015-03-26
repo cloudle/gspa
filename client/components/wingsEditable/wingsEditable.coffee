@@ -11,7 +11,8 @@ Wings.defineWidget 'wingsEditable',
     "keyup input": (event, template) ->
       if event.which is 13
         newValue = $(template.find("[field='#{@field}']")).val()
-        updateResult = Wings.CRUD.setField(Model.ApiNode, @model, @field, newValue, Wings.validatorTest)
+        updateResult = Wings.CRUD.setField(Model.ApiNode, @model, @field, newValue)
+        updateResult.error unless updateResult.valid
         Template.instance().saveRemaining.set(!updateResult.valid)
       else if event.which is 27
         $(event.currentTarget).val(@model[@field])

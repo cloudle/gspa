@@ -3,7 +3,7 @@ Wings.Validators.leafCreate =
     type: String
     meta: [
       min: 2
-      error: "Property không thể ngắn hơn 2 ký tự"
+      error: "Tên không thể ngắn hơn 2 ký tự"
     ]
 
   parent:

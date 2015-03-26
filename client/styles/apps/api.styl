@@ -83,10 +83,12 @@
     /*border-left solid 5px #efefeb*/
 
   .leaf-detail
+    position relative
     background-color #f9f9f5
     border-left solid 5px #efefeb
     padding 10px 8px
     margin-bottom 10px
+
     .leaf-name
       font-family open-sans
       font-size 25px; font-weight 700
@@ -101,6 +103,10 @@
         background-color #edede8
         border-radius 20px
         padding 2px 8px 4px 8px
+      .remove-command
+        display none; cursor pointer
+        color #D5D5D5
+    &:hover .leaf-name > .remove-command { display: inline-block }
 
     .leaf-doc
       padding 20px 0 5px 0

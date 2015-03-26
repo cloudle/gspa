@@ -6,7 +6,6 @@ Wings.CRUD.setField = (collection, model, field, value, validator = {}, extraChe
   collection.update(model._id, {$set: updateOptions})
   return {valid: true}
 
-
 Wings.CRUD.update = (collection, id, model, fields = [], validator, extraChecks...) ->
   updateOption = Wings.CRUD.generateObj(model, fields)
   isValidModel = Wings.CRUD.validate(updateOption, validator)
