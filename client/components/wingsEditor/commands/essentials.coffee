@@ -1,12 +1,12 @@
 Wings.Editor.commands.bold =
-  command: "bold"
-  icon: "icon-emo-coffee"
+  icon: "icon-bold"
   description: "In đậm"
   canExecute: true
   isActive: new ReactiveVar(false)
+  command: -> document.execCommand("bold")
 
 Wings.Editor.commands.italic =
-  command: "italic"
-  icon: "icon-emo-coffee"
+  icon: "icon-italic"
   description: "In nghiêng"
   isActive: new ReactiveVar(false)
+  command: -> document.execCommand("italic")

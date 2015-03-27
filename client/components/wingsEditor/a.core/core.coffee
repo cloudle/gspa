@@ -16,4 +16,4 @@ Wings.Editor =
 
 $(document).on "wingsEditorChange", ->
   for name, obj of Wings.Editor.commands
-    obj.isActive.set document.queryCommandState(obj.command) if obj.isActive
+    obj.isActive.set document.queryCommandState(name) if obj.isActive

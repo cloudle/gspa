@@ -1,7 +1,7 @@
 @require '../wings.import.styl'
 
 .wings-editor-wrapper
-  padding-bottom 25px
+  padding-bottom 37px
   .wings-editor
     cursor pointer
   .commands
@@ -14,12 +14,19 @@
   .commands
     margin-top 5px
     border-top solid 1px #E4E4E4
-  &.save-remaining .commands
+  &.save-remaining .button
     background-color lime
 
 .wings-editor-pane
-  display none
+  /*display none*/
+  line-height 38px
+  user-select none
+  font-size 14px
   &.active
     display inherit
-  .button.active
-    font-weight bolder
+  .button
+    transition background-color 150ms
+    &.active, &:hover
+      background-color rgba(0, 0, 0, 0.1)
+  .button, span
+    user-select none

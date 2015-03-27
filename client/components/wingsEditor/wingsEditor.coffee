@@ -8,7 +8,7 @@ Wings.defineHyper 'wingsEditor',
     Template.instance().hasFocus = new ReactiveVar(false)
 
   events:
-    "click .wings-button": (event, template) ->
+    "click .button.save": (event, template) ->
       newValue = $(template.find(".wings-editor")).html()
       updateResult = Wings.IRUS.setField(Model.ApiMachineLeaf, @model, @field, newValue)
       updateResult.error unless updateResult.valid

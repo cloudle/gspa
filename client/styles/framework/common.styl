@@ -11,3 +11,10 @@
 
 .open-sans
   font-family open-sans
+
+.clearfix
+  &:before, &:after
+    content ""
+    display table
+  &:after
+    clear both

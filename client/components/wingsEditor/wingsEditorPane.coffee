@@ -4,3 +4,7 @@ Wings.defineHyper 'wingsEditorPane',
   italicActiveClass: -> if Wings.Editor.commands.italic.isActive.get() then 'active' else ''
 #  underActiveClass: -> if Wings.Editor.commands.italic.isActive.get() then 'active' else ''
 #  crossActiveClass: -> if Wings.Editor.commands.italic.isActive.get() then 'active' else ''
+  events:
+    "mousedown .button": (event, template) ->
+      document.execCommand $(event.currentTarget).attr("action")
+      event.stopPropagation()
