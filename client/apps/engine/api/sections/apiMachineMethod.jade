@@ -6,7 +6,7 @@ template(name="apiMachineMethod")
       span.return-signature {void}
       span.remove-command.icon-cancel-circled-4
     .leaf-doc
-      .doc-editor.wings-editor(contenteditable="true" placeholder="Ghi chú..")
+      +wingsEditor(model=this collection=currentCollection field="content" placeholder="Ghi chú.." class="doc-editor")
     if params
       table.leaf-params
         tr

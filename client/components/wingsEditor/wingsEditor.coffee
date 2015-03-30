@@ -10,7 +10,7 @@ Wings.defineHyper 'wingsEditor',
   events:
     "click .button.save": (event, template) ->
       newValue = $(template.find(".wings-editor")).html()
-      updateResult = Wings.IRUS.setField(Model.ApiMachineLeaf, @model, @field, newValue)
+      updateResult = Wings.IRUS.setField(@collection, @model, @field, newValue)
       updateResult.error unless updateResult.valid
       Template.instance().saveRemaining.set(!updateResult.valid)
 

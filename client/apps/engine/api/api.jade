@@ -7,6 +7,7 @@ template(name="api")
             .header
               +wingsEditable(size="s2" model=currentNode field="name" label="tên node")
               +wingsEditable(size="s6" model=currentNode field="description")
+              +wingsEditor(model=currentNode collection=currentCollection field="content" placeholder="Nội dung.." class="doc-editor")
             .subsection-wrapper
               .subsection-title Members
 

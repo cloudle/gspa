@@ -1,8 +1,10 @@
 Wings.defineHyper 'apiMachineMethod',
+  currentCollection: -> Model.ApiMachineLeaf
   paramCommas: ->
     result = ''; return result unless @params
     result += "#{param.name}, " for param in @params
     result.substring(0, result.length - 2)
+
   events:
     "keyup [name='insertParamInput']": (event, template) ->
       if event.which is 13

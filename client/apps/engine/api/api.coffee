@@ -2,6 +2,7 @@ scope = logics.api
 
 Wings.defineApp 'api',
   currentNode: -> Session.get('currentApiNode')
+  currentCollection: -> Model.ApiNode
 #  insertingMember: -> scope.insertingMember.get()
 #  insertingMethod: -> scope.insertingMethod.get()
 #  machineMethods: -> Model.ApiMachineLeaf.find {parent: Session.get('currentApiNode')?._id, leafType: Wings.Enum.nodeTypes.method}
