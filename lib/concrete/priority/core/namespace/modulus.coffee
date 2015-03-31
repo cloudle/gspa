@@ -9,9 +9,9 @@ interfaceKeywords = ['constructor', 'static']
 #    currentNamespace = currentNamespace[part]
   namespace = generateNamespace(namespace)
 
-  namespace.parent = specifications.constructor ? ->
-  namespace::[key] = value for key, value of specifications when key not in interfaceKeywords
-  namespace[key] = value for key, value of specifications.static if specifications.static
+  namespace.parent[namespace.node] = specifications.constructor ? ->
+  namespace.parent[namespace.node]::[key] = value for key, value of specifications when key not in interfaceKeywords
+  namespace.parent[namespace.node][key] = value for key, value of specifications.static if specifications.static
 
 #  previousNamespace[lastPart] = specifications.constructor ? ->
 #  previousNamespace[lastPart]::[key] = value for key, value of specifications when key not in moduleKeywords
@@ -19,7 +19,7 @@ interfaceKeywords = ['constructor', 'static']
 
 @Module = (namespace, specifications) ->
   namespace = generateNamespace(namespace)
-  namespace[key] = value for key, value of specifications
+  namespace.parent[namespace.node][key] = value for key, value of specifications
 
 generateNamespace = (namespace) ->
   currentNamespace = @
@@ -28,4 +28,4 @@ generateNamespace = (namespace) ->
     previousNamespace = currentNamespace; lastPart = part
     currentNamespace[part] = {} if !currentNamespace[part]
     currentNamespace = currentNamespace[part]
-  previousNamespace[lastPart]
+  return { parent: previousNamespace, node: lastPart }
