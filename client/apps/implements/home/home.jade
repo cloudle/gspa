@@ -5,4 +5,6 @@ template(name="home")
         h1 Chào mừng bạn đến với hệ thống GSPA!
         h2 Sản phẩm đang được xây dựng và sẽ có mặt trong 06 tuần tới.
     .dual-addon
-      span this is addon
+      each customers
+        h3 Tên: {{name}}
+        h3 Nhóm: {{groupName}}

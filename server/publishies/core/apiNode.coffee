@@ -19,3 +19,13 @@ Model.ApiNode.allow
       if Model.ApiNode.findOne(modifier.$push.childNodes) then return true else return false
     return true
   remove: (userId, apiNode)-> true
+#
+#Model.ApiMachineLeaf.allow
+#  insert: (userId, apiMachineLeaf) -> true
+#  update: (userId, apiMachineLeaf, fieldNames, modifier)-> true
+#  remove: (userId, apiMachineLeaf)-> true
+#
+#Model.ApiHumanLeaf.allow
+#  insert: (userId, apiHumanLeaf) -> true
+#  update: (userId, apiHumanLeaf, fieldNames, modifier)-> true
+#  remove: (userId, apiHumanLeaf)-> true
