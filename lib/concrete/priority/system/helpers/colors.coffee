@@ -6,13 +6,14 @@ colors = ['green', 'light-green', 'yellow', 'orange', 'blue', 'dark-blue', 'lime
 generateRandomIndex = -> Math.floor(Math.random() * colors.length)
 colorGenerateHistory = []
 
-Wings.Helper.randomColor = ->
-  colorGenerateHistory = [] if colorGenerateHistory.length >= colors.length
+Module 'Wings.Helper',
+  randomColor: ->
+    colorGenerateHistory = [] if colorGenerateHistory.length >= colors.length
 
-  while true
-    randomIndex = generateRandomIndex()
-    colorExisted = _.contains(colorGenerateHistory, randomIndex)
-    break unless colorExisted
+    while true
+      randomIndex = generateRandomIndex()
+      colorExisted = _.contains(colorGenerateHistory, randomIndex)
+      break unless colorExisted
 
-  colorGenerateHistory.push randomIndex
-  colors[randomIndex]
+    colorGenerateHistory.push randomIndex
+    colors[randomIndex]
