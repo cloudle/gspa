@@ -1,5 +1,7 @@
 Module 'Wings.Validators',
-  providerCreate:
+  providerUpdateFields: ['name', 'phone', 'description', 'address']
+#------------------------------------------------------------------
+  providerInsert:
     name:
       type: String
       meta: [
@@ -14,7 +16,7 @@ Module 'Wings.Validators',
         min: 9
         error: "Số điện thoại không thể ngắn hơn 9 ký tự"
       ]
-
+#------------------------------------------------------------------
   providerUpdate:
     name:
       type: String

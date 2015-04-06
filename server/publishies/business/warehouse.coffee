@@ -8,6 +8,6 @@ Model.Warehouse.before.update (userId, warehouse, fieldNames, modifier, options)
 
 
 Model.Warehouse.allow
-  insert: (userId, warehouse)-> true
+  insert: (userId, warehouse)-> true if Model.Branch.findOne(warehouse.branch)
   update: (userId, warehouse, fieldNames, modifier)-> true
   remove: (userId, warehouse)-> true

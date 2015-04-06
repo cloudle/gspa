@@ -1,14 +1,43 @@
-Wings.Warehouse.Import = {}
+class Wings.Warehouse.Import
+  constructor: (doc) -> @[key] = value for key, value of doc
 
-Wings.Warehouse.Import.insert = (provider, description, warehouse = null)->
-  newImport = {}
-  newImport.description = description if description
-  newImport.provider    = provider if provider
-  newImport.warehouse   = warehouse if warehouse
+  @insert: (provider = null, description = null, warehouse)->
+    newImport             = {warehouse: warehouse}
+    newImport.provider    = provider if provider
+    newImport.description = description if description
+    Wings.IRUS.insert(Model.Import, newImport, Wings.Validators.importInsert)
 
-  insertResult = Wings.IRUS.insert(Model.Import, newImport, Wings.Validators.productGroupCreate)
-  console.log insertResult.error unless insertResult.valid
-  return insertResult
+  insert: ()->
+    return {valid: false, error: 'This _id is required!'} if @_id
+    newImport             = {warehouse: @warehouse}
+    newImport.provider    = @provider if @provider
+    newImport.description = @description if @description
 
-Wings.Warehouse.Import.update = (importId)->
-Wings.Warehouse.Import.remove = (importId)->
+    insertResult = Wings.IRUS.insert(Model.Import, newImport, Wings.Validators.importInsert)
+    @_id = insertResult.result if insertResult.valid
+    return insertResult
+
+  update: (fields)->
+    return {valid: false, error: 'This _id is required!'} if !@_id
+
+    result = Wings.Validators.checkExistField(fields, "importUpdateFields")
+    if result.valid then updateFields = result.data else return result
+
+    Wings.IRUS.update(Model.Import, @_id, @, updateFields, Wings.Validators.importUpdate)
+
+  remove: ->
+    return {valid: false, error: 'This _id is required!'} if !@_id
+    Wings.IRUS.remove(Model.Import, @_id)
+
+  insertDetail: (branchPrice, quality = null, price = null, expire = null)->
+    return {valid: false, error: 'This _id is required!'} if !@_id
+    newImportDetail         = {import: @_id, branchPrice: branchPrice}
+    newImportDetail.quality = quality if quality
+    newImportDetail.price   = price if price
+    newImportDetail.expire  = expire if expire
+    Wings.IRUS.insert(Model.ImportDetail, newImportDetail, Wings.Validators.importDetailInsert)
+
+  changProvider: (provider)->
+    return {valid: false, error: 'This _id is required!'} if !@_id
+    return {valid: false, error: 'This provider is required!'} if !provider
+    Wings.IRUS.setField(Model.Import, @, 'provider', provider, Wings.Validators.importUpdate)
