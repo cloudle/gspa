@@ -12,6 +12,8 @@ Module "Wings",
       creator: creator
       instance: null
 
+    return moduleId
+
   start: (moduleId) ->
     (console.log "Module #{moduleId} not found."; return) if !module = @moduleInstances[moduleId]
     module.instance = module.creator(@sandbox)
