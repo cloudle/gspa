@@ -17,10 +17,10 @@ Module 'Wings.Validators',
       optional: true
       meta: [
         min: 17
-        error: "warehouseId không chính xác"
+        error: "providerId không chính xác"
       ,
         max: 17
-        error: "warehouseId không chính xác"
+        error: "providerId không chính xác"
       ]
 
     description:

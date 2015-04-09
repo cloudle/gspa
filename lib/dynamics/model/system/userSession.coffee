@@ -1,1 +1,0 @@
-Model.UserSession = new Meteor.Collection 'userSessions'

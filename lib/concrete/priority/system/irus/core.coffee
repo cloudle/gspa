@@ -16,7 +16,7 @@ Module 'Wings.IRUS',
         result = customMetaCheck(source, key, obj)
         return result unless result.valid
 
-    return {valid: true} if $.isEmptyObject(pattern)
+    return {valid: true} if Meteor.isClient and $.isEmptyObject(pattern)
     result = {valid: Match.test(source, if isArray then [Match.ObjectIncluding(pattern)] else Match.ObjectIncluding(pattern))}
     result.error = "Structure of your data is not valid." if !result.valid
     return result

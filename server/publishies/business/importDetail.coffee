@@ -16,20 +16,20 @@ Model.ImportDetail.before.update (userId, importDetail, fieldNames, modifier, op
 Model.ImportDetail.after.insert (userId, importDetail) ->
   discount = 0
   total    = importDetail.quality * importDetail.price
-  Model.Import.update importDetail.import, inc:{discountCash: discount, totalPrice: total, finalPrice: total - discount}
+  Model.Import.update importDetail.import, $inc:{discountCash: discount, totalPrice: total, finalPrice: (total - discount)}
 
 Model.ImportDetail.after.update (userId, importDetail, fieldNames, modifier, options) ->
   discount = 0
   total    = (importDetail.quality * importDetail.price) - (@previous.quality * @previous.price)
-  Model.Import.update importDetail.import, inc:{discountCash: discount, totalPrice: total, finalPrice: total - discount}
+  Model.Import.update importDetail.import, $inc:{discountCash: discount, totalPrice: total, finalPrice: total - discount}
 
 
 
 Model.ImportDetail.allow
   insert: (userId, importDetail)-> true if Model.Import.findOne(importDetail.import)
   update: (userId, importDetail, fieldNames, modifier)->
-    return false if !Wings.Validators.checkValidUpdateField(fieldNames, 'importDetailUpdateFields')
-    return false if _.contains(fieldNames, 'quality') and modifier.$set.quality < 0
-    return false if _.contains(fieldNames, 'price') and modifier.$set.price < 0
+#    return false if !Wings.Validators.checkValidUpdateField(fieldNames, 'importDetailUpdateFields')
+#    return false if _.contains(fieldNames, 'quality') and modifier.$set.quality < 0
+#    return false if _.contains(fieldNames, 'price') and modifier.$set.price < 0
     true
   remove: (userId, importDetail)-> true

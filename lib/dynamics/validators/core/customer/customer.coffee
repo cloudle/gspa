@@ -1,5 +1,7 @@
 Module 'Wings.Validators',
-  customerCreate:
+  customerUpdateFields: ['name', 'phone', 'gender', 'description', 'dateOfBirth', 'email', 'address']
+#----------------------------------------------------------------------------------------
+  customerInsert:
     name:
       type: String
       meta: [
@@ -15,6 +17,7 @@ Module 'Wings.Validators',
         error: "Số điện thoại không thể ngắn hơn 9 ký tự"
       ]
 
+#------------------------------------------------------------------------------------------
   customerUpdate:
     name:
       type: String
@@ -51,31 +54,6 @@ Module 'Wings.Validators',
     email:
       type: String
       optional: true
-
-  customerGroupCreate:
-    name:
-      type: String
-      meta: [
-        min: 2
-        error: "Tên nhóm khách hàng không thể ngắn hơn 2 ký tự"
-      ]
-
-  customerGroupUpdate:
-    name:
-      type: String
-      optional: true
-      meta: [
-        min: 2
-        error: "Tên nhóm khách hàng không thể ngắn hơn 2 ký tự"
-      ]
-
-    description:
-      type: String
-      optional: true
-      meta: [
-        min: 2
-        error: "Tên nhóm khách hàng không thể ngắn hơn 2 ký tự"
-      ]
 
 
 
