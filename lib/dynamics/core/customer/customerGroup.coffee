@@ -1,4 +1,4 @@
-class Wings.Customer.Group
+class Wings.Customer.CustomerGroup
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (name, description = null)->

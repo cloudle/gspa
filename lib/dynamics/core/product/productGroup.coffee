@@ -1,4 +1,4 @@
-class Wings.Product.Group
+class Wings.Product.ProductGroup
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (name, warehouse = null)->

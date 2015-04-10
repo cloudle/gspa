@@ -1,5 +1,7 @@
 class Wings.Product.Conversion
   constructor: (doc) -> @[key] = value for key, value of doc
+  findProduct: -> Model.Product.findOne @product
+  findUnit: -> Model.Unit.findOne @unit
 
   @insert: (productId, unitId, conversion = 1)->
     newConversion = {product: productId, unit: unitId, conversion: conversion}

@@ -23,7 +23,10 @@ Model.ImportDetail.after.update (userId, importDetail, fieldNames, modifier, opt
   total    = (importDetail.quality * importDetail.price) - (@previous.quality * @previous.price)
   Model.Import.update importDetail.import, $inc:{discountCash: discount, totalPrice: total, finalPrice: total - discount}
 
-
+Model.ImportDetail.after.remove (userId, importDetail) ->
+  discount = 0
+  total    = importDetail.quality * importDetail.price
+  Model.Import.update importDetail.import, $inc:{discountCash: discount, totalPrice: -total, finalPrice: -(total - discount)}
 
 Model.ImportDetail.allow
   insert: (userId, importDetail)-> true if Model.Import.findOne(importDetail.import)

@@ -42,32 +42,17 @@ class Wings.Warehouse.Import
     return {valid: false, error: 'This provider is required!'} if !provider
     Wings.IRUS.setField(Model.Import, @, 'provider', provider, Wings.Validators.importUpdate)
 
-  importDetail: -> Model.ImportDetail.find({import: @_id}).fetch()
-
   submitImport: ->
     return {valid: false, error: 'This _id is required!'} if !@_id
     return {valid: false, error: 'This Import is Submit!'} if @_id.status is "submit"
 
     Model.ImportDetail.find({import: @_id}).forEach(
       (importDetail) ->
-        branchPrice   = Model.BranchPrice.findOne importDetail.branchPrice
-        conversion    = Model.Conversion.findOne branchPrice.conversion
-        branchProduct = Model.BranchProduct.findOne branchPrice.branchProduct
-        product       = Model.Product.findOne branchProduct.product
+        quality = importDetail.quality * importDetail.conversionQuality
+        updateQuality = {availableQuality: quality, inStockQuality: quality, importQuality: quality}
 
-        quality = importDetail.quality * conversion.conversion
-
-        updateQuality =
-          availableQuality    : quality
-          inOderQuality       : quality
-          inStockQuality      : quality
-          saleQuality         : quality
-          returnSaleQuality   : quality
-          importQuality       : quality
-          returnImportQuality : quality
-
-        Model.BranchProduct.update branchProduct._id, $inc: updateQuality
-        Model.Product.update product._id, $inc: updateQuality
+        Model.BranchProduct.update importDetail.branchProduct, $inc: updateQuality
+        Model.Product.update importDetail.product, $inc: updateQuality
 
         updateQuality.status = "submit"
         Model.ImportDetail.update importDetail._id, $set: updateQuality

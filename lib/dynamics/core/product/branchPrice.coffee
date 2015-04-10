@@ -1,12 +1,21 @@
 class Wings.Product.BranchPrice
-  constructor: (doc) -> @[key] = value for key, value of doc
+  constructor: (doc) ->
+    @[key] = value for key, value of doc
+
+    if branchProduct = Model.BranchProduct.findOne doc.branchProduct
+      @product = branchProduct.product
+      @branch  = branchProduct.branch
+
+    if conversion = Model.Conversion.findOne doc.conversion
+      @unit              = conversion.unit
+      @conversionQuality = conversion.conversion
 
   @insert: (name, description = null)->
     newProduct = {name: name}
     newProduct.description = description if description
     Wings.IRUS.insert(Model.Product, newProduct, Wings.Validators.productInsert)
 
-  insert: ()->
+  insert: ->
     return {valid: false, error: 'This record is created'} if @_id
     newProduct = product
     newProduct.name = @name if @name
@@ -28,14 +37,3 @@ class Wings.Product.BranchPrice
   remove: ->
     Wings.IRUS.remove(Model.Product, @_id)
 
-product =
-  createdAt           : new Date()
-  productGroup        : []
-  conversion          : []
-  availableQuality    : 0
-  inOderQuality       : 0
-  inStockQuality      : 0
-  saleQuality         : 0
-  returnSaleQuality   : 0
-  importQuality       : 0
-  returnImportQuality : 0

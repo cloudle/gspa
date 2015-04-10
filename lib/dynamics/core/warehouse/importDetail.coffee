@@ -1,5 +1,13 @@
 class Wings.Warehouse.ImportDetail
-  constructor: (doc) -> @[key] = value for key, value of doc
+  constructor: (doc) ->
+    @[key] = value for key, value of doc
+    if branchPrice = Model.BranchPrice.findOne doc.branchPrice
+      @product           = branchPrice.product
+      @branch            = branchPrice.branch
+      @branchProduct     = branchPrice.branchProduct
+      @unit              = branchPrice.unit
+      @conversion        = branchPrice.conversion
+      @conversionQuality = branchPrice.conversionQuality
 
   @insert: (importId, branchPriceId, quality = null, price = null, expire = null)->
     return {valid: false, error: 'This _id is required!'} if !@_id
