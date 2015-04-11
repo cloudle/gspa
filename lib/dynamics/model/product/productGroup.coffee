@@ -6,7 +6,7 @@ class Model.Product.ProductGroup
     newGroup.warehouse = warehouse if warehouse
     newGroup.creator   = Meteor.userId() if Meteor.userId()
 
-    Wings.IRUS.insert(Model.ProductGroup, newGroup, Wings.Validators.productGroupInsert)
+    Wings.IRUS.insert(Schema.ProductGroup, newGroup, Wings.Validators.productGroupInsert)
 
   insert: ()->
     return {valid: false, error: 'This record is created'} if @_id
@@ -14,7 +14,7 @@ class Model.Product.ProductGroup
     newGroup.warehouse = @warehouse
     newGroup.creator   = Meteor.userId() if Meteor.userId()
 
-    insertResult = Wings.IRUS.insert(Model.ProductGroup, newGroup, Wings.Validators.productGroupInsert)
+    insertResult = Wings.IRUS.insert(Schema.ProductGroup, newGroup, Wings.Validators.productGroupInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
@@ -24,10 +24,10 @@ class Model.Product.ProductGroup
     result = Wings.Validators.checkExistField(fields, "productGroupUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.ProductGroup, @_id, @, updateFields, Wings.Validators.productGroupUpdate)
+    Wings.IRUS.update(Schema.ProductGroup, @_id, @, updateFields, Wings.Validators.productGroupUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.ProductGroup, @_id)
+    Wings.IRUS.remove(Schema.ProductGroup, @_id)
 
   addProduct: (productLists)->
     if _.isArray(productLists) then arrayProduct = productLists else arrayProduct = [productLists]
@@ -37,8 +37,8 @@ class Model.Product.ProductGroup
     else
       return {valid: false, error: "productLists is required."}
 
-    if (Model.ProductGroup.update @_id, $addToSet: {productList: {$each: arrayProduct}})
-      (Model.Product.update productId, $addToSet: {productGroup: @_id}) for productId in arrayProduct
+    if (Schema.ProductGroup.update @_id, $addToSet: {productList: {$each: arrayProduct}})
+      (Schema.Product.update productId, $addToSet: {productGroup: @_id}) for productId in arrayProduct
       return {valid: true}
     else
       return {valid: false, error: 'productGroupId is not valid.'}
@@ -52,8 +52,8 @@ class Model.Product.ProductGroup
       return {valid: false, error: "productLists is required."}
 
     for productId in arrayProduct
-      if (Model.ProductGroup.update @_id, $pull: {productList: productId})
-        Model.Product.update productId, $pull: {productGroup: @_id}
+      if (Schema.ProductGroup.update @_id, $pull: {productList: productId})
+        Schema.Product.update productId, $pull: {productGroup: @_id}
       else
         return {valid: false, error: "productGroupId is not valid."}
     return {valid: true}

@@ -4,14 +4,14 @@ class Model.Provider
   @insert: (name, phone = null)->
     newProvider = {name: name}
     newProvider.phone = phone if phone
-    Wings.IRUS.insert(Model.Provider, newProvider, Wings.Validators.providerInsert)
+    Wings.IRUS.insert(Schema.Provider, newProvider, Wings.Validators.providerInsert)
 
   insert: ()->
     return {valid: false, error: 'This record is created'} if @_id
     newProvider = {name: @name}
     newProvider.phone = @phone if @phone
 
-    insertResult = Wings.IRUS.insert(Model.Provider, newProvider, Wings.Validators.providerInsert)
+    insertResult = Wings.IRUS.insert(Schema.Provider, newProvider, Wings.Validators.providerInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
@@ -21,7 +21,7 @@ class Model.Provider
     result = Wings.Validators.checkExistField(fields, "providerUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.Provider,  @_id, @, updateFields, Wings.Validators.providerUpdate)
+    Wings.IRUS.update(Schema.Provider,  @_id, @, updateFields, Wings.Validators.providerUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.Branch, @_id)
+    Wings.IRUS.remove(Schema.Branch, @_id)

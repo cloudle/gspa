@@ -7,7 +7,7 @@ class Model.Branch
     newBranch.phone       = phone if phone
     newBranch.description = description if description
 
-    Wings.IRUS.insert(Model.Branch, newBranch, Wings.Validators.branchInsert)
+    Wings.IRUS.insert(Schema.Branch, newBranch, Wings.Validators.branchInsert)
 
   insert: ()->
     return {valid: false, error: 'This record is created'} if @_id
@@ -16,7 +16,7 @@ class Model.Branch
     newBranch.phone       = @phone if @phone
     newBranch.description = @description if @description
 
-    insertResult = Wings.IRUS.insert(Model.Branch, newBranch, Wings.Validators.branchInsert)
+    insertResult = Wings.IRUS.insert(Schema.Branch, newBranch, Wings.Validators.branchInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
@@ -26,14 +26,14 @@ class Model.Branch
     result = Wings.Validators.checkExistField(fields, "branchUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.Branch, @_id, @, updateFields, Wings.Validators.branchUpdate)
+    Wings.IRUS.update(Schema.Branch, @_id, @, updateFields, Wings.Validators.branchUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.Branch, @_id)
+    Wings.IRUS.remove(Schema.Branch, @_id)
 
   createWarehouse: (name, address = null, description = null)->
     newWarehouse = {name: name, branch: @_id}
     newWarehouse.address     = address if address
     newWarehouse.description = description if description
 
-    Wings.IRUS.insert(Model.Warehouse, newWarehouse, Wings.Validators.warehouseCreate)
+    Wings.IRUS.insert(Schema.Warehouse, newWarehouse, Wings.Validators.warehouseCreate)

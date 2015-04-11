@@ -6,7 +6,7 @@ class Model.Sale
     newSale.buyer       = buyer if buyer
     newSale.description = description if description
 
-    Wings.IRUS.insert(Model.Sale, newSale, Wings.Validators.saleInsert)
+    Wings.IRUS.insert(Schema.Sale, newSale, Wings.Validators.saleInsert)
 
   insert: ->
     return {valid: false, error: 'This record is created'} if @_id
@@ -14,7 +14,7 @@ class Model.Sale
     newSale.buyer       = @buyer if @buyer
     newSale.description = @description if @description
 
-    insertResult = Wings.IRUS.insert(Model.Sale, newSale, Wings.Validators.saleInsert)
+    insertResult = Wings.IRUS.insert(Schema.Sale, newSale, Wings.Validators.saleInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
@@ -24,23 +24,24 @@ class Model.Sale
     result = Wings.Validators.checkExistField(fields, "saleUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.Sale, @_id, @, updateFields, Wings.Validators.saleUpdate)
+    Wings.IRUS.update(Schema.Sale, @_id, @, updateFields, Wings.Validators.saleUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.Sale, @_id)
+    Wings.IRUS.remove(Schema.Sale, @_id)
 
   insertDetail: (branchPriceId, quality, price)->
     return {valid: false, error: 'This _id is required!'} if !@_id
 
-    newDetail = {sale: @_id, branchPrice: branchPriceId, quality: quality, price: price}
-    Wings.IRUS.insert(Model.SaleDetail, newDetail, Wings.Validators.saleDetailInsert)
+    newDetail = {sale: @_id, branchPrice: branchPriceId, quality: Wings.Convert.toNumber(quality), price: Wings.Convert.toNumber(price)}
+    console.log newDetail
+    Wings.IRUS.insert(Schema.SaleDetail, newDetail, Wings.Validators.saleDetailInsert)
 
   submitSale: ->
-    return {valid: false, error: 'This _id is required!'} if !sale = Model.Sale.findOne @_id
+    return {valid: false, error: 'This _id is required!'} if !sale = Schema.Sale.findOne @_id
     return {valid: false, error: 'This Import is Submit!'} if sale.status is "submit"
 
-    saleDetails    = Model.SaleDetail.find({sale: sale._id}).fetch()
-    branchProducts = Model.BranchProduct.find({_id: {$in: _.uniq(_.pluck(saleDetails, 'branchProduct'))} }).fetch()
+    saleDetails    = Schema.SaleDetail.find({sale: sale._id}).fetch()
+    branchProducts = Schema.BranchProduct.find({_id: {$in: _.uniq(_.pluck(saleDetails, 'branchProduct'))} }).fetch()
 
     if branchProducts.length > 0
       result = checkProductInStockQuality(saleDetails, branchProducts)
@@ -48,15 +49,15 @@ class Model.Sale
 
     for saleDetail in saleDetails
       importDetails = []
-      Model.BranchPrice.find({branchProduct: saleDetail.branchProduct}).forEach(
+      Schema.BranchPrice.find({branchProduct: saleDetail.branchProduct}).forEach(
         (branchPrice) ->
-          details = Model.ImportDetail.find({branchPrice: branchPrice._id, availableQuality: {$gt: 0}}
+          details = Schema.ImportDetail.find({branchPrice: branchPrice._id, availableQuality: {$gt: 0}}
             {sort: {'version.createdAt': 1}}).fetch()
 
           importDetails.push detail for detail in details
       )
       if subtractQualityOnSales(importDetails, saleDetail)
-        Model.Sale.update sale._id, $set:{status: "submit"}
+        Schema.Sale.update sale._id, $set:{status: "submit"}
 
 
 checkProductInStockQuality = (saleDetails, branchProducts)->
@@ -92,10 +93,10 @@ subtractQualityOnSales = (importDetails, saleDetail) ->
     console.log importDetail
 
     updateProduct = {availableQuality: -takenQuality, inStockQuality: -takenQuality, saleQuality: takenQuality}
-    Model.Product.update importDetail.product, $inc: updateProduct
-    Model.BranchProduct.update importDetail.branchProduct, $inc: updateProduct
-    Model.ImportDetail.update importDetail._id, $inc: updateProduct, $push:{saleDetail: {id:saleDetail._id, quality: takenQuality}}
-    Model.SaleDetail.update saleDetail._id, $set:{status: "submit"}, $push:{importDetail: {id:importDetail._id, quality: takenQuality}}
+    Schema.Product.update importDetail.product, $inc: updateProduct
+    Schema.BranchProduct.update importDetail.branchProduct, $inc: updateProduct
+    Schema.ImportDetail.update importDetail._id, $inc: updateProduct, $push:{saleDetail: {id:saleDetail._id, quality: takenQuality}}
+    Schema.SaleDetail.update saleDetail._id, $set:{status: "submit"}, $push:{importDetail: {id:importDetail._id, quality: takenQuality}}
 
     transactionQuality += takenQuality
     if transactionQuality == saleDetail.basicQuality then break

@@ -5,7 +5,7 @@ class Model.Warehouse.Import
     newImport             = {warehouse: warehouse}
     newImport.provider    = provider if provider
     newImport.description = description if description
-    Wings.IRUS.insert(Model.Import, newImport, Wings.Validators.importInsert)
+    Wings.IRUS.insert(Schema.Import, newImport, Wings.Validators.importInsert)
 
   insert: ()->
     return {valid: false, error: 'This _id is required!'} if @_id
@@ -13,7 +13,7 @@ class Model.Warehouse.Import
     newImport.provider    = @provider if @provider
     newImport.description = @description if @description
 
-    insertResult = Wings.IRUS.insert(Model.Import, newImport, Wings.Validators.importInsert)
+    insertResult = Wings.IRUS.insert(Schema.Import, newImport, Wings.Validators.importInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
@@ -23,11 +23,11 @@ class Model.Warehouse.Import
     result = Wings.Validators.checkExistField(fields, "importUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.Import, @_id, @, updateFields, Wings.Validators.importUpdate)
+    Wings.IRUS.update(Schema.Import, @_id, @, updateFields, Wings.Validators.importUpdate)
 
   remove: ->
     return {valid: false, error: 'This _id is required!'} if !@_id
-    Wings.IRUS.remove(Model.Import, @_id)
+    Wings.IRUS.remove(Schema.Import, @_id)
 
   insertDetail: (branchPrice, quality = null, price = null, expire = null)->
     return {valid: false, error: 'This _id is required!'} if !@_id
@@ -35,27 +35,27 @@ class Model.Warehouse.Import
     newImportDetail.quality = quality if quality
     newImportDetail.price   = price if price
     newImportDetail.expire  = expire if expire
-    Wings.IRUS.insert(Model.ImportDetail, newImportDetail, Wings.Validators.importDetailInsert)
+    Wings.IRUS.insert(Schema.ImportDetail, newImportDetail, Wings.Validators.importDetailInsert)
 
   changProvider: (provider)->
     return {valid: false, error: 'This _id is required!'} if !@_id
     return {valid: false, error: 'This provider is required!'} if !provider
-    Wings.IRUS.setField(Model.Import, @, 'provider', provider, Wings.Validators.importUpdate)
+    Wings.IRUS.setField(Schema.Import, @, 'provider', provider, Wings.Validators.importUpdate)
 
   submitImport: ->
     return {valid: false, error: 'This _id is required!'} if !@_id
     return {valid: false, error: 'This Import is Submit!'} if @_id.status is "submit"
 
-    Model.ImportDetail.find({import: @_id}).forEach(
+    Schema.ImportDetail.find({import: @_id}).forEach(
       (importDetail) ->
         quality = importDetail.quality * importDetail.conversionQuality
         updateQuality = {availableQuality: quality, inStockQuality: quality, importQuality: quality}
 
-        Model.BranchProduct.update importDetail.branchProduct, $inc: updateQuality
-        Model.Product.update importDetail.product, $inc: updateQuality
+        Schema.BranchProduct.update importDetail.branchProduct, $inc: updateQuality
+        Schema.Product.update importDetail.product, $inc: updateQuality
 
         updateQuality.status = "submit"
-        Model.ImportDetail.update importDetail._id, $set: updateQuality
+        Schema.ImportDetail.update importDetail._id, $set: updateQuality
     )
-    Model.Import.update @_id, $set:{status: "submit"}
+    Schema.Import.update @_id, $set:{status: "submit"}
 

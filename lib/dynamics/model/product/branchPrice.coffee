@@ -2,18 +2,18 @@ class Model.Product.BranchPrice
   constructor: (doc) ->
     @[key] = value for key, value of doc
 
-    if branchProduct = Model.BranchProduct.findOne doc.branchProduct
+    if branchProduct = Schema.BranchProduct.findOne doc.branchProduct
       @product = branchProduct.product
       @branch  = branchProduct.branch
 
-    if conversion = Model.Conversion.findOne doc.conversion
+    if conversion = Schema.Conversion.findOne doc.conversion
       @unit              = conversion.unit
       @conversionQuality = conversion.conversion
 
   @insert: (name, description = null)->
     newProduct = {name: name}
     newProduct.description = description if description
-    Wings.IRUS.insert(Model.BranchPrice, newProduct, Wings.Validators.branchPriceInsert)
+    Wings.IRUS.insert(Schema.BranchPrice, newProduct, Wings.Validators.branchPriceInsert)
 
   insert: ->
     return {valid: false, error: 'This record is created'} if @_id
@@ -22,7 +22,7 @@ class Model.Product.BranchPrice
     newProduct.description = @description if @description
     newProduct.creator     = Meteor.userId() if Meteor.userId()
 
-    insertResult = Wings.IRUS.insert(Model.BranchPrice, newProduct, Wings.Validators.branchPriceInsert)
+    insertResult = Wings.IRUS.insert(Schema.BranchPrice, newProduct, Wings.Validators.branchPriceInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
@@ -32,7 +32,7 @@ class Model.Product.BranchPrice
     result = Wings.Validators.checkExistField(fields, "branchPriceUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.BranchPrice, @_id, @, updateFields, Wings.Validators.branchPriceUpdate)
+    Wings.IRUS.update(Schema.BranchPrice, @_id, @, updateFields, Wings.Validators.branchPriceUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.BranchPrice, @_id)
+    Wings.IRUS.remove(Schema.BranchPrice, @_id)

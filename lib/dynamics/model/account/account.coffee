@@ -12,12 +12,12 @@ Wings.Account.insert = (option)->
   isValidModel = Wings.IRUS.validate(newAccount, Wings.Validators.accountCreate)
   (console.log isValidModel.error; return isValidModel) unless isValidModel.valid
 
-  Meteor.call 'createNewAccount', (error, userId)-> if error then console.log error else console.log userId
+  Meteor.call 'createNewAccount', newAccount, (error, userId)-> if error then console.log error else console.log userId
 
 
 Wings.Account.update = (option, userId)->
   if Meteor.userId() and typeof option is 'object'
-    if userProfile = Model.UserProfile.findOne({user: userId ? Meteor.userId()})
+    if userProfile = Schema.UserProfile.findOne({user: userId ? Meteor.userId()})
       optionUpdate = {}
 
       if option.name
@@ -66,7 +66,7 @@ Wings.Account.update = (option, userId)->
       if option.dateOfBirth
         optionUpdate.dateOfBirth = option.dateOfBirth
 
-      Model.UserProfile.update userProfile._id, $set: optionUpdate if _.keys(optionUpdate).length > 0
+      Schema.UserProfile.update userProfile._id, $set: optionUpdate if _.keys(optionUpdate).length > 0
 
 Wings.Account.remove = (staffId)->
-  Model.Wings.Account.remove staffId if Meteor.userId() and Meteor.userId() isnt staffId
+  Schema.Wings.Account.remove staffId if Meteor.userId() and Meteor.userId() isnt staffId

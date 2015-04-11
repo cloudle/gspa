@@ -7,14 +7,14 @@ class Model.Customer
     newCustomer.phone       = phone if phone
     newCustomer.description = description if description
 
-    Wings.IRUS.insert(Model.Customer, newCustomer, Wings.Validators.customerInsert)
+    Wings.IRUS.insert(Schema.Customer, newCustomer, Wings.Validators.customerInsert)
 
   insert: ()->
     return {valid: false, error: 'This record is created'} if @_id
     newCustomer = {name: @name}
     newCustomer.phone = @phone if @phone
 
-    insertResult = Wings.IRUS.insert(Model.Customer, newCustomer, Wings.Validators.customerInsert)
+    insertResult = Wings.IRUS.insert(Schema.Customer, newCustomer, Wings.Validators.customerInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
@@ -24,10 +24,10 @@ class Model.Customer
     result = Wings.Validators.checkExistField(fields, "customerUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.Customer, @_id, @, updateFields, Wings.Validators.customerUpdate)
+    Wings.IRUS.update(Schema.Customer, @_id, @, updateFields, Wings.Validators.customerUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.Customer, @_id)
+    Wings.IRUS.remove(Schema.Customer, @_id)
 
   addCustomerGroup: (customerGroupId)->
     return {valid: false, error: 'This _id is required!'} if !@_id
@@ -35,4 +35,4 @@ class Model.Customer
     result = Wings.Validators.checkExistField(fields, "customerGroupUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.Customer, @_id, @, updateFields, Wings.Validators.customerUpdate)
+    Wings.IRUS.update(Schema.Customer, @_id, @, updateFields, Wings.Validators.customerUpdate)

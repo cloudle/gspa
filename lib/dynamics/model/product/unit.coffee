@@ -5,7 +5,7 @@ class Model.Product.Unit
     newUnit = {name: name}
     newUnit.description = description if description
 
-    Wings.IRUS.insert(Model.Unit, newUnit, Wings.Validators.unitInsert)
+    Wings.IRUS.insert(Schema.Unit, newUnit, Wings.Validators.unitInsert)
 
   insert: ()->
     return {valid: false, error: 'This record is created'} if @_id
@@ -13,7 +13,7 @@ class Model.Product.Unit
     newUnit = {name: @name}
     newUnit.description = @description if @description
 
-    insertResult = Wings.IRUS.insert(Model.Unit, newUnit, Wings.Validators.unitInsert)
+    insertResult = Wings.IRUS.insert(Schema.Unit, newUnit, Wings.Validators.unitInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
@@ -23,7 +23,7 @@ class Model.Product.Unit
     result = Wings.Validators.checkExistField(fields, "unitUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.Unit, @_id, @, updateFields, Wings.Validators.unitUpdate)
+    Wings.IRUS.update(Schema.Unit, @_id, @, updateFields, Wings.Validators.unitUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.Unit, @_id)
+    Wings.IRUS.remove(Schema.Unit, @_id)

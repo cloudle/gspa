@@ -1,7 +1,7 @@
 class Model.Sale.SaleDetail
   constructor: (doc) ->
     @[key] = value for key, value of doc
-    if branchPrice = Model.BranchPrice.findOne doc.branchPrice
+    if branchPrice = Schema.BranchPrice.findOne doc.branchPrice
       @product           = branchPrice.product
       @branch            = branchPrice.branch
       @branchProduct     = branchPrice.branchProduct
@@ -9,15 +9,18 @@ class Model.Sale.SaleDetail
       @conversion        = branchPrice.conversion
       @conversionQuality = branchPrice.conversionQuality
 
+      @productName = Schema.Product.findOne(branchPrice.product).name
+      @unitName    = Schema.Unit.findOne(branchPrice.unit).name
+
   @insert: (saleId, branchPriceId, quality, price)->
     newSaleDetail = {sale: saleId, branchPrice: branchPriceId, quality: quality, price: price}
-    Wings.IRUS.insert(Model.SaleDetail, newSaleDetail, Wings.Validators.saleDetailInsert)
+    Wings.IRUS.insert(Schema.SaleDetail, newSaleDetail, Wings.Validators.saleDetailInsert)
 
   insert: ()->
     return {valid: false, error: 'This record is created'} if @_id
 
     newSaleDetail = {sale: @sale, branchPrice: @branchPrice, quality: @quality, price: @price}
-    insertResult = Wings.IRUS.insert(Model.SaleDetail, newSaleDetail, Wings.Validators.saleDetailInsert)
+    insertResult = Wings.IRUS.insert(Schema.SaleDetail, newSaleDetail, Wings.Validators.saleDetailInsert)
 
     @_id = insertResult.result if insertResult.valid
     return insertResult
@@ -28,7 +31,7 @@ class Model.Sale.SaleDetail
     result = Wings.Validators.checkExistField(fields, "saleDetailUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.SaleDetail, @_id, @, updateFields, Wings.Validators.saleDetailUpdate)
+    Wings.IRUS.update(Schema.SaleDetail, @_id, @, updateFields, Wings.Validators.saleDetailUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.SaleDetail, @_id)
+    Wings.IRUS.remove(Schema.SaleDetail, @_id)
