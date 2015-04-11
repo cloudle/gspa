@@ -23,5 +23,5 @@ momentjs:moment
 reactive-var
 meteorhacks:npm
 
-
 npm-container
+raix:eventemitter

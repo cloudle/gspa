@@ -8,7 +8,7 @@ class Model.Sale
 
     Wings.IRUS.insert(Model.Sale, newSale, Wings.Validators.saleInsert)
 
-  insert: ()->
+  insert: ->
     return {valid: false, error: 'This record is created'} if @_id
     newSale = {seller: @seller}
     newSale.buyer       = @buyer if @buyer

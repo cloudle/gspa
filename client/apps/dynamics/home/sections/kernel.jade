@@ -3,12 +3,17 @@ template(name="kernel")
     .nano: .nano-content
       .channel-info
       .channel-messages
-        .message
-          .avatar(style="background-image:url('avatars/cloud.jpg')")
-          .message-meta
-            span.owner-alias cloudle
-            span.time-stamp 03:47 ch
-          .content this is message content
+        each messages
+          if separator
+            .message.separator
+              .avatar(style="background-image:url('avatars/cloud.jpg')")
+              .message-meta
+                span.owner-alias cloudle
+                span.time-stamp {{formatHour createAt}}
+              .content {{message}}
+          else
+            .message
+              .content {{message}}
 
   .kernel-footer
     input.messenger-input(type="text")

@@ -12,3 +12,4 @@ Template.registerHelper 'booleanHideClass', (visibility) -> if visibility then '
 
 Template.registerHelper 'reactiveVar', (source) -> source?.get()
 Template.registerHelper 'brackets', (source) -> "{#{source}}"
+Template.registerHelper 'formatHour', (source) -> moment(source).format('h:mm a')

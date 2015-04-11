@@ -11,6 +11,7 @@ Module 'Wings.IRUS',
     updateOption = @generateObj(model, fields)
     isValidModel = @validate(updateOption, validator)
     return isValidModel unless isValidModel.valid
+    model.updateAt = new Date() unless !validator.timestamp?.required and !model.updateAt
 
     result = collection.update id ? model._id, $set:updateOption if _.keys(updateOption).length > 0
     if result then {valid: true} else {valid: false, error: 'update fail.'}

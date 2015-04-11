@@ -16,7 +16,7 @@ Module "Wings",
 
   start: (moduleId) ->
     (console.log "Module #{moduleId} not found."; return) if !module = @moduleInstances[moduleId]
-    module.instance = module.creator(@sandbox)
+    module.instance = module.creator(@sandbox())
     module.instance.init()
 
   stop: (moduleId) ->

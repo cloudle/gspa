@@ -1,25 +1,25 @@
 template(name="channel")
   .channel-wrapper
     ul.starred
-      span QUAN TRỌNG
-      span.icon-star
+      li.header
+        span QUAN TRỌNG
+        span.icon-star
     ul.channels
       li.header KÊNH TRÒ CHUYỆN
-      li.channel-item.icon-shareable kênh chung
-      li.channel-item.icon-shareable ngẫu nhiên
+      each channels
+        li.channel-item.public.icon-shareable(class="{{isActiveChannel}}") {{name}}
     ul.direct-message
       li.header TRỰC TIẾP
-      li.direct-item
+      li.channel-item.direct
         span.online-status
         span cloudle
-      li.direct-item
+      li.channel-item.direct
         span.online-status
         span locnguyen
-      li.direct-item
+      li.channel-item.direct
         span.online-status
         span kynguyen
     ul.private-group
       li.header NHÓM TRÒ CHUYỆN
-      li.group-item.icon-shareable bán hàng
-      li.group-item.icon-shareable quản lý kho
-      li.group-item.icon-shareable marketing
+      each groups
+        li.channel-item.private.icon-shareable(class="{{isActiveChannel}}") {{name}}
