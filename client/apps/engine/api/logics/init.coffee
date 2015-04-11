@@ -4,4 +4,4 @@ setups.apiReactives = []
 #setups.apiInits.push (scope) ->
 
 setups.apiReactives.push ->
-  Session.set "currentApiNode", Model.ApiNode.findOne Session.get("currentApiNode")?._id ? {}
+  Session.set "currentApiNode", Schema.ApiNode.findOne Session.get("currentApiNode")?._id ? {}

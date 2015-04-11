@@ -9,7 +9,7 @@ Wings.Router.add
   data: ->
     Wings.Router.setup(scope, setups.apiReactives)
     return {
-      apiNodes: Model.ApiNode.find({parent: {$exists: false}}, {sort: {name: 1}})
-      apiTechLeaves: Model.ApiMachineLeaf.find({})
-      apiBizLeaves: Model.ApiHumanLeaf.find({})
+      apiNodes: Schema.ApiNode.find({parent: {$exists: false}}, {sort: {name: 1}})
+      apiTechLeaves: Schema.ApiMachineLeaf.find({})
+      apiBizLeaves: Schema.ApiHumanLeaf.find({})
     }

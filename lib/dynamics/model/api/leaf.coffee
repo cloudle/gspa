@@ -9,15 +9,15 @@ Wings.Api.Leaf =
   insertParams: (leafId, params) ->
     params = @splitTypes(params) if typeof params is 'string'
     _(params).map (obj) -> obj.type = [obj.type]
-    Model.ApiMachineLeaf.update(leafId, {$push: {params: {$each: params}}}) if Array.isArray(params)
-  removeParam: (leafId, name) -> Model.ApiMachineLeaf.update(leafId, {$pull: {params: {name: name}}})
+    Schema.ApiMachineLeaf.update(leafId, {$push: {params: {$each: params}}}) if Array.isArray(params)
+  removeParam: (leafId, name) -> Schema.ApiMachineLeaf.update(leafId, {$pull: {params: {name: name}}})
 
   insertMembers: (leafId, methods) ->
     members = @splitTypes(methods) if typeof methods is 'string'
     _(members).map (obj) -> obj.parent = leafId; obj.leafType = Wings.Enum.nodeTypes.property
-    Wings.IRUS.insert(Model.ApiMachineLeaf, member, Wings.Validators.leafCreate) for member in members
+    Wings.IRUS.insert(Schema.ApiMachineLeaf, member, Wings.Validators.leafCreate) for member in members
 
-  remove: (leafId) -> Model.ApiMachineLeaf.remove(leafId)
+  remove: (leafId) -> Schema.ApiMachineLeaf.remove(leafId)
 
   splitTypes: (sourceString) ->
     results = []
@@ -35,7 +35,6 @@ Wings.Api.Leaf =
 
     results
 
-
 #Wings.Api.isValidMachineLeaf = (leafOjb) ->
 #  if Match.test(leafOjb.name, String) and leafOjb.name.length < 1
 #    return { valid: false, message: "invalid leaf name!" }
@@ -52,6 +51,6 @@ Wings.Api.Leaf =
 #  validation = Wings.Api.isValidMachineLeaf(newLeaf)
 #  (console.log validation.message; return ) if !validation.valid
 #
-#  Model.ApiMachineLeaf.insert(newLeaf)
+#  Schema.ApiMachineLeaf.insert(newLeaf)
 #
 #Wings.Api.insertLeafParam = (param) ->

@@ -1,5 +1,6 @@
 Wings.defineWidget 'kernel',
   messages: -> Schema.Message.find({parent: Session.get("currentChannel")?._id}, {sort: {createAt: 1}})
+  avatarImg: -> "avatars/#{Meteor.userId()}.jpg"
   events:
     "keyup .messenger-input": (event, template) ->
       if event.which is 13 and currentChannel = Session.get("currentChannel")

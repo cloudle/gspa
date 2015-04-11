@@ -2,11 +2,11 @@ scope = logics.api
 
 Wings.defineApp 'api',
   currentNode: -> Session.get('currentApiNode')
-  currentCollection: -> Model.ApiNode
+  currentCollection: -> Schema.ApiNode
 #  insertingMember: -> scope.insertingMember.get()
 #  insertingMethod: -> scope.insertingMethod.get()
-#  machineMethods: -> Model.ApiMachineLeaf.find {parent: Session.get('currentApiNode')?._id, leafType: Wings.Enum.nodeTypes.method}
-#  machineMembers: -> Model.ApiMachineLeaf.find {parent: Session.get('currentApiNode')?._id, leafType: Wings.Enum.nodeTypes.property}
+#  machineMethods: -> Schema.ApiMachineLeaf.find {parent: Session.get('currentApiNode')?._id, leafType: Wings.Enum.nodeTypes.method}
+#  machineMembers: -> Schema.ApiMachineLeaf.find {parent: Session.get('currentApiNode')?._id, leafType: Wings.Enum.nodeTypes.property}
   events:
     "keyup [name='insertMemberInput']": (event, template) ->
       if event.which is 13
@@ -25,7 +25,7 @@ Wings.defineApp 'api',
           name: template.ui.$insertMethodInput.val()
           parent: Session.get('currentApiNode')._id
           leafType: Wings.Enum.nodeTypes.method
-        insertResult = Wings.IRUS.insert(Model.ApiMachineLeaf, model, Wings.Validators.leafCreate)
+        insertResult = Wings.IRUS.insert(Schema.ApiMachineLeaf, model, Wings.Validators.leafCreate)
         if insertResult.valid
           template.ui.$insertMethodInput.val('')
         else

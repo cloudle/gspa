@@ -6,7 +6,7 @@ template(name="kernel")
         each messages
           if separator
             .message.separator
-              .avatar(style="background-image:url('avatars/cloud.jpg')")
+              .avatar(style="background-image:url('{{avatarImg}}')")
               .message-meta
                 span.owner-alias cloudle
                 span.time-stamp {{formatHour createAt}}

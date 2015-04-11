@@ -1,2 +1,2 @@
 Wings.defineHyper 'apiMachineMember',
-  currentCollection: -> Model.ApiMachineLeaf
+  currentCollection: -> Schema.ApiMachineLeaf

@@ -10,7 +10,7 @@ Wings.Api.isValidNode = (nodeObj) ->
     return { valid: false, message: "invalid node name!" }
 
 #  if Meteor.isServer
-#    return { valid: false } if Model.ApiNode.findOne({name: nodeObj.name})
+#    return { valid: false } if Schema.ApiNode.findOne({name: nodeObj.name})
 
   return { valid: true }
 
@@ -23,7 +23,7 @@ Wings.Api.insertNode = (name, parentId) ->
     console.log validation.message
     return
 
-  childId = Model.ApiNode.insert(newChild)
-  Model.ApiNode.update(parentId, {$push: {childNodes: childId}}) if parentId
+  childId = Schema.ApiNode.insert(newChild)
+  Schema.ApiNode.update(parentId, {$push: {childNodes: childId}}) if parentId
 
-Wings.Api.removeNode = (nodeId) -> Model.ApiNode.remove(nodeId)
+Wings.Api.removeNode = (nodeId) -> Schema.ApiNode.remove(nodeId)

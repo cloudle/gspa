@@ -31,5 +31,5 @@ smartEmptyCurrentSelection = (instance) ->
     (Session.set "currentApiNode"; console.log "session cleaned"; break) if currentNode._id == instance._id
     break if !currentNode.parent
 
-    currentNode = Model.ApiNode.findOne(currentNode.parent)
+    currentNode = Schema.ApiNode.findOne(currentNode.parent)
     break if !currentNode

@@ -1,5 +1,5 @@
 Wings.defineHyper 'apiMachineMethod',
-  currentCollection: -> Model.ApiMachineLeaf
+  currentCollection: -> Schema.ApiMachineLeaf
   paramCommas: ->
     result = ''; return result unless @params
     result += "#{param.name}, " for param in @params
