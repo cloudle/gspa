@@ -1,4 +1,14 @@
 template(name="kernel")
- h1 this is home kernel
- h1 Chào mừng bạn đến với hệ thống GSPA
- h2 Sản phẩm đang được xây dựng và sẽ có mặt trong 06 tuần tới.
+  .kernel-content
+    .nano: .nano-content
+      .channel-info
+      .channel-messages
+        .message
+          .avatar(style="background-image:url('avatars/cloud.jpg')")
+          .message-meta
+            span.owner-alias cloudle
+            span.time-stamp 03:47 ch
+          .content this is message content
+
+  .kernel-footer
+    input.messenger-input(type="text")

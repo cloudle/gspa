@@ -1,7 +1,9 @@
 template(name="home")
   .dual-layout#home
-    .detail-wrapper
-      .dual-detail
+    .detail-wrapper: .dual-detail
+      .kernel-addon
+        +sidebar
+      .kernel-wrapper: .kernel-detail
         +kernel
     .dual-addon
       +channel
