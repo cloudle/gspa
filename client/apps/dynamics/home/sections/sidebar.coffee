@@ -1,0 +1,2 @@
+Wings.defineWidget 'sidebar',
+  currentNode: ->

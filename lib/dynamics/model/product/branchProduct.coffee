@@ -1,4 +1,4 @@
-class Wings.Product.BranchProduct
+class Model.Product.BranchProduct
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (branchId, productId)->

@@ -1,4 +1,4 @@
-class Wings.Product.Conversion
+class Model.Product.Conversion
   constructor: (doc) -> @[key] = value for key, value of doc
   findProduct: -> Model.Product.findOne @product
   findUnit: -> Model.Unit.findOne @unit

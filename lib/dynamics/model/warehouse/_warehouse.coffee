@@ -1,4 +1,4 @@
-class Wings.Warehouse
+class Model.Warehouse
   constructor: (doc) -> @[key] = value for key, value of doc
 
   #params: name, address = null, description = null, (last)branch

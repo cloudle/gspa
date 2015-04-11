@@ -1,5 +1,5 @@
 Module 'Wings.Validators',
-  branchPriceUpdateFields: ['name', 'description']
+  branchPriceUpdateFields: ['price', 'importPrice']
 #------------------------------------------------------------------------------
   branchPriceInsert:
     branchProduct:
@@ -25,15 +25,18 @@ Module 'Wings.Validators',
 
 #------------------------------------------------------------------------------
   branchPriceUpdate:
-    name:
-      type: String
+    price:
+      type: Match.Integer
       optional: true
       meta: [
-        min: 2
-        error: "Tên sản phẩm không thể ngắn hơn 2 ký tự"
+        min: 0
+        error: "branchId không chính xác"
       ]
 
-
-    description:
-      type: String
+    importPrice:
+      type: Match.Integer
       optional: true
+      meta: [
+        min: 0
+        error: "branchId không chính xác"
+      ]

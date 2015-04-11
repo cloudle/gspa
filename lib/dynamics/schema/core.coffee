@@ -1,4 +1,4 @@
-Module 'Model',
+Module 'Schema',
   ApiNode         : new Meteor.Collection 'apiNodes'
   ApiMachineLeaf  : new Meteor.Collection 'apiMachineLeaves'
   ApiHumanLeaf    : new Meteor.Collection 'apiHumanLeaves'

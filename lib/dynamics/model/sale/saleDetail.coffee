@@ -1,4 +1,4 @@
-class Wings.Sale.SaleDetail
+class Model.Sale.SaleDetail
   constructor: (doc) ->
     @[key] = value for key, value of doc
     if branchPrice = Model.BranchPrice.findOne doc.branchPrice

@@ -1,4 +1,4 @@
-Model.Product.before.insert (userId, product) ->
+Schema.Product.before.insert (userId, product) ->
   product.creator = userId if userId
   product.createdAt = new Date()
 
@@ -8,12 +8,12 @@ Model.Product.before.insert (userId, product) ->
   product.availableQuality = product.inOderQuality = product.inStockQuality = product.saleQuality =
     product.returnSaleQuality = product.importQuality = product.returnImportQuality = 0
 
-Model.Product.before.update (userId, product, fieldNames, modifier, options) ->
+Schema.Product.before.update (userId, product, fieldNames, modifier, options) ->
   modifier.$set = modifier.$set || {}
   modifier.$set.updateAt = new Date()
 
 
-Model.Product.allow
+Schema.Product.allow
   insert: (userId, product)-> true
   update: (userId, product, fieldNames, modifier)-> true
   remove: (userId, product)-> true

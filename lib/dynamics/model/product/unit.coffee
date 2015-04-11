@@ -1,4 +1,4 @@
-class Wings.Product.Unit
+class Model.Product.Unit
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (name, description = null)->

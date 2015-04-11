@@ -1,4 +1,4 @@
-class Wings.Product.BranchPrice
+class Model.Product.BranchPrice
   constructor: (doc) ->
     @[key] = value for key, value of doc
 
@@ -13,7 +13,7 @@ class Wings.Product.BranchPrice
   @insert: (name, description = null)->
     newProduct = {name: name}
     newProduct.description = description if description
-    Wings.IRUS.insert(Model.Product, newProduct, Wings.Validators.productInsert)
+    Wings.IRUS.insert(Model.BranchPrice, newProduct, Wings.Validators.branchPriceInsert)
 
   insert: ->
     return {valid: false, error: 'This record is created'} if @_id
@@ -22,18 +22,17 @@ class Wings.Product.BranchPrice
     newProduct.description = @description if @description
     newProduct.creator     = Meteor.userId() if Meteor.userId()
 
-    insertResult = Wings.IRUS.insert(Model.Product, newProduct, Wings.Validators.productInsert)
+    insertResult = Wings.IRUS.insert(Model.BranchPrice, newProduct, Wings.Validators.branchPriceInsert)
     @_id = insertResult.result if insertResult.valid
     return insertResult
 
   update: (fields)->
     return {valid: false, error: 'This _id is required!'} if !@_id
 
-    result = Wings.Validators.checkExistField(fields, "productUpdateFields")
+    result = Wings.Validators.checkExistField(fields, "branchPriceUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Model.Product, @_id, @, updateFields, Wings.Validators.productUpdate)
+    Wings.IRUS.update(Model.BranchPrice, @_id, @, updateFields, Wings.Validators.branchPriceUpdate)
 
   remove: ->
-    Wings.IRUS.remove(Model.Product, @_id)
-
+    Wings.IRUS.remove(Model.BranchPrice, @_id)

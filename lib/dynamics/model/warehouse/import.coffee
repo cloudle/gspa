@@ -1,4 +1,4 @@
-class Wings.Warehouse.Import
+class Model.Warehouse.Import
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (provider = null, description = null, warehouse)->

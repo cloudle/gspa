@@ -1,4 +1,4 @@
-class Wings.Branch
+class Model.Branch
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (name, address = null, phone = null, description = null)->

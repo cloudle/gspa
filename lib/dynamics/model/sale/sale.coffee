@@ -1,4 +1,4 @@
-class Wings.Sale
+class Model.Sale
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (description, buyer = null, seller = null)->
@@ -39,7 +39,7 @@ class Wings.Sale
     return {valid: false, error: 'This _id is required!'} if !sale = Model.Sale.findOne @_id
     return {valid: false, error: 'This Import is Submit!'} if sale.status is "submit"
 
-    saleDetails = Model.SaleDetail.find({sale: sale._id}).fetch()
+    saleDetails    = Model.SaleDetail.find({sale: sale._id}).fetch()
     branchProducts = Model.BranchProduct.find({_id: {$in: _.uniq(_.pluck(saleDetails, 'branchProduct'))} }).fetch()
 
     if branchProducts.length > 0

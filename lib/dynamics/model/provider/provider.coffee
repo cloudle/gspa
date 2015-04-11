@@ -1,4 +1,4 @@
-class Wings.Provider
+class Model.Provider
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (name, phone = null)->

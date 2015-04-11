@@ -1,4 +1,4 @@
-class Wings.Customer
+class Model.Customer
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (name, address = null, phone = null, description = null)->

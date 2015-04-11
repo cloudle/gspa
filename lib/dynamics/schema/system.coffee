@@ -1,4 +1,4 @@
-Module 'Model',
+Module 'Schema',
   Notification    : new Meteor.Collection 'notifications'
   Role            : new Meteor.Collection 'roles'
 

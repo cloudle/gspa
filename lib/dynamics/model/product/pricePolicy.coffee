@@ -1,4 +1,4 @@
-class Wings.Product.PricePolicy
+class Model.Product.PricePolicy
   constructor: (doc) -> @[key] = value for key, value of doc
 
 
