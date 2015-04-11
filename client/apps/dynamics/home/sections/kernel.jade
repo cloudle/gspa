@@ -8,7 +8,7 @@ template(name="kernel")
             .message.separator
               .avatar(style="background-image:url('{{avatarImg}}')")
               .message-meta
-                span.owner-alias cloudle
+                span.owner-alias {{messageCreator.profile.name}}
                 span.time-stamp {{formatHour createAt}}
               .content {{message}}
           else

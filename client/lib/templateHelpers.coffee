@@ -1,3 +1,5 @@
+Template.registerHelper 'currentUser', -> Meteor.user()
+
 Template.registerHelper 'isEmptyCollection', (collection) -> return collection.count() is 0
 Template.registerHelper 'nodeDetails', -> Schema.ApiNode.findOne(@toString())
 Template.registerHelper 'nodeActiveClass', -> if @._id is Session.get("currentApiNode")?._id then 'active' else ''
