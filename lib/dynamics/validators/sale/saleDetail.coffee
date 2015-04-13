@@ -38,6 +38,14 @@ Module 'Wings.Validators',
         error: "giá phải lớn hơn 0"
       ]
 
+    basicQuality:
+      type: Match.Integer
+      optional: true
+      meta: [
+        min: 0
+        error: "giá phải lớn hơn 0"
+      ]
+
 #------------------------------------------------------------------------------>
   saleDetailUpdate:
     quality:

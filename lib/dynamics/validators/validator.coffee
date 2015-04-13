@@ -1,7 +1,7 @@
 Module 'Wings.Validators',
   checkExistField: (fields, modelUpdateFields)->
     updateFields = []
-    for field in Wings.Convert.toArray(fields)
+    for field in Convert.toArray(fields)
       if _.contains(@[modelUpdateFields], field) then updateFields.push field
       else return {valid: false, error: "This is property (#{field}) does not exist, update Fail."}
     return {valid: true, data: updateFields}

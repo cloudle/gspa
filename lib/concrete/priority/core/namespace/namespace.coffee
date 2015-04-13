@@ -1,5 +1,6 @@
 @Wings = {}
 @Model = {}
+@Convert = {}
 
 Wings.Enum = {}
 

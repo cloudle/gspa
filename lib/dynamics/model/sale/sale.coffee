@@ -32,7 +32,7 @@ class Model.Sale
   insertDetail: (branchPriceId, quality, price)->
     return {valid: false, error: 'This _id is required!'} if !@_id
 
-    newDetail = {sale: @_id, branchPrice: branchPriceId, quality: Wings.Convert.toNumber(quality), price: Wings.Convert.toNumber(price)}
+    newDetail = {sale: @_id, branchPrice: branchPriceId, quality: Convert.toNumber(quality), price: Convert.toNumber(price)}
     console.log newDetail
     Wings.IRUS.insert(Schema.SaleDetail, newDetail, Wings.Validators.saleDetailInsert)
 

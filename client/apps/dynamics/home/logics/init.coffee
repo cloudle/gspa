@@ -5,17 +5,21 @@ setups.homeReactives = []
 #setups.homeInits.push (scope) ->
 
 setups.homeReactives.push (scope) ->
-  if Session.get("activeLayout") is "saleLayout"
+  if Session.get("activeLayout") is "saleManagement"
     Session.set("currentSale", Schema.Sale.findOne({status: {$ne: "submit"} }))
 
-    if selectBranchProduct = Session.get("currentSale")?.selectBranchProduct
-      Session.set("currentBranchProduct", Schema.BranchProduct.findOne(selectBranchProduct))
+  else if Session.get("activeLayout") is "importManagement"
+    Session.set("currentImport", Schema.Import.findOne({status: {$ne: "submit"} }))
 
-    if Session.get("currentSale")?.selectBranchProduct and Session.get("currentSale")?.selectConversion
-      Session.set("currentBranchPrice", Schema.BranchPrice.findOne({
-        branchProduct: Session.get("currentSale").selectBranchProduct
-        conversion: Session.get("currentSale").selectConversion
-      }))
+  if sale = Session.get("currentSale")
+    if Session.get("salesEditingRowId") then Session.set("salesEditingRow", Schema.SaleDetail.findOne(Session.get("salesEditingRowId")))
+    else if Session.get("salesEditingRow") then Session.set("salesEditingRow")
 
 
+    if !(branchProduct = Session.get("currentBranchProduct")) or branchProduct._id isnt sale.selectBranchProduct
+      Session.set("currentBranchProduct", Schema.BranchProduct.findOne(sale.selectBranchProduct))
 
+    if sale.selectBranchProduct and sale.selectConversion
+      if !(branchPrice = Session.get("currentBranchPrice")) or
+        branchPrice.branchProduct isnt sale.selectBranchProduct or branchPrice.conversion isnt sale.selectConversion
+          Session.set("currentBranchPrice", Schema.BranchPrice.findOne({branchProduct: sale.selectBranchProduct, conversion: sale.selectConversion}))

@@ -13,17 +13,13 @@ class Model.Sale.SaleDetail
       @unitName    = Schema.Unit.findOne(branchPrice.unit).name
 
   @insert: (saleId, branchPriceId, quality, price)->
-    newSaleDetail = {sale: saleId, branchPrice: branchPriceId, quality: quality, price: price}
-    Wings.IRUS.insert(Schema.SaleDetail, newSaleDetail, Wings.Validators.saleDetailInsert)
+    Meteor.call 'addSaleDetail', saleId, branchPriceId, quality, price, (err, result) ->
+      if result.valid then "" else console.log result.error
 
   insert: ()->
     return {valid: false, error: 'This record is created'} if @_id
-
-    newSaleDetail = {sale: @sale, branchPrice: @branchPrice, quality: @quality, price: @price}
-    insertResult = Wings.IRUS.insert(Schema.SaleDetail, newSaleDetail, Wings.Validators.saleDetailInsert)
-
-    @_id = insertResult.result if insertResult.valid
-    return insertResult
+    Meteor.call 'addSaleDetail', @sale, @branchPrice, @quality, @price, (err, result) ->
+      if result.valid then "" else console.log result.error
 
   update: (fields)->
     return {valid: false, error: 'This _id is required!'} if !@_id
@@ -31,7 +27,11 @@ class Model.Sale.SaleDetail
     result = Wings.Validators.checkExistField(fields, "saleDetailUpdateFields")
     if result.valid then updateFields = result.data else return result
 
-    Wings.IRUS.update(Schema.SaleDetail, @_id, @, updateFields, Wings.Validators.saleDetailUpdate)
+    quality = if _.contains(updateFields, 'quality') then @quality else null
+    price   = if _.contains(updateFields, 'price') then @price else null
+
+    Meteor.call 'updateSaleDetail', @_id, quality, price, (err, result) ->
 
   remove: ->
-    Wings.IRUS.remove(Schema.SaleDetail, @_id)
+    Meteor.call 'deleteSaleDetail', @_id, (err, result) ->
+      if result.valid then "" else console.log result.error

@@ -3,18 +3,19 @@ Module 'Wings.IRUS',
     pattern = {}
 
     for key, obj of validator
-      if obj.optional
-        pattern[key] = Match.Optional(obj.type)
-      else
-        pattern[key] = obj.type
+      unless key is 'timestamp'
+        if obj.optional
+          pattern[key] = Match.Optional(obj.type)
+        else
+          pattern[key] = obj.type
 
-      if isArray
-        for item in source
-          result = customMetaCheck(item, key, obj)
+        if isArray
+          for item in source
+            result = customMetaCheck(item, key, obj)
+            return result unless result.valid
+        else
+          result = customMetaCheck(source, key, obj)
           return result unless result.valid
-      else
-        result = customMetaCheck(source, key, obj)
-        return result unless result.valid
 
     return {valid: true} if Meteor.isClient and $.isEmptyObject(pattern)
     result = {valid: Match.test(source, if isArray then [Match.ObjectIncluding(pattern)] else Match.ObjectIncluding(pattern))}
@@ -24,7 +25,7 @@ Module 'Wings.IRUS',
   generateObj: (option, fields)->
     Obj = {}
     for item in fields
-      Obj[item] = option[item] if option[item] or option[item] is "" or option[item] is false
+      Obj[item] = option[item] if option[item] or option[item] is "" or option[item] is false or option[item] is 0
     return Obj
 
 

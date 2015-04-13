@@ -2,101 +2,15 @@ template(name="sidebar")
   .sidebar-addNews
     .menuNews-wrapper
       ul(style="padding-left: 0; list-style: none;")
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.selectProduct Sản Phẩm
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.selectSale Bán Hàng
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.selectImport Nhập Kho
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.productManagement Sản Phẩm
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.saleManagement Bán Hàng
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.importManagement Nhập Kho
 
-    if activeProductLayout
-      +layoutProduct
+    if productManagementActive
+      +productManagement
 
-    if activeImportLayout
-      +layoutImport
+    if importManagementActive
+      +importManagement
 
-    if activeSaleLayout
-      +layoutSale
-
-template(name="layoutImport")
-template(name="layoutProduct")
-
-template(name="layoutSale")
-  .detailNews-wrapper
-    .sale-header
-      .left-header(style="float:left")
-        |Phiếu Bán Hàng
-
-      .right-header(style="float:right")
-        .sale-staff(style="float:right")
-          select.staffs
-            each staffs
-              option(value="{{_id}}") {{staffDisplayName}}
-
-        .sale-customer(style="float:right")
-          select.customers
-            each customers
-              option(value="{{_id}}") {{name}}
-
-    .sale-content
-      table(style="width:100%; text-align: right")
-        tr
-          th(style="width:auto; text-align: left") SẢN PHẨM
-          th(style="width:70px") ĐƠN VỊ
-          th(style="width:50px") SL
-          th(style="width:140px") GIÁ BÁN
-
-        each saleDetails
-          tr
-            td(style="text-align: left") {{productName}}
-            td {{unitName}}
-            td {{quality}}
-            td {{price}} VND
-
-        tr
-          td
-          td(colspan="2") Tổng Cộng:
-          td {{sale.totalPrice}} VND
-
-        tr
-          td
-          td(colspan="2") Thanh Toán:
-          td {{sale.depositCash}} VND
-        tr
-          td
-          td(colspan="2")
-          td {{sale.finalPrice}} VND
-
-  .footerNews-wrapper
-    .content-extra
-      .sale-product(style="float:left")
-        select.products
-          each products
-            option(value="{{_id}}") {{productName}}
-
-      .sale-conversion(style="float:left")
-        select.conversions
-          each conversions
-            option(value="{{_id}}") {{findUnit.name}}
-
-      .sale-quality(style="float:left")
-        input.addDetailQuality(style="width:50px" value="0")
-
-      .sale-price(style="float:left")
-        input.addDetailPrice(style="width:50px" value="0")
-
-      .sale-add(style="float:right"): button.saleAddDetail Add
-
-    //.content
-    //  .left-content(style="float:left")
-    //    .sale-delivery(style="float:left")
-    //      select
-    //        option(value="01") Trực Tiếp
-    //        option(value="02") Đặt Hàng
-    //
-    //    .sale-delivery(style="float:left")
-    //      select
-    //        option(value="01") Trực Tiếp
-    //        option(value="02") Đặt Hàng
-    //
-    //
-    //  .right-content(style="float:right")
-    //    .sale-option
-    //    .sale-submit: button HOÀN TẤT
+    if saleManagementActive
+      +saleManagement

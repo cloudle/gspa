@@ -4,14 +4,14 @@ Module 'Wings.IRUS',
     isValidModel = @validate(simulate, validator)
     return {valid: false, error: isValidModel.error} unless isValidModel.valid
     updateOptions = {}; updateOptions[field] = value
+    updateOptions.updateAt = new Date() unless validator.timestamp is false
     collection.update(model._id, {$set: updateOptions})
     return {valid: true}
 
   update: (collection, id, model, fields = [], validator, extraChecks...) ->
-    updateOption = @generateObj(model, fields)
-    isValidModel = @validate(updateOption, validator)
+    updateOptions = @generateObj(model, fields)
+    isValidModel = @validate(updateOptions, validator)
     return isValidModel unless isValidModel.valid
-    model.updateAt = new Date() unless !validator.timestamp?.required and !model.updateAt
-
-    result = collection.update id ? model._id, $set:updateOption if _.keys(updateOption).length > 0
+    updateOptions.updateAt = new Date() unless validator.timestamp is false
+    result = collection.update id ? model._id, $set:updateOptions if _.keys(updateOptions).length > 0
     if result then {valid: true} else {valid: false, error: 'update fail.'}

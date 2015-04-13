@@ -4,11 +4,6 @@ Schema.Sale.before.insert (userId, sale) ->
   sale.creator = userId if userId
   sale.createdAt = new Date()
 
-Schema.Sale.before.update (userId, sale, fieldNames, modifier, options) ->
-  modifier.$set = modifier.$set || {}
-  modifier.$set.updateAt = new Date()
-
-
 Schema.Sale.allow
   insert: (userId, sale)-> true
   update: (userId, sale, fieldNames, modifier)-> true
