@@ -51,6 +51,9 @@ template(name="saleManagement")
             td(colspan="2")
             td {{sale.finalPrice}} VND
 
+      .saleAddDescription(style="height: 25px")
+        input.saleDescription(value="{{sale.description}}")
+
       .saleAddDetail(style="height: 25px")
         .sale-product(style="float:left")
           select.products
@@ -62,21 +65,20 @@ template(name="saleManagement")
             each conversions
               option(value="{{_id}}") {{findUnit.name}}
 
-        .sale-quality(style="float:left"): input.addDetailQuality(style="width:50px" value="0")
+        .sale-quality(style="float:left"): input.addDetailQuality(style="width:50px" value="1")
         .sale-price(style="float:left"): input.addDetailPrice(style="width:50px" value="0")
         .sale-add(style="float:right"): button.addDetail Add
 
     .saleManagement-footer
-      .sale-paymentsDelivery(style="float:left")
-        select
-          option(value="01") Trực Tiếp
-          option(value="02") Đặt Hàng
+      .sale-paymentDelivery(style="float:left")
+        select.paymentsDelivery
+          option(value="1") Trực Tiếp
+          option(value="2") Đặt Hàng
 
       .sale-paymentMethod(style="float:left")
-        select
-          option(value="01") Tiền Mặt
-          option(value="02") Thẻ ATM
-          option(value="03") Ghi Nợ
+        select.paymentMethod
+          option(value="1") Tiền Mặt
+          option(value="2") Ghi Nợ
 
       .sale-deposit(style="float:left"): input.saleDeposit(style="width:100px" value="{{sale.depositCash}}")
       .sale-submit(style="float:right"): button HOÀN TẤT

@@ -3,7 +3,6 @@ Meteor.methods
     if sale = Schema.Sale.findOne({ _id: saleId, status: {$ne: "submit"} })
       sale.depositCash  = Convert.toNumber(deposit)
       sale.finalPrice   = sale.totalPrice - sale.depositCash
-      sale.updateAt     = new Date()
       Wings.IRUS.update(Schema.Sale, sale._id, sale, ['depositCash', 'finalPrice'], Wings.Validators.saleUpdate)
 
   submitSale: (saleId)->
@@ -25,7 +24,10 @@ Meteor.methods
             importDetails.push detail for detail in details
         )
         if subtractQualityOnSales(importDetails, saleDetail)
-          Schema.Sale.update sale._id, $set:{status: "submit"}
+          Schema.Sale.update sale._id, $set: {status: "submit"}
+
+          if !Schema.Sale.findOne({status: {$ne: "submit"} })
+            Model.Sale.insert(null, sale.buyer, sale.seller)
 
   addSaleDetail: (saleId, branchPriceId, quality, price) ->
     sale        = Schema.Sale.findOne _id: saleId, status: {$ne: "submit"}

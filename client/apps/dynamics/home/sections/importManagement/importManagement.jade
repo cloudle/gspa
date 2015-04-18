@@ -1,1 +1,82 @@
 template(name="importManagement")
+  .importManagement-wrapper
+    .importManagement-header
+      .left-header(style="float:left")
+        |Phiếu Nhập Kho
+
+      .right-header
+        .import-staff(style="float:right")
+          select.staffs
+            each staffs
+              option(value="{{_id}}") {{staffDisplayName}}
+
+        .import-customer(style="float:right")
+          select.customers
+            each customers
+              option(value="{{_id}}") {{name}}
+
+    .importManagement-body
+      .importDetails
+        table(style="width:100%; text-align: right")
+          tr
+            th(style="width:auto; text-align: left") SẢN PHẨM
+            th(style="width:70px") ĐƠN VỊ
+            th(style="width:50px") SL
+            th(style="width:140px") GIÁ BÁN
+            th(style="width:20px")
+
+          each importDetails
+            if editingMode
+              +importDetailEditor this
+            else
+              tr.detail-row
+                td(style="text-align: left") {{productName}}
+                td {{unitName}}
+                td {{quality}}
+                td {{price}} VND
+                td: span.icon-minus-4.deleteDetail
+
+          tr
+            td
+            td(colspan="2") Tổng Cộng:
+            td {{import.totalPrice}} VND
+
+          tr
+            td
+            td(colspan="2") Thanh Toán:
+            td {{import.depositCash}} VND
+
+          tr
+            td
+            td(colspan="2")
+            td {{import.finalPrice}} VND
+
+      .importAddDetail(style="height: 25px")
+        .import-product(style="float:left")
+          select.products
+            each products
+              option(value="{{_id}}") {{productName}}
+
+        .import-conversion(style="float:left")
+          select.conversions
+            each conversions
+              option(value="{{_id}}") {{findUnit.name}}
+
+        .import-quality(style="float:left"): input.addDetailQuality(style="width:50px" value="0")
+        .import-price(style="float:left"): input.addDetailPrice(style="width:50px" value="0")
+        .import-add(style="float:right"): button.addDetail Add
+
+    .importManagement-footer
+      .import-paymentsDelivery(style="float:left")
+        select
+          option(value="01") Trực Tiếp
+          option(value="02") Đặt Hàng
+
+      .import-paymentMethod(style="float:left")
+        select
+          option(value="01") Tiền Mặt
+          option(value="02") Thẻ ATM
+          option(value="03") Ghi Nợ
+
+      .import-deposit(style="float:left"): input.importDeposit(style="width:100px" value="{{import.depositCash}}")
+      .import-submit(style="float:right"): button.importSubmit HOÀN TẤT

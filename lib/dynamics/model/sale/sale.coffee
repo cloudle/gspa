@@ -1,3 +1,11 @@
+Wings.Enum.paymentsDeliveries =
+  direct : 1
+  order  : 2
+
+Wings.Enum.salePaymentMethods =
+  cash  : 1
+  debit : 2
+
 class Model.Sale
   constructor: (doc) -> @[key] = value for key, value of doc
 
@@ -5,6 +13,9 @@ class Model.Sale
     newSale = {seller: seller ? Meteor.userId()}
     newSale.buyer       = buyer if buyer
     newSale.description = description if description
+    newSale.paymentMethod   = Wings.Enum.salePaymentMethods.debit
+    newSale.paymentDelivery = Wings.Enum.paymentsDeliveries.direct
+    newSale.discountCash = newSale.totalPrice = newSale.finalPrice = newSale.depositCash = 0
 
     Wings.IRUS.insert(Schema.Sale, newSale, Wings.Validators.saleInsert)
 
@@ -13,6 +24,7 @@ class Model.Sale
     newSale = {seller: @seller}
     newSale.buyer       = @buyer if @buyer
     newSale.description = @description if @description
+    newSale.discountCash = newSale.totalPrice = newSale.finalPrice = newSale.depositCash = 0
 
     insertResult = Wings.IRUS.insert(Schema.Sale, newSale, Wings.Validators.saleInsert)
     @_id = insertResult.result if insertResult.valid
