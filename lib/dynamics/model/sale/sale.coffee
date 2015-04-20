@@ -1,4 +1,4 @@
-Wings.Enum.paymentsDeliveries =
+Wings.Enum.salePaymentsDeliveries =
   direct : 1
   order  : 2
 
@@ -10,11 +10,11 @@ class Model.Sale
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (description, buyer = null, seller = null)->
-    newSale = {seller: seller ? Meteor.userId()}
+    newSale = {creator: Meteor.userId(), seller: seller ? Meteor.userId()}
     newSale.buyer       = buyer if buyer
     newSale.description = description if description
     newSale.paymentMethod   = Wings.Enum.salePaymentMethods.debit
-    newSale.paymentDelivery = Wings.Enum.paymentsDeliveries.direct
+    newSale.paymentDelivery = Wings.Enum.salePaymentsDeliveries.direct
     newSale.discountCash = newSale.totalPrice = newSale.finalPrice = newSale.depositCash = 0
 
     Wings.IRUS.insert(Schema.Sale, newSale, Wings.Validators.saleInsert)
@@ -69,7 +69,7 @@ class Model.Sale
           importDetails.push detail for detail in details
       )
       if subtractQualityOnSales(importDetails, saleDetail)
-        Schema.Sale.update sale._id, $set:{status: "submit"}
+        Schema.Sale.update sale._id, $set:{status: "submit", submitAt: new Date()}
 
 
 checkProductInStockQuality = (saleDetails, branchProducts)->

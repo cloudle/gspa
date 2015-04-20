@@ -1,0 +1,9 @@
+template(name="historySales")
+   each mySales
+      .saleSummary
+         .avatar(style="background-image:url('{{avatarImg}}')")
+         .title {{title}}
+         .sale-meta
+            span.owner-alias {{creatorName}}
+            span.time-stamp {{formatHour createAt}}
+         .content {{description}}

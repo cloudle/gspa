@@ -24,7 +24,7 @@ Meteor.methods
             importDetails.push detail for detail in details
         )
         if subtractQualityOnSales(importDetails, saleDetail)
-          Schema.Sale.update sale._id, $set: {status: "submit"}
+          Schema.Sale.update sale._id, $set: {status: "submit", submitAt: new Date()}
 
           if !Schema.Sale.findOne({status: {$ne: "submit"} })
             Model.Sale.insert(null, sale.buyer, sale.seller)

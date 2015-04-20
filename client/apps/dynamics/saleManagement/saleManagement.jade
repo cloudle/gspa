@@ -1,0 +1,26 @@
+template(name="saleManagement")
+  .saleManagement-wrapper
+    .saleManagement-header
+      +menuSaleManagement
+
+    .saleManagement-body
+      //.body-createSale(style="visibility: hidden")
+
+      if isActiveCreateSalesLayout
+        +createSales
+
+      if isActiveHistorySalesLayout
+        +historySales
+
+    .saleManagement-footer
+
+
+
+template(name="allSales")
+
+
+
+template(name="menuSaleManagement")
+  ul(style="padding-left: 0; list-style: none;")
+    li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.createSales Phiếu Bán
+    li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-history.historySales Nhật Ký

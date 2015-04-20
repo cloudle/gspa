@@ -1,16 +1,10 @@
 template(name="sidebar")
   .sidebar-addNews
-    .menuNews-wrapper
-      ul(style="padding-left: 0; list-style: none;")
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.productManagement Sản Phẩm
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.saleManagement Bán Hàng
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.importManagement Nhập Kho
-
-    if productManagementActive
+    if isActiveProductManagement
       +productManagement
 
-    if importManagementActive
+    if isActiveImportManagement
       +importManagement
 
-    if saleManagementActive
+    if isActiveSaleManagement
       +saleManagement

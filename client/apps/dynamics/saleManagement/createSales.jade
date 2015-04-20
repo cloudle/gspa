@@ -1,0 +1,78 @@
+template(name="createSales")
+  .editor-row
+    .editor-wrapper(style="float:left")
+      | Phiếu Bán Hàng
+    .editor-wrapper(style="float:right")
+      select.staff
+        each staffs
+          option(value="{{_id}}") {{staffDisplayName}}
+    .editor-wrapper(style="float:right")
+      select.customer
+        each customers
+          option(value="{{_id}}") {{name}}
+
+  .editor-row
+    .saleDetails
+      table(style="width:100%; text-align: right")
+        tr
+          th(style="width:auto; text-align: left") SẢN PHẨM
+          th(style="width:70px") ĐƠN VỊ
+          th(style="width:50px") SL
+          th(style="width:140px") GIÁ BÁN
+          th(style="width:20px")
+
+        each saleDetails
+          if editingMode
+            +saleDetailEditor this
+          else
+            tr.detail-row
+              td(style="text-align: left") {{productName}}
+              td {{unitName}}
+              td {{quality}}
+              td {{price}} VND
+              td: span.icon-minus-4.deleteDetail
+
+        tr
+          td
+          td(colspan="2") Tổng Cộng:
+          td {{sale.totalPrice}} VND
+
+        tr
+          td
+          td(colspan="2") Thanh Toán:
+          td {{sale.depositCash}} VND
+
+        tr
+          td
+          td(colspan="2")
+          td {{sale.finalPrice}} VND
+
+
+  .editor-row(style="height: 25px")
+    .editor-wrapper(style="height: 25px")
+      input.saleDescription(value="{{sale.description}}")
+
+  .editor-row(style="height: 25px")
+    .editor-wrapper(style="float:left")
+      select.branchProduct
+        each branchProducts
+          option(value="{{_id}}") {{productName}}
+    .editor-wrapper(style="float:left")
+      select.conversion
+        each conversions
+          option(value="{{_id}}") {{findUnit.name}}
+    .editor-wrapper(style="float:left"): input.saleDetailQuality(style="width:50px" value="{{sale.quality}}")
+    .editor-wrapper(style="float:left"): input.saleDetailPrice(style="width:50px" value="{{sale.price}}")
+    .editor-wrapper(style="float:right"): button.addDetail Add
+
+  .editor-row
+    .editor-wrapper(style="float:left")
+      select.paymentsDelivery
+        option(value="1") Trực Tiếp
+        option(value="2") Đặt Hàng
+    .editor-wrapper(style="float:left")
+      select.paymentMethod
+        option(value="1") Tiền Mặt
+        option(value="2") Ghi Nợ
+    .editor-wrapper(style="float:left"): input.saleDeposit(style="width:100px" value="{{sale.depositCash}}")
+    .editor-wrapper(style="float:right"): button.saleSubmit HOÀN TẤT

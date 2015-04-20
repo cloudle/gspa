@@ -1,0 +1,38 @@
+template(name="productManagement")
+  .productManagement-header
+    .search-filter(style="float:left")
+      select.search-products
+        each products
+          option(value="{{_id}}") {{name}}
+
+    .add-product
+      input.productName(type="text")
+      button.addProduct Add
+
+  .productManagement-body
+    .section.panel-default
+      .panel-heading
+        span(style="height: 25px")
+        span(style="height: 25px") san pham
+
+      .panel-body
+        table(style="width:100%")
+          tr
+            th(style="width:auto") MÃ VẠCH
+            th(style="width:60px") ĐVT
+            th(style="width:50px") QĐỔI
+            th(style="width:130px") GIÁ NHẬP
+            th(style="width:130px") GIÁ BÁN
+
+          each branchPrices
+            tr
+              td 123456789123
+              td {{unitName}}
+              td {{conversionQuality}}
+              td {{importPrice}} VNĐ
+              td {{price}} VNĐ
+
+      .panel-footer
+
+  .productManagement-footer
+
