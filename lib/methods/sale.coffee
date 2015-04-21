@@ -1,9 +1,53 @@
+#----Sale----->
 Meteor.methods
-  updateSaleDepositCash: (saleId, deposit = 0) ->
-    if sale = Schema.Sale.findOne({ _id: saleId, status: {$ne: "submit"} })
-      sale.depositCash  = Convert.toNumber(deposit)
-      sale.finalPrice   = sale.totalPrice - sale.depositCash
-      Wings.IRUS.update(Schema.Sale, sale._id, sale, ['depositCash', 'finalPrice'], Wings.Validators.saleUpdate)
+  insertSale: (description = null, buyerId = null, sellerId = null)->
+    seller = Meteor.users.findOne(sellerId) if sellerId
+    buyer  = Schema.Customer.findOne(buyerId) if buyerId
+
+    newSale = Model.Diagrams.Sale()
+    newSale.seller      = seller._id if seller
+    newSale.buyer       = buyer._id if buyer
+    newSale.description = description if description
+
+    insertResult = Wings.IRUS.insert(Schema.Sale, newSale, Wings.Validators.saleInsert)
+    return insertResult
+
+  updateSale: (saleId, model, fields)->
+    if sale = Schema.Sale.findOne({_id: saleId, status: {$ne: "submit"}})
+      result = Wings.Validators.checkExistField(fields, "saleUpdateFields")
+      if result.valid then updateFields = result.data else return result
+
+      if _.contains(updateFields, 'seller')
+        return {valid: false, error: 'staff not found!'} if !Meteor.users.findOne(model.seller)
+
+      if _.contains(updateFields, 'buyer')
+        return {valid: false, error: 'customer not found!'} if !Schema.Customer.findOne(model.buyer)
+
+      if _.contains(updateFields, 'selectProduct')
+        return {valid: false, error: 'product not found!'} if !Schema.Product.findOne(model.selectProduct)
+
+      if _.contains(updateFields, 'selectConversion')
+        if branchPrice = Schema.BranchPrice.findOne({branchProduct: sale.selectBranchProduct, conversion: model.selectConversion})
+          model.price = branchPrice.price; updateFields.push('price')
+        else
+          return {valid: false, error: 'conversion not found!'}
+
+      if _.contains(updateFields, 'paymentMethod')
+        switch model.paymentMethod
+          when Wings.Enum.salePaymentMethods.cash then model.depositCash = sale.totalPrice
+          when Wings.Enum.salePaymentMethods.debit then model.depositCash = 0
+        updateFields.push('depositCash')
+
+      if _.contains(updateFields, 'depositCash')
+        model.finalPrice = sale.totalPrice - model.depositCash; updateFields.push('finalPrice')
+
+      Wings.IRUS.update(Schema.Sale, sale._id, model, updateFields, Wings.Validators.saleUpdate)
+
+  removeSale: (saleId)->
+    if sale = Schema.Sale.findOne({_id: saleId, status: {$ne: "submit"}})
+      result = Wings.IRUS.remove(Schema.Sale, sale._id)
+      Schema.SaleDetail.find({sale: sale._id}).forEach( (saleDetail)-> Schema.SaleDetail.remove saleDetail._id ) if result.valid
+      return result
 
   submitSale: (saleId)->
     if sale = Schema.Sale.findOne({ _id: saleId, status: {$ne: "submit"} })
@@ -28,63 +72,6 @@ Meteor.methods
 
           if !Schema.Sale.findOne({status: {$ne: "submit"} })
             Model.Sale.insert(null, sale.buyer, sale.seller)
-
-  addSaleDetail: (saleId, branchPriceId, quality, price) ->
-    sale        = Schema.Sale.findOne _id: saleId, status: {$ne: "submit"}
-    branchPrice = Schema.BranchPrice.findOne branchPriceId
-
-    if sale and branchPrice
-      saleDetail = {creator: @userId, returnBasicQuality : 0}
-      saleDetail.sale         = sale._id
-      saleDetail.branchPrice  = branchPrice._id
-      saleDetail.quality      = Convert.toNumber(quality)
-      saleDetail.price        = Convert.toNumber(price)
-      saleDetail.basicQuality = saleDetail.quality * branchPrice.conversionQuality
-
-      insertResult = Wings.IRUS.insert(Schema.SaleDetail, saleDetail, Wings.Validators.saleDetailInsert)
-      if insertResult.valid
-        discount = 0
-        total    = saleDetail.quality * saleDetail.price
-        Schema.Sale.update sale._id, $inc:{discountCash: discount, totalPrice: total, finalPrice: (total - discount)}
-
-      return insertResult
-
-  updateSaleDetail: (saleDetailId, quality = null, price = null) ->
-    saleDetail = Schema.SaleDetail.findOne({_id: saleDetailId, status: {$ne: "submit"}})
-    if saleDetail and (quality or price)
-      conversion = saleDetail.basicQuality/saleDetail.quality
-      model = {}; updateFields = []
-
-      if price
-        model.price = Convert.toNumber(price)
-        updateFields.push 'price'
-      else
-        model.price = saleDetail.price
-
-      if quality
-        model.quality      = Convert.toNumber(quality)
-        model.basicQuality = model.quality * conversion
-        updateFields.push 'quality'
-        updateFields.push 'basicQuality'
-      else
-        model.quality = saleDetail.quality
-
-      result = Wings.IRUS.update(Schema.SaleDetail, saleDetail._id, model, updateFields, Wings.Validators.saleDetailUpdate)
-      if result.valid
-        discount   = 0
-        total      = (model.quality * model.price) - (saleDetail.quality * saleDetail.price)
-        Schema.Sale.update saleDetail.sale, $inc: {discountCash: discount, totalPrice: total, finalPrice: (total - discount)}
-
-      return result
-
-  deleteSaleDetail: (saleDetailId) ->
-    if saleDetail = Schema.SaleDetail.findOne({_id: saleDetailId, status: {$ne: "submit"}})
-      result = Wings.IRUS.remove(Schema.SaleDetail, saleDetail._id)
-      if result.valid
-        discount   = -0
-        total      = -(saleDetail.quality * saleDetail.price)
-        Schema.Sale.update saleDetail.sale, $inc:{discountCash: discount, totalPrice: total, finalPrice: (total - discount)}
-      return result
 
 checkProductInStockQuality = (saleDetails, branchProducts)->
   details = _.chain(saleDetails)

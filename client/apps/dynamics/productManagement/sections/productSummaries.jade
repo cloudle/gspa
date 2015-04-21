@@ -1,0 +1,22 @@
+template(name="productSummaries")
+  .productSummaries
+    each managedProducts
+      if showFilterSearch
+        .productSummary
+          .avatar(style="background-image:url('{{avatarImg}}')")
+          .content {{name}}
+          .sale-meta
+            span.owner-alias {{creatorName}}
+            span.time-stamp {{formatHour createAt}}
+          .content {{description}}
+
+          .action
+            span.addBranchProduct(style="cursor: pointer") Thêm
+
+          .action
+            span.branchProductDetail(style="cursor: pointer") Chi Tiết
+
+          .action
+            span.deleteBranchProduct(style="cursor: pointer") Xóa
+
+          .content --------------------------

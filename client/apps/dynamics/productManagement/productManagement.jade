@@ -1,38 +1,61 @@
 template(name="productManagement")
-  .productManagement-header
-    .search-filter(style="float:left")
-      select.search-products
-        each products
-          option(value="{{_id}}") {{name}}
+  .productManagement
+    .productManagement-header
+      +menuProductManagement
 
-    .add-product
-      input.productName(type="text")
-      button.addProduct Add
+    .productManagement-body
+      if isActiveProductSummariesLayout
+        +productSummaries
+      if isActiveProductDetailLayout
+        +productDetail
 
-  .productManagement-body
-    .section.panel-default
-      .panel-heading
-        span(style="height: 25px")
-        span(style="height: 25px") san pham
+    .productManagement-footer
 
-      .panel-body
-        table(style="width:100%")
-          tr
-            th(style="width:auto") MÃ VẠCH
-            th(style="width:60px") ĐVT
-            th(style="width:50px") QĐỔI
-            th(style="width:130px") GIÁ NHẬP
-            th(style="width:130px") GIÁ BÁN
 
-          each branchPrices
-            tr
-              td 123456789123
-              td {{unitName}}
-              td {{conversionQuality}}
-              td {{importPrice}} VNĐ
-              td {{price}} VNĐ
 
-      .panel-footer
+    //  .search-filter(style="float:left")
+    //    select.search-products
+    //      each products
+    //        option(value="{{_id}}") {{name}}
+    //
+    //  .add-product
+    //    input.productName(type="text")
+    //    button.addProduct Add
+    //
+    //.productManagement-body
+    //  .section.panel-default
+    //    .panel-heading
+    //      span(style="height: 25px")
+    //      span(style="height: 25px") san pham
+    //
+    //    .panel-body
+    //      table(style="width:100%")
+    //        tr
+    //          th(style="width:auto") MÃ VẠCH
+    //          th(style="width:60px") ĐVT
+    //          th(style="width:50px") QĐỔI
+    //          th(style="width:130px") GIÁ NHẬP
+    //          th(style="width:130px") GIÁ BÁN
+    //
+    //        each branchPrices
+    //          tr
+    //            td 123456789123
+    //            td {{unitName}}
+    //            td {{conversionQuality}}
+    //            td {{importPrice}} VNĐ
+    //            td {{price}} VNĐ
+    //
+    //    .panel-footer
 
-  .productManagement-footer
 
+template(name="productDetail")
+
+
+template(name="menuProductManagement")
+  ul(style="padding-left: 0; list-style: none;")
+    li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.productSummaries Tổng Quan
+    li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.productDetail Chi Tiết
+
+  .search-filter
+    input(name='searchFilter' type="text" value="{{searchFilter.textSearch}}")
+    i.icon-search-8

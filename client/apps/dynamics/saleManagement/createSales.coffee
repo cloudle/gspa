@@ -22,63 +22,6 @@ Wings.defineWidget 'createSales',
   destroyed: ->
 
   events:
-    "change .staff": (event, template) ->
-      staffId = template.find('.staffs').value
-      console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'seller', staffId)
-    "change .customer": (event, template) ->
-      customerId = template.find('.customers').value
-      console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'buyer', customerId)
-    "change .branchProduct": (event, template) ->
-      productId = template.find('.products').value
-      console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'selectProduct', productId)
-    "change .conversion": (event, template) ->
-      conversionId = template.find('.conversion').value
-      console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'selectConversion', conversionId)
-
-      branchPrice = Schema.BranchPrice.findOne({branchProduct: Session.get("currentSale").selectBranchProduct, conversion: conversionId})
-      Session.set("currentBranchPrice", branchPrice)
-      console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'price', branchPrice.price)
-
-    "change .paymentDelivery": (event, template) ->
-      paymentDelivery = Convert.toNumber(template.find('.paymentDelivery').value)
-      console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'paymentDelivery', paymentDelivery)
-    "change .paymentMethod": (event, template) ->
-      paymentMethod = Convert.toNumber(template.find('.paymentMethod').value)
-      console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'paymentMethod', paymentMethod)
-
-      if paymentMethod is Wings.Enum.salePaymentMethods.cash
-        Meteor.call 'updateSaleDepositCash', Session.get("currentSale")._id, Session.get("currentSale").totalPrice,
-          (err, result) -> console.log err, result
-      else if paymentMethod is Wings.Enum.salePaymentMethods.debit
-        Meteor.call 'updateSaleDepositCash', Session.get("currentSale")._id, 0, (err, result) -> console.log err, result
-
-
-    "keyup input.saleDetailQuality": (event, template) ->
-      Wings.Helper.deferredAction ->
-        sale = Session.get("currentSale"); quality = template.find('.saleDetailQuality').value
-        if sale and sale.depositCash isnt quality and quality >= 0
-          console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'quality', quality)
-      , "updateSaleDetailQuality"
-    "keyup input.saleDetailPrice": (event, template) ->
-      Wings.Helper.deferredAction ->
-        sale = Session.get("currentSale"); price = template.find('.saleDetailPrice').value
-        if sale and sale.depositCash isnt price and price >= 0
-          console.log Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'price', price)
-      , "updateSaleDetailPrice"
-    "keyup input.saleDeposit": (event, template) ->
-      Wings.Helper.deferredAction ->
-        sale = Session.get("currentSale"); deposit = template.find('.saleDeposit').value
-        if sale and sale.depositCash isnt deposit and deposit >= 0
-          Meteor.call 'updateSaleDepositCash', sale._id, deposit, (err, result) -> if result.valid then "" else console.log result.error
-      , "updateSaleDepositCash"
-    "keyup input.saleDescription": (event, template) ->
-      Wings.Helper.deferredAction ->
-        sale = Session.get("currentSale"); description = template.find('.saleDescription').value
-        if sale and sale.description isnt description
-          console.log Wings.IRUS.setField(Schema.Sale, sale, 'description', description)
-      , "updateSaleDescription"
-
-
     "click .detail-row": -> Session.set("salesEditingRowId", @_id)
     "click .addDetail": (event, template) ->
       saleId        = Session.get("currentSale")?._id
@@ -86,10 +29,73 @@ Wings.defineWidget 'createSales',
       quality       = Session.get("currentSale")?.quality
       price         = Session.get("currentSale")?.price
 
-      console.log saleId, branchPriceId, quality, price
-      Meteor.call 'addSaleDetail', saleId, branchPriceId, quality, price, (err, result) -> console.log err, result
+      Meteor.call 'insertSaleDetail', saleId, branchPriceId, quality, price, (err, result) -> console.log result
+
     "click .deleteDetail": (event, template) ->
-      Meteor.call 'deleteSaleDetail', @_id, (err, result) -> if result.valid then "" else console.log result.error
+      Meteor.call 'removeSaleDetail', @_id, (err, result) -> console.log result
       event.stopPropagation()
+
     "click .saleSubmit": (event, template) ->
-      Meteor.call 'submitSale', Session.get("currentSale")._id, (err, result) -> console.log err, result
+      Meteor.call 'submitSale', Session.get("currentSale")._id, (err, result) -> console.log result
+
+    "change .staffs": (event, template) ->
+      model = {seller: template.find('.staffs').value}
+      Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'seller', (err, result) -> console.log result
+
+    "change .customers": (event, template) ->
+      model = {buyer: template.find('.customers').value}
+      Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'buyer', (err, result) -> console.log result
+
+    "change .branchProducts": (event, template) ->
+      model = {selectProduct: template.find('.products').value}
+      Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'selectProduct', (err, result) -> console.log result
+
+    "change .conversions": (event, template) ->
+      model = {selectConversion: template.find('.conversions').value}
+      Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'selectConversion', (err, result) -> console.log result
+
+    "change .paymentDelivery": (event, template) ->
+      model = {paymentDelivery: Convert.toNumber(template.find('.paymentDelivery').value)}
+      Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'paymentDelivery', (err, result) -> console.log result
+
+    "change .paymentMethod": (event, template) ->
+      model = {paymentMethod: Convert.toNumber(template.find('.paymentMethod').value)}
+      Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'paymentMethod', (err, result) -> console.log result
+
+    "keyup input.saleDetailQuality": (event, template) ->
+      Wings.Helper.DeferredAction ->
+        model = {quality: Convert.toNumber(template.find('.saleDetailQuality').value)}; sale = Session.get("currentSale")
+
+        if sale and sale.quality isnt model.quality and model.quality >= 0
+          Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'quality', (err, result) -> console.log result
+
+      , "updateSaleDetailQuality"
+
+    "keyup input.saleDetailPrice": (event, template) ->
+      Wings.Helper.DeferredAction ->
+        model = {price: Convert.toNumber(template.find('.saleDetailPrice').value)}; sale = Session.get("currentSale")
+
+        if sale and sale.price isnt model.price and model.price >= 0
+          Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'price', (err, result) -> console.log result
+
+      , "updateSaleDetailPrice"
+
+    "keyup input.saleDeposit": (event, template) ->
+      Wings.Helper.DeferredAction ->
+        model = {depositCash: Convert.toNumber(template.find('.saleDeposit').value)}; sale = Session.get("currentSale")
+
+        if sale and sale.depositCash isnt model.depositCash and model.depositCash >= 0
+          Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'depositCash', (err, result) -> console.log result
+
+      , "updateSaleDepositCash"
+
+    "keyup input.saleDescription": (event, template) ->
+      Wings.Helper.DeferredAction ->
+        model = {description: template.find('.saleDescription').value}; sale = Session.get("currentSale")
+
+        if sale and sale.description isnt model.description
+          Meteor.call 'updateSale', Session.get("currentSale")._id, model, 'description', (err, result) -> console.log result
+
+      , "updateSaleDescription"
+
+

@@ -2,7 +2,19 @@ class Model.Product
   constructor: (doc) -> @[key] = value for key, value of doc
 
   @insert: (name, description = null)->
-    newProduct = {name: name}
+    newProduct =
+      name               : name
+      availableQuality   : 0
+      inOderQuality      : 0
+      inStockQuality     : 0
+      saleQuality        : 0
+      returnSaleQuality  : 0
+      importQuality      : 0
+      returnImportQuality: 0
+      productGroup       : []
+      conversion         : []
+      branch             : []
+
     newProduct.description = description if description
     Wings.IRUS.insert(Schema.Product, newProduct, Wings.Validators.productInsert)
 

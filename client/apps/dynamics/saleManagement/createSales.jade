@@ -3,11 +3,11 @@ template(name="createSales")
     .editor-wrapper(style="float:left")
       | Phiếu Bán Hàng
     .editor-wrapper(style="float:right")
-      select.staff
+      select.staffs
         each staffs
           option(value="{{_id}}") {{staffDisplayName}}
     .editor-wrapper(style="float:right")
-      select.customer
+      select.customers
         each customers
           option(value="{{_id}}") {{name}}
 
@@ -54,11 +54,11 @@ template(name="createSales")
 
   .editor-row(style="height: 25px")
     .editor-wrapper(style="float:left")
-      select.branchProduct
+      select.branchProducts
         each branchProducts
           option(value="{{_id}}") {{productName}}
     .editor-wrapper(style="float:left")
-      select.conversion
+      select.conversions
         each conversions
           option(value="{{_id}}") {{findUnit.name}}
     .editor-wrapper(style="float:left"): input.saleDetailQuality(style="width:50px" value="{{sale.quality}}")
@@ -67,7 +67,7 @@ template(name="createSales")
 
   .editor-row
     .editor-wrapper(style="float:left")
-      select.paymentsDelivery
+      select.paymentDelivery
         option(value="1") Trực Tiếp
         option(value="2") Đặt Hàng
     .editor-wrapper(style="float:left")

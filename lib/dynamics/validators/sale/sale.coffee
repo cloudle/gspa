@@ -1,5 +1,16 @@
 Module 'Wings.Validators',
-  saleUpdateFields: ['seller', 'buyer', 'description', 'depositCash']
+  saleUpdateFields:[
+    'seller'
+    'buyer'
+    'description'
+    'depositCash'
+    'selectProduct'
+    'selectConversion'
+    'price'
+    'quality'
+    'paymentDelivery'
+    'paymentMethod'
+  ]
 #------------------------------------------------------------------------------>
   saleInsert:
     seller:

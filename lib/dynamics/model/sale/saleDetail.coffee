@@ -13,25 +13,23 @@ class Model.Sale.SaleDetail
       @unitName    = Schema.Unit.findOne(branchPrice.unit).name
 
   @insert: (saleId, branchPriceId, quality, price)->
-    Meteor.call 'addSaleDetail', saleId, branchPriceId, quality, price, (err, result) ->
-      if result.valid then "" else console.log result.error
+    Meteor.call 'insertSaleDetail', saleId, branchPriceId, quality, price, (err, result) -> console.log err, result
 
   insert: ()->
     return {valid: false, error: 'This record is created'} if @_id
-    Meteor.call 'addSaleDetail', @sale, @branchPrice, @quality, @price, (err, result) ->
-      if result.valid then "" else console.log result.error
+    Meteor.call 'insertSaleDetail', @sale, @branchPrice, @quality, @price, (err, result) -> console.log err, result
 
   update: (fields)->
     return {valid: false, error: 'This _id is required!'} if !@_id
 
-    result = Wings.Validators.checkExistField(fields, "saleDetailUpdateFields")
-    if result.valid then updateFields = result.data else return result
+    validator = Wings.Validators.checkExistField(fields, "saleDetailUpdateFields")
+    if validator.valid then updateFields = validator.data else return validator
 
     quality = if _.contains(updateFields, 'quality') then @quality else null
     price   = if _.contains(updateFields, 'price') then @price else null
 
-    Meteor.call 'updateSaleDetail', @_id, quality, price, (err, result) ->
+    Meteor.call 'updateSaleDetail', @_id, quality, price, (err, result) -> console.log err, result
 
   remove: ->
-    Meteor.call 'deleteSaleDetail', @_id, (err, result) ->
-      if result.valid then "" else console.log result.error
+    return {valid: false, error: 'This _id is required!'} if !@_id
+    Meteor.call 'removeSaleDetail', @_id, (err, result) -> console.log err, result

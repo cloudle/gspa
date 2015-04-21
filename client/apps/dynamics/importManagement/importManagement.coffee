@@ -29,11 +29,7 @@ Wings.defineWidget 'importManagement',
 
 
     "keyup input.importDeposit": (event, template) ->
-      Wings.Helper.deferredAction ->
-        currentImport = Session.get("currentImport"); deposit = template.find('.importDeposit').value
-        if currentImport and currentImport.depositCash isnt deposit and deposit >= 0
-          Meteor.call 'updateSaleDepositCash', currentImport._id, deposit, (err, result) -> if result.valid then "" else console.log result.error
-      , "updateSaleDepositCash"
+
 
     "click .addDetail": (event, template) ->
       importId        = Session.get("currentImport")?._id
@@ -41,11 +37,11 @@ Wings.defineWidget 'importManagement',
       quality       = template.find('.addDetailQuality').value
       price         = template.find('.addDetailPrice').value
 
-      Meteor.call 'addSaleDetail', importId, branchPriceId, quality, price, (err, result) ->
+      Meteor.call 'insertSaleDetail', importId, branchPriceId, quality, price, (err, result) ->
         if result.valid then "" else console.log result.error
 
     "click .deleteDetail": (event, template) ->
-      Meteor.call 'deleteSaleDetail', @_id, (err, result) -> if result.valid then "" else console.log result.error
+      Meteor.call 'removeSaleDetail', @_id, (err, result) -> if result.valid then "" else console.log result.error
       event.stopPropagation()
 
     "click .importSubmit": (event, template) ->
