@@ -10,13 +10,16 @@ template(name="productSummaries")
             span.time-stamp {{formatHour createAt}}
           .content {{description}}
 
-          .action
-            span.addBranchProduct(style="cursor: pointer") Thêm
+          .action: span.editProduct(style="cursor: pointer") Thông tin chi tiết
 
-          .action
-            span.branchProductDetail(style="cursor: pointer") Chi Tiết
+          if isBranchProduct
+            if allowDelete
+              .action: span.deleteBranchProduct(style="cursor: pointer") Xóa khỏi chi nhánh
+          else
+            .action: span.addBranchProduct(style="cursor: pointer") Thêm vào chi nhánh
 
-          .action
-            span.deleteBranchProduct(style="cursor: pointer") Xóa
+          if isDeleteProduct
+            .action: span.deleteProduct(style="cursor: pointer") Xóa khỏi công ty
+
 
           .content --------------------------

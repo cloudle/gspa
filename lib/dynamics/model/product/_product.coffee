@@ -1,95 +1,43 @@
 class Model.Product
   constructor: (doc) -> @[key] = value for key, value of doc
 
-  @insert: (name, description = null)->
-    newProduct =
-      name               : name
-      availableQuality   : 0
-      inOderQuality      : 0
-      inStockQuality     : 0
-      saleQuality        : 0
-      returnSaleQuality  : 0
-      importQuality      : 0
-      returnImportQuality: 0
-      productGroup       : []
-      conversion         : []
-      branch             : []
-
-    newProduct.description = description if description
-    Wings.IRUS.insert(Schema.Product, newProduct, Wings.Validators.productInsert)
+  @insert: (name, description)->
+    Meteor.call 'insertProduct', name, description, (err, result) -> console.log result
 
   insert: ()->
+    self = @
     return {valid: false, error: 'This record is created'} if @_id
-
-    newProduct = {name: @name}
-    newProduct.description = @description if @description
-    insertResult = Wings.IRUS.insert(Schema.Product, newProduct, Wings.Validators.productInsert)
-
-    @_id = insertResult.result if insertResult.valid
-    return insertResult
+    Meteor.call 'insertProduct', @name, @description,
+      (err, result) -> if result.valid then self._id = result.result; console.log result
 
   update: (fields)->
     return {valid: false, error: 'This _id is required!'} if !@_id
+    Meteor.call 'updateProduct', @_id, @, fields, (err, result) -> console.log result
 
-    result = Wings.Validators.checkExistField(fields, "productUpdateFields")
-    if result.valid then updateFields = result.data else return result
-
-    Wings.IRUS.update(Schema.Product, @_id, @, updateFields, Wings.Validators.productUpdate)
-
-  remove: -> Wings.IRUS.remove(Schema.Product, @_id)
-
-  insertBranchProduct: (branchId)->
+  remove: ->
     return {valid: false, error: 'This _id is required!'} if !@_id
+    Meteor.call 'removeProduct', @_id, (err, result) -> console.log result
 
-    newBranchProduct = {branch: branchId, product: @_id}
-    insertResult = Wings.IRUS.insert(Schema.BranchProduct, newBranchProduct, Wings.Validators.branchProductInsert)
 
-    if insertResult.valid
-      newBranchPrice = {branchProduct: insertResult.result, isRoot: true}
-      if @basicUnit and @conversion.length > 0
-        for item, index in @conversion
-          newBranchPrice.isRoot     = if index is 0 then true else false
-          newBranchPrice.conversion = item
-          Wings.IRUS.insert(Schema.BranchPrice, newBranchPrice, Wings.Validators.branchPriceInsert)
-      else
-        Wings.IRUS.insert(Schema.BranchPrice, newBranchPrice, Wings.Validators.branchPriceInsert)
 
-    return insertResult
+  addBranchProduct: (branchId)->
+    return {valid: false, error: 'This _id is required!'} if !@_id
+    Meteor.call 'insertBranchProduct', @_id, branchId, (err, result) -> console.log result
 
-  setBasicUnit: (unitId)->
+  updateBasicUnit: (unitId)->
     return {valid: false, error: 'This _id is required!'} if !@_id
 
     if @basicUnit
       return {valid: false, error: 'basicUnit trùng lắp'} if @basicUnit is unitId
       return {valid: false, error: 'không thể sửa đổi basicUnit'} if @conversion.length > 1
 
-    updateResult = Wings.IRUS.setField(Schema.Product, @, 'basicUnit', unitId, Wings.Validators.productBasicUnit)
-    if updateResult.valid
-      Schema.Conversion.remove(@conversion[0]) if @conversion?.length is 1
-  #    Meteor.call 'productSetBasicUnit', @_id, unitId
+    Meteor.call 'updateProduct', @_id, {basicUnit: unitId}, 'basicUnit', (err, result) -> console.log result
 
-      newConvention = {product: @_id, unit: unitId, conversion: 1}
-      insertResult = Wings.IRUS.insert(Schema.Conversion, newConvention, Wings.Validators.conversionInsert)
-      if insertResult.valid
-        Schema.BranchProduct.find({product: @_id}).forEach(
-          (branchProduct)->
-            Schema.BranchPrice.find({branchProduct: branchProduct._id, isRoot: true}).forEach(
-              (branchPrice) -> Schema.BranchPrice.update branchPrice._id, $set:{conversion: insertResult.result}
-            )
-        )
 
-  insertConversion: (unitId, conversion)->
+  addConversion: (unitId, conversion)->
     return {valid: false, error: 'This _id is required!'} if !@_id
-    if @basicUnit
-      return {valid: false, error: 'Đơn vị tính bị trùng với ĐVT cơ bản.'} if @basicUnit is unitId
-    else
-      return {valid: false, error: 'Chưa tạo đơn vị tính cơ bản'}
 
-    newConversion = {product: @_id, unit: unitId, conversion: conversion}
-    insertResult = Wings.IRUS.insert(Schema.Conversion, newConversion, Wings.Validators.conversionInsert)
-    if insertResult.valid
-      Schema.BranchProduct.find({product: @_id}).forEach(
-        (branchProduct)->
-          newBranchPrice = {branchProduct: branchProduct._id, conversion: insertResult.result, isRoot: false}
-          console.log Wings.IRUS.insert(Schema.BranchPrice, newBranchPrice, Wings.Validators.branchPriceInsert)
-      )
+    return {valid: false, error: 'Chưa tạo đơn vị tính cơ bản'} if !@basicUnit
+    return {valid: false, error: 'Đơn vị tính bị trùng với ĐVT cơ bản.'} if @basicUnit is unitId
+
+    Meteor.call 'insertConversion', @_id, unitId, conversion, (err, result) -> console.log result

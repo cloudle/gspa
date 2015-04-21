@@ -13,7 +13,7 @@ setups.homeReactives.push (scope) ->
     else if activeLayout.layout is "importManagement"
       foundImport = Schema.Import.findOne({status:{$ne: "submit"}})
     else if activeLayout.layout is "productManagement"
-      foundProduct = Schema.Product.findOne(Session.get("mySession").currentProduct)
+      foundProduct = Schema.Product.findOne(Session.get("mySession")?.currentProduct)
 
     Session.set("currentSale", foundSale)
     Session.set("currentImport", foundImport)

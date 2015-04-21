@@ -1,0 +1,40 @@
+template(name="productDetail")
+  .productManagement-body
+    .section.panel-default
+      .panel-heading
+        span(style="height: 25px") {{product.name}}
+        select.basicUnit
+          each unitsOfProduct
+            option(value="{{_id}}") {{name}}
+
+
+      .panel-body
+        table(style="width:100%")
+          tr
+            th(style="width:auto") ĐVT
+            th(style="width:50px") QĐỔI
+            th(style="width:110px") MÃ VẠCH
+            th(style="width:120px") GIÁ NHẬP
+            th(style="width:120px") GIÁ BÁN
+            th(style="width:20px")
+
+          each conversions
+            tr
+              td {{unitName}}
+              td {{branchPrice.conversionQuality}}
+              td 123456789123
+              td {{branchPrice.importPrice}} VNĐ
+              td {{branchPrice.price}} VNĐ
+              td
+                if allowDelete
+                  span.icon-minus-4.deleteConversion
+
+          if showAddConversion
+            tr
+              td
+                select.units
+                  each units
+                    option(value="{{_id}}") {{name}}
+              td: input(style="width:50px").conversionQuality
+              td: input(style="width:auto").barcode
+              td(colspan="2"): button.addConversion Thêm

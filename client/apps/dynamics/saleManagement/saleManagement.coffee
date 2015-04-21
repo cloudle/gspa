@@ -13,8 +13,6 @@ Wings.defineWidget 'saleManagement',
     Session.set("currentConversion")
     Session.set("currentBranchPrice")
 
-Wings.defineWidget 'menuSaleManagement',
   events:
     "click .createSales"  : -> Session.set "activeLayout", {layout: "saleManagement", active: "createSales"}
     "click .historySales" : -> Session.set "activeLayout", {layout: "saleManagement", active: "historySales"}
-

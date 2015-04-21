@@ -1,5 +1,5 @@
 Module 'Wings.Validators',
-  productUpdateFields: ['name', 'description']
+  productUpdateFields: ['name', 'description', 'basicUnit']
 #------------------------------------------------------------------------------
   productInsert:
     name:

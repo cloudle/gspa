@@ -1,6 +1,18 @@
 Module 'Wings.Validators',
   conversionUpdateFields: ['name', 'description']
 #------------------------------------------------------------------------------
+  conversionInsertDefault:
+    product:
+      type: String
+      meta: [
+        min: 17
+        error: "productId không chính xác"
+      ,
+        max: 17
+        error: "productId không chính xác"
+      ]
+
+#------------------------------------------------------------------------------
   conversionInsert:
     product:
       type: String

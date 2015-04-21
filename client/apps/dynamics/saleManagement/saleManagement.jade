@@ -1,7 +1,9 @@
 template(name="saleManagement")
   .saleManagement
     .saleManagement-header
-      +menuSaleManagement
+      ul(style="padding-left: 0; list-style: none;")
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.createSales Phiếu Bán
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-history.historySales Nhật Ký
 
     .saleManagement-body
       //.body-createSale(style="visibility: hidden")
@@ -13,10 +15,3 @@ template(name="saleManagement")
         +historySales
 
     .saleManagement-footer
-
-
-
-template(name="menuSaleManagement")
-  ul(style="padding-left: 0; list-style: none;")
-    li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.createSales Phiếu Bán
-    li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-history.historySales Nhật Ký

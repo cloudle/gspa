@@ -17,4 +17,4 @@ Template.registerHelper 'brackets', (source) -> "{#{source}}"
 Template.registerHelper 'formatHour', (source) -> moment(source).format('h:mm a')
 
 Template.registerHelper 'staffDisplayName', -> @profile?.name ? @username
-Template.registerHelper 'unitName', -> if @unit then Schema.Unit.findOne(@unit)?.name else ''
+Template.registerHelper 'unitName', -> if @unit then Schema.Unit.findOne(@unit)?.name else 'KO CÓ'
