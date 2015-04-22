@@ -19,12 +19,25 @@ template(name="productDetail")
             th(style="width:20px")
 
           each conversions
-            tr
+            tr.detail-row
               td {{unitName}}
               td {{branchPrice.conversionQuality}}
-              td 123456789123
-              td {{branchPrice.importPrice}} VNĐ
-              td {{branchPrice.price}} VNĐ
+
+              if editingBarcode
+                td: input(style="width:110px" value="{{barcode}}").editBarcode
+              else
+                td.barcode {{barcode}}
+
+              if editingImportPrice
+                td: input(style="width:120px" value="{{branchPrice.importPrice}}").editImportPrice
+              else
+                td.importPrice {{branchPrice.importPrice}} VNĐ
+
+              if editingPrice
+                td: input(style="width:120px" value="{{branchPrice.price}}").editPrice
+              else
+                td.price {{branchPrice.price}} VNĐ
+
               td
                 if allowDelete
                   span.icon-minus-4.deleteConversion
@@ -36,5 +49,5 @@ template(name="productDetail")
                   each units
                     option(value="{{_id}}") {{name}}
               td: input(style="width:50px").conversionQuality
-              td: input(style="width:auto").barcode
+              td: input(style="width:110px").conversionBarcode
               td(colspan="2"): button.addConversion Thêm

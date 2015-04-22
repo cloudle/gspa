@@ -17,9 +17,6 @@ Wings.defineWidget 'productSummaries',
       Session.set("currentProduct", @)
 #      event.stopPropagation()
 
-
-
-
     "click .addBranchProduct": ->
       branchId = Schema.UserSession.findOne({user: Meteor.userId()}).branch
       Meteor.call('insertBranchProduct', @_id, branchId, (err, result) -> console.log result) if branchId

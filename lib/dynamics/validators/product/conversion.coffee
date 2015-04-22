@@ -1,5 +1,5 @@
 Module 'Wings.Validators',
-  conversionUpdateFields: ['name', 'description']
+  conversionUpdateFields: ['barcode']
 #------------------------------------------------------------------------------
   conversionInsertDefault:
     product:
@@ -11,6 +11,10 @@ Module 'Wings.Validators',
         max: 17
         error: "productId không chính xác"
       ]
+
+    barcode:
+      type: String
+      optional: true
 
 #------------------------------------------------------------------------------
   conversionInsert:
@@ -41,18 +45,13 @@ Module 'Wings.Validators',
         error: "Quy đổi không thể nhỏ hơn 1"
       ]
 
+    barcode:
+      type: String
+      optional: true
+
 
 #------------------------------------------------------------------------------
   conversionUpdate:
-    name:
-      type: String
-      optional: true
-      meta: [
-        min: 2
-        error: "Tên sản phẩm không thể ngắn hơn 2 ký tự"
-      ]
-
-
-    description:
+    barcode:
       type: String
       optional: true

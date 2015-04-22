@@ -7,7 +7,7 @@ Wings.defineWidget 'createSales',
   conversions: -> Schema.Conversion.find({product: Session.get("currentBranchProduct")?.product})
 
   editingMode: -> Session.get("salesEditingRow")?._id is @_id
-  editingData: -> Session.get("salesEditingRow")
+#  editingData: -> Session.get("salesEditingRow")
 
 
   rendered: ->

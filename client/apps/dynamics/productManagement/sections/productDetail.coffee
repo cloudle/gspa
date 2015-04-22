@@ -1,7 +1,22 @@
+scope = logics.productManagement
+
 Wings.defineWidget 'productDetail',
+  product: -> Session.get("currentProduct")
   showAddConversion: -> Session.get("currentProduct")?.basicUnit
-  product : -> Session.get("currentProduct")
-  conversions : -> if product = Session.get("currentProduct") then Schema.Conversion.find({product: product._id})
+  conversions: -> if product = Session.get("currentProduct") then Schema.Conversion.find({product: product._id})
+
+  editingBarcode: ->
+    if branchPrice = Session.get("branchPriceEditingRow")
+      branchPrice.conversion is @_id and branchPrice.editing is 'barcode'
+
+  editingImportPrice: ->
+    if branchPrice = Session.get("branchPriceEditingRow")
+      branchPrice.conversion is @_id and branchPrice.editing is 'importPrice'
+
+  editingPrice: ->
+    if branchPrice = Session.get("branchPriceEditingRow")
+      branchPrice.conversion is @_id and branchPrice.editing is 'price'
+
   branchPrice: ->
     if branchProduct = Session.get("currentBranchProduct")
       if branchPrice = Schema.BranchPrice.findOne({branchProduct: branchProduct._id, conversion: @_id})
@@ -25,12 +40,19 @@ Wings.defineWidget 'productDetail',
     return units
 
 
-
   rendered: ->
     if Session.get("currentProduct")
       $('.basicUnit').val(Session.get("currentProduct").basicUnit ? 0)
 
   events:
+    "click td.barcode"    : -> scope.setBranchPriceEditingRow(@_id, 'barcode')
+    "click td.importPrice": -> scope.setBranchPriceEditingRow(@_id, 'importPrice')
+    "click td.price"      : -> scope.setBranchPriceEditingRow(@_id, 'price')
+
+    "keyup input.editBarcode"     : (event, template) -> scope.changeConversion(event, template, @_id, 'barcode')
+    "keyup input.editImportPrice" : (event, template) -> scope.changeConversion(event, template, @_id, 'importPrice')
+    "keyup input.editPrice"       : (event, template) -> scope.changeConversion(event, template, @_id, 'price')
+
     "change .basicUnit": (event, template) ->
       model = {basicUnit: template.find('.basicUnit').value}
       Meteor.call 'updateProduct', Session.get("currentProduct")._id, model, 'basicUnit', (err, result) -> console.log result
@@ -39,7 +61,7 @@ Wings.defineWidget 'productDetail',
       productId  = Session.get("currentProduct")?._id
       unitId     = template.find('.units').value
       conversion = template.find('.conversionQuality').value
-      barcode    = template.find('.barcode').value
+      barcode    = template.find('.conversionBarcode').value
 
       Meteor.call 'insertConversion', productId, unitId, conversion, barcode, (err, result) -> console.log result
 
