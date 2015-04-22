@@ -1,16 +1,13 @@
-Wings.defineWidget 'productManagement',
-  searchFilter: -> Session.get("productManagementSearchFilter") ? ""
-  isActiveProductSummariesLayout: ->
-    if activeLayout = Session.get("activeLayout")
-      activeLayout.layout is "productManagement" and activeLayout.active is "productSummaries"
+scope = logics.home
 
-  isActiveProductDetailLayout: ->
-    if activeLayout = Session.get("activeLayout")
-      activeLayout.layout is "productManagement" and activeLayout.active is "productDetail"
+Wings.defineWidget 'productManagement',
+  searchFilter            : -> Session.get("productManagementSearchFilter") ? ""
+  isActiveProductSummaries: -> scope.getActiveLayout("productManagement", "home")
+  isActiveProductDetail   : -> scope.getActiveLayout("productManagement", "productDetail")
 
   events:
-    "click .productSummaryLayout" : -> Session.set "activeLayout", {layout: "productManagement", active: "productSummaries"}
-    "click .productDetailLayout"  : -> Session.set "activeLayout", {layout: "productManagement", active: "productDetail"}
+    "click .productManagement .home"          : -> scope.setActiveLayout("productManagement", "home")
+    "click .productManagement .productDetail" : -> scope.setActiveLayout("productManagement", "productDetail")
     "input .search-filter": (event, template) ->
       Wings.Helper.DeferredAction ->
         textSearch = template.find("[name=searchFilter]").value

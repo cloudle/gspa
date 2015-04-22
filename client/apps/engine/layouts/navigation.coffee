@@ -1,10 +1,10 @@
 Wings.defineWidget 'navigation',
   events:
-    "click .importManagement"   : -> Session.set "activeLayout", {layout: "importManagement", active: ""}
-    "click .saleManagement"     : -> Session.set "activeLayout", {layout: "saleManagement", active: "createSales"}
-    "click .productManagement"  : -> Session.set "activeLayout", {layout: "productManagement", active: "productSummaries"}
-    "click .deliveryManagement" : -> Session.set "activeLayout", {layout: "deliveryManagement", active: ""}
-    "click .staffManagement"    : -> Session.set "activeLayout", {layout: "staffManagement", active: ""}
-    "click .customerManagement" : -> Session.set "activeLayout", {layout: "customerManagement", active: ""}
-    "click .reportManagement"   : -> Session.set "activeLayout", {layout: "reportManagement", active: ""}
-    "click .optionManagement"   : -> Session.set "activeLayout", {layout: "optionManagement", active: ""}
+    "click .navigation .saleManagement"     : -> logics.home.setActiveLayout("saleManagement"     , "home")
+    "click .navigation .staffManagement"    : -> logics.home.setActiveLayout("staffManagement"    , "home")
+    "click .navigation .reportManagement"   : -> logics.home.setActiveLayout("reportManagement"   , "home")
+    "click .navigation .optionManagement"   : -> logics.home.setActiveLayout("optionManagement"   , "home")
+    "click .navigation .importManagement"   : -> logics.home.setActiveLayout("importManagement"   , "home")
+    "click .navigation .productManagement"  : -> logics.home.setActiveLayout("productManagement"  , "home")
+    "click .navigation .customerManagement" : -> logics.home.setActiveLayout("customerManagement" , "home")
+    "click .navigation .deliveryManagement" : -> logics.home.setActiveLayout("deliveryManagement" , "home")

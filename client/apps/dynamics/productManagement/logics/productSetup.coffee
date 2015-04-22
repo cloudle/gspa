@@ -1,17 +1,16 @@
-setups.homeReactives.push (scope) ->
-  if currentProduct = Session.get("currentProduct")
-    branchProduct = Schema.BranchProduct.findOne({product: currentProduct._id, branch: Session.get("mySession")?.branch})
-    Session.set("currentBranchProduct", branchProduct)
+setups.homeInits.push (scope) ->
+  scope.showConversionEditField = (conversionId, field) ->
+    if branchPrice = Session.get("branchPriceEditingRow")
+      branchPrice.conversion is conversionId and branchPrice.editing is field
 
-Module 'logics.productManagement',
-  setBranchPriceEditingRow: (conversionId, editing)->
+  scope.setConversionEditField = (conversionId, editing)->
     branchProductId = Session.get("currentBranchProduct")?._id
     branchPrice = Schema.BranchPrice.findOne({branchProduct: branchProductId, conversion: conversionId})
     if _.contains(['barcode', 'importPrice', 'price'], editing)
       branchPrice.editing = editing
       Session.set("branchPriceEditingRow", branchPrice)
 
-  changeConversion: (event, template, conversionId, editing)->
+  scope.conversionUpdateField = (event, template, conversionId, editing)->
     if branchPrice = Session.get("branchPriceEditingRow")
       if event.which isnt 13
         if branchPrice.conversion is conversionId and branchPrice.editing is editing
@@ -29,3 +28,18 @@ Module 'logics.productManagement',
               Meteor.call 'updateBranchPrice', branchPrice._id, {price: price}, 'price', (err, result) -> console.log result
 
       else Session.set("branchPriceEditingRow")
+
+  scope.productUpdateBasicUnit = (template)->
+    model = {basicUnit: template.find('.basicUnit').value}
+    Meteor.call 'updateProduct', Session.get("currentProduct")._id, model, 'basicUnit', (err, result) -> console.log result
+
+  scope.conversionCreate = (template)->
+    productId  = Session.get("currentProduct")?._id
+    unitId     = template.find('.units').value
+    conversion = template.find('.conversionQuality').value
+    barcode    = template.find('.conversionBarcode').value
+
+    Meteor.call 'insertConversion', productId, unitId, conversion, barcode, (err, result) -> console.log result
+
+  scope.conversionDestroy = (conversion) ->
+    Meteor.call('removeConversion', conversion._id, (err, result) -> console.log result) if conversion.allowDelete

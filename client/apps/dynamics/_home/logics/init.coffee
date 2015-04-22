@@ -2,7 +2,18 @@ scope = logics.home = {}
 setups.homeInits = []
 setups.homeReactives = []
 
-#setups.homeInits.push (scope) ->
+setups.homeInits.push (scope) ->
+  scope.getActiveLayout = (layout, active = null)->
+    if activeLayout = Session.get("activeLayout")
+      isValidLayout = activeLayout.layout is layout
+      isValidAction = if active then activeLayout.active is active else true
+      isValidLayout and isValidAction
+
+  scope.setActiveLayout = (layout, active = null)->
+    activeLayout = {layout: layout}
+    activeLayout.active = active if active
+    Session.set("activeLayout", activeLayout)
+
 
 setups.homeReactives.push (scope) ->
   Session.set("mySession", Schema.UserSession.findOne {user: Meteor.userId()} ) if Meteor.userId()

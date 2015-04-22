@@ -1,6 +1,8 @@
+scope = logics.home
+
 Wings.defineWidget 'productSummaries',
   managedProducts: -> Schema.Product.find()
-  creatorName: -> Meteor.users.findOne(@creator)?.profile.name if @creator
+  creatorName    : -> Meteor.users.findOne(@creator)?.profile.name if @creator
   isBranchProduct: -> _.contains(@branch ? [], Session.get('mySession')?.branch)
   isDeleteProduct: -> @branch.length is 0
 
@@ -12,7 +14,7 @@ Wings.defineWidget 'productSummaries',
 
   events:
     "click .editProduct" : ->
-      Session.set("activeLayout", {layout: "productManagement", active: "productDetail"})
+      scope.setActiveLayout("productManagement", "productDetail")
       Schema.UserSession.update Session.get("mySession")._id, $set:{currentProduct: @_id}
       Session.set("currentProduct", @)
 #      event.stopPropagation()

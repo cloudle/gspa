@@ -1,8 +1,8 @@
+scope = logics.home
+
 Wings.defineWidget 'saleManagement',
-  isActiveCreateSalesLayout: ->
-    (activeLayout.layout is "saleManagement" and activeLayout.active is "createSales") if activeLayout = Session.get("activeLayout")
-  isActiveHistorySalesLayout: ->
-    (activeLayout.layout is "saleManagement" and activeLayout.active is "historySales") if activeLayout = Session.get("activeLayout")
+  isActiveCreateSale  : -> scope.getActiveLayout("saleManagement", "home")
+  isActiveHistorySale : -> scope.getActiveLayout("saleManagement", "historySale")
 
   rendered: ->
 
@@ -14,5 +14,5 @@ Wings.defineWidget 'saleManagement',
     Session.set("currentBranchPrice")
 
   events:
-    "click .createSales"  : -> Session.set "activeLayout", {layout: "saleManagement", active: "createSales"}
-    "click .historySales" : -> Session.set "activeLayout", {layout: "saleManagement", active: "historySales"}
+    "click .saleManagement .home"        : -> scope.setActiveLayout("saleManagement", "home")
+    "click .saleManagement .historySale" : -> scope.setActiveLayout("saleManagement", "historySale")

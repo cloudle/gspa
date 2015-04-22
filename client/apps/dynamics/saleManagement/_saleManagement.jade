@@ -2,16 +2,16 @@ template(name="saleManagement")
   .saleManagement
     .saleManagement-header
       ul(style="padding-left: 0; list-style: none;")
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.createSales Phiếu Bán
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-history.historySales Nhật Ký
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.home Phiếu Bán
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-history.historySale Nhật Ký
 
     .saleManagement-body
       //.body-createSale(style="visibility: hidden")
 
-      if isActiveCreateSalesLayout
-        +createSales
+      if isActiveCreateSale
+        +createSale
 
-      if isActiveHistorySalesLayout
-        +historySales
+      if isActiveHistorySale
+        +historySale
 
     .saleManagement-footer

@@ -3,7 +3,7 @@ template(name="productDetail")
     .section.panel-default
       .panel-heading
         span(style="height: 25px") {{product.name}}
-        select.basicUnit
+        select.select-basicUnit
           each unitsOfProduct
             option(value="{{_id}}") {{name}}
 
@@ -40,7 +40,7 @@ template(name="productDetail")
 
               td
                 if allowDelete
-                  span.icon-minus-4.deleteConversion
+                  span.icon-minus-4.destroyConversion
 
           if showAddConversion
             tr
@@ -50,4 +50,4 @@ template(name="productDetail")
                     option(value="{{_id}}") {{name}}
               td: input(style="width:50px").conversionQuality
               td: input(style="width:110px").conversionBarcode
-              td(colspan="2"): button.addConversion Thêm
+              td(colspan="2"): button.createConversion Thêm

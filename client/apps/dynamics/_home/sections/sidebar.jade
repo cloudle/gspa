@@ -1,0 +1,23 @@
+template(name="sidebar")
+  .sidebar-addNews
+    if isActiveProductManagement
+      +productManagement
+
+    if isActiveImportManagement
+      +importManagement
+
+    if isActiveSaleManagement
+      +saleManagement
+
+    if isActiveCustomerManagement
+      +customerManagement
+
+    if isActiveStaffManagement
+      +staffManagement
+
+
+
+
+template(name="staffManagement")
+
+template(name="reportManagement")

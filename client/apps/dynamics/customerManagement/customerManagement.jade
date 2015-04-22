@@ -1,19 +1,21 @@
-template(name="productManagement")
+template(name="customerManagement")
   .productManagement
     .productManagement-header
-      ul(style="padding-left: 0; list-style: none;")
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.productSummaryLayout Tổng Quan
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.productDetailLayout Chi Tiết
-
-      if isActiveProductSummariesLayout
+      if isActiveHomeLayout
         .search-filter
           input(name='searchFilter' type="text" value="{{searchFilter.textSearch}}")
           i.icon-search-8
 
+      ul(style="padding-left: 0; list-style: none;")
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.productSummaryLayout Tổng Quan
+        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.productDetailLayout Chi Tiết
+
+
+
     .productManagement-body
-      if isActiveProductSummaries
-        +productSummaries
-      if isActiveProductDetail
-        +productDetail
+        if isActiveProductSummariesLayout
+            +productSummaries
+        if isActiveProductDetailLayout
+            +productDetail
 
     .productManagement-footer

@@ -1,29 +1,44 @@
-setups.homeReactives.push (scope) ->
-  if currentSale = Session.get("currentSale")
-    if Session.get("salesEditingRowId")
-      Session.set("salesEditingRow", Schema.SaleDetail.findOne(Session.get("salesEditingRowId")))
-    else if Session.get("salesEditingRow")
-      Session.set("salesEditingRow")
+setups.homeInits.push (scope) ->
+  scope.saleUpdateFieldBySelect = (field, value)->
+    if sale = Session.get("currentSale")
+      switch field
+        when 'seller'
+          model = {seller: value}
+        when 'buyer'
+          model = {buyer: value}
+        when 'selectProduct'
+          model = {selectProduct: value}
+        when 'selectConversion'
+          model = {selectConversion: value}
+        when 'paymentDelivery'
+          model = {paymentDelivery: Convert.toNumber(value)}
+        when 'paymentMethod'
+          model = {paymentMethod: Convert.toNumber(value)}
 
-    if branchProductId = currentSale.selectBranchProduct
-      branchProduct = Session.get("currentBranchProduct")
-      Session.set("currentBranchProduct", Schema.BranchProduct.findOne(branchProductId)) if !branchProduct or branchProduct._id isnt branchProductId
-    else
-      if branchProduct = Schema.BranchProduct.findOne()
-        Session.set("currentBranchProduct", branchProduct)
-        Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'selectBranchProduct', branchProduct._id)
+      if model
+        Meteor.call 'updateSale', sale._id, model, field, (err, result) -> console.log result
 
-    if conversionId = currentSale.selectConversion
-      conversion = Session.get("currentConversion")
-      Session.set("currentConversion", Schema.Conversion.findOne(conversionId)) if !conversion or conversion._id isnt conversionId
-    else
-      if conversion = Schema.Conversion.findOne({product: branchProduct.product})
-        Session.set("currentConversion", branchProduct)
-        Wings.IRUS.setField(Schema.Sale, Session.get("currentSale"), 'selectConversion', conversion._id)
+  scope.saleUpdateFieldByInput = (field, value, timeOut = null)->
+    if sale = Session.get("currentSale")
+      switch field
+        when 'quality'
+          model = {quality: Convert.toNumberAsb(value)}
+        when 'price'
+          model = {price: Convert.toNumberAsb(value)}
+        when 'depositCash'
+          model = {depositCash: Convert.toNumberAsb(value)}
+        when 'description'
+          model = {description: value}
 
-    if branchProduct and conversion
-      if !(branchPrice = Session.get("currentBranchPrice")) or
-        branchPrice.branchProduct isnt branchProduct._id or branchPrice.conversion isnt conversion._id
+      Wings.Helper.DeferredAction ->
+        if !sale[field] or sale[field] isnt model[field]
+          Meteor.call 'updateSale', sale._id, model, field, (err, result) -> console.log result
+      , "updateSaleField#{field}"
 
-          branchPrice = Schema.BranchPrice.findOne({branchProduct: branchProduct._id, conversion: conversion._id})
-          Session.set("currentBranchPrice", branchPrice)
+  scope.saleDetailCreate = ->
+    saleId        = Session.get("currentSale")?._id
+    branchPriceId = Session.get("currentBranchPrice")?._id
+    quality       = Session.get("currentSale")?.quality
+    price         = Session.get("currentSale")?.price
+
+    Meteor.call 'insertSaleDetail', saleId, branchPriceId, quality, price, (err, result) -> console.log result
