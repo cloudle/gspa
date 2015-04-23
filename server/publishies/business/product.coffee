@@ -1,10 +1,3 @@
-Schema.Product.before.insert (userId, product) ->
-
-
-
-
-
-
 Schema.Product.allow
   insert: (userId, product)-> true
   update: (userId, product, fieldNames, modifier)-> true

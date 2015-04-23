@@ -7,7 +7,7 @@ Meteor.methods
     branchPrice = Schema.BranchPrice.findOne branchPriceId
     return {valid: false, error: 'branchPrice not found!'} if !branchPrice
 
-    saleDetail = Model.Diagrams.SaleDetail()
+    saleDetail = Model.Diagrams.SaleDetail
     saleDetail.sale         = sale._id
     saleDetail.branchPrice  = branchPrice._id
     saleDetail.quality      = Convert.toNumber(quality)
@@ -24,37 +24,40 @@ Meteor.methods
 
   updateSaleDetail: (saleDetailId, quality = null, price = null) ->
     saleDetail = Schema.SaleDetail.findOne({_id: saleDetailId, status: {$ne: "submit"}})
-    if saleDetail and (quality or price)
-      conversion = saleDetail.basicQuality/saleDetail.quality
-      model = {}; updateFields = []
+    return {valid: false, error: 'saleDetailId is not valid!'} if !saleDetail
+    return {valid: false, error: 'quality and price is empty!'} if !quality and !price
 
-      if price
-        model.price = Convert.toNumber(price)
-        updateFields.push 'price'
-      else
-        model.price = saleDetail.price
+    conversion = saleDetail.basicQuality/saleDetail.quality
+    model = {}; updateFields = []
 
-      if quality
-        model.quality      = Convert.toNumber(quality)
-        model.basicQuality = model.quality * conversion
-        updateFields.push 'quality'
-        updateFields.push 'basicQuality'
-      else
-        model.quality = saleDetail.quality
+    if price
+      model.price = Convert.toNumber(price)
+      updateFields.push 'price'
+    else
+      model.price = saleDetail.price
 
-      result = Wings.IRUS.update(Schema.SaleDetail, saleDetail._id, model, updateFields, Wings.Validators.saleDetailUpdate)
-      if result.valid
-        discount   = 0
-        total      = (model.quality * model.price) - (saleDetail.quality * saleDetail.price)
-        Schema.Sale.update saleDetail.sale, $inc: {discountCash: discount, totalPrice: total, finalPrice: (total - discount)}
+    if quality
+      model.quality      = Convert.toNumber(quality)
+      model.basicQuality = model.quality * conversion
+      updateFields.push 'quality'
+      updateFields.push 'basicQuality'
+    else
+      model.quality = saleDetail.quality
 
-      return result
+    result = Wings.IRUS.update(Schema.SaleDetail, saleDetail._id, model, updateFields, Wings.Validators.saleDetailUpdate)
+    if result.valid
+      discount   = 0
+      total      = (model.quality * model.price) - (saleDetail.quality * saleDetail.price)
+      Schema.Sale.update saleDetail.sale, $inc: {discountCash: discount, totalPrice: total, finalPrice: (total - discount)}
+    return result
 
   removeSaleDetail: (saleDetailId) ->
-    if saleDetail = Schema.SaleDetail.findOne({_id: saleDetailId, status: {$ne: "submit"}})
-      result = Wings.IRUS.remove(Schema.SaleDetail, saleDetail._id)
-      if result.valid
-        discount   = -0
-        total      = -(saleDetail.quality * saleDetail.price)
-        Schema.Sale.update saleDetail.sale, $inc:{discountCash: discount, totalPrice: total, finalPrice: (total - discount)}
-      return result
+    saleDetail = Schema.SaleDetail.findOne({_id: saleDetailId, status: {$ne: "submit"}})
+    return {valid: false, error: 'saleDetailId is not valid!'} if !saleDetail
+
+    result = Wings.IRUS.remove(Schema.SaleDetail, saleDetail._id)
+    if result.valid
+      discount   = -0
+      total      = -(saleDetail.quality * saleDetail.price)
+      Schema.Sale.update saleDetail.sale, $inc:{discountCash: discount, totalPrice: total, finalPrice: (total - discount)}
+    return result

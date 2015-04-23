@@ -2,6 +2,16 @@ Module 'Wings.Validators',
   customerUpdateFields: ['name', 'phone', 'gender', 'description', 'dateOfBirth', 'email', 'address']
 #----------------------------------------------------------------------------------------
   customerInsert:
+    branch:
+      type: String
+      meta: [
+        min: 17
+        error: "branchId không chính xác"
+      ,
+        max: 17
+        error: "branchId không chính xác"
+      ]
+
     name:
       type: String
       meta: [
@@ -16,6 +26,14 @@ Module 'Wings.Validators',
         min: 9
         error: "Số điện thoại không thể ngắn hơn 9 ký tự"
       ]
+
+    gender:
+      type: Boolean
+      optional: true
+
+    description:
+      type: String
+      optional: true
 
 #------------------------------------------------------------------------------------------
   customerUpdate:

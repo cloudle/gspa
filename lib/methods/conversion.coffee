@@ -39,25 +39,26 @@ Meteor.methods
     return insertResult
 
   updateConversion: (conversionId, model, fields)->
-    if Schema.Conversion.findOne(conversionId)
-      result = Wings.Validators.checkExistField(fields, "conversionUpdateFields")
-      if result.valid then updateFields = result.data else return result
+    conversion = Schema.Conversion.findOne(conversionId)
+    return {valid: false, error: 'conversionId is not valid!'} if !conversion
 
-      if _.contains(updateFields, 'barcode')
-        return {valid: false, error: 'barcode is exist!'} if Schema.Conversion.findOne({barcode: model.barcode})
+    result = Wings.Validators.checkExistField(fields, "conversionUpdateFields")
+    if result.valid then updateFields = result.data else return result
 
-      updateResult = Wings.IRUS.update(Schema.Conversion, conversionId, model, updateFields, Wings.Validators.conversionUpdate)
-      return updateResult
+    if _.contains(updateFields, 'barcode')
+      return {valid: false, error: 'barcode is exist!'} if Schema.Conversion.findOne({barcode: model.barcode})
+
+    updateResult = Wings.IRUS.update(Schema.Conversion, conversionId, model, updateFields, Wings.Validators.conversionUpdate)
+    return updateResult
 
   removeConversion: (conversionId)->
-    if conversion = Schema.Conversion.findOne({_id: conversionId, allowDelete: true})
-      result = Wings.IRUS.remove(Schema.Conversion, conversionId)
+    conversion = Schema.Conversion.findOne({_id: conversionId, allowDelete: true})
+    return {valid: false, error: 'conversionId is not valid!'} if !conversion
 
-      if result.valid
-        Schema.Product.update conversion.product, $pull: {conversion: conversionId, unit: conversion.unit}
-        Schema.BranchPrice.find({conversion: conversionId}).forEach(
-          (branchPrice) -> Schema.BranchPrice.remove branchPrice._id
-        )
-
-      return result
-
+    result = Wings.IRUS.remove(Schema.Conversion, conversionId)
+    if result.valid
+      Schema.Product.update conversion.product, $pull: {conversion: conversionId, unit: conversion.unit}
+      Schema.BranchPrice.find({conversion: conversionId}).forEach(
+        (branchPrice) -> Schema.BranchPrice.remove branchPrice._id
+      )
+    return result

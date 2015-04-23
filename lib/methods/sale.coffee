@@ -4,7 +4,7 @@ Meteor.methods
     seller = Meteor.users.findOne(sellerId) if sellerId
     buyer  = Schema.Customer.findOne(buyerId) if buyerId
 
-    newSale = Model.Diagrams.Sale()
+    newSale = Model.Diagrams.Sale
     newSale.seller      = seller._id if seller
     newSale.buyer       = buyer._id if buyer
     newSale.description = description if description
@@ -13,65 +13,73 @@ Meteor.methods
     return insertResult
 
   updateSale: (saleId, model, fields)->
-    if sale = Schema.Sale.findOne({_id: saleId, status: {$ne: "submit"}})
-      result = Wings.Validators.checkExistField(fields, "saleUpdateFields")
-      if result.valid then updateFields = result.data else return result
+    sale = Schema.Sale.findOne({_id: saleId, status: {$ne: "submit"}})
+    return {valid: false, error: 'saleId is not valid!'} if !sale
 
-      if _.contains(updateFields, 'seller')
-        return {valid: false, error: 'staff not found!'} if !Meteor.users.findOne(model.seller)
+    result = Wings.Validators.checkExistField(fields, "saleUpdateFields")
+    if result.valid then updateFields = result.data else return result
 
-      if _.contains(updateFields, 'buyer')
-        return {valid: false, error: 'customer not found!'} if !Schema.Customer.findOne(model.buyer)
+    if _.contains(updateFields, 'seller')
+      return {valid: false, error: 'staff not found!'} if !Meteor.users.findOne(model.seller)
 
-      if _.contains(updateFields, 'selectProduct')
-        return {valid: false, error: 'product not found!'} if !Schema.Product.findOne(model.selectProduct)
+    if _.contains(updateFields, 'buyer')
+      return {valid: false, error: 'customer not found!'} if !Schema.Customer.findOne(model.buyer)
 
-      if _.contains(updateFields, 'selectConversion')
-        if branchPrice = Schema.BranchPrice.findOne({branchProduct: sale.selectBranchProduct, conversion: model.selectConversion})
-          model.price = branchPrice.price; updateFields.push('price')
-        else
-          return {valid: false, error: 'conversion not found!'}
+    if _.contains(updateFields, 'selectProduct')
+      return {valid: false, error: 'product not found!'} if !Schema.Product.findOne(model.selectProduct)
 
-      if _.contains(updateFields, 'paymentMethod')
-        switch model.paymentMethod
-          when Wings.Enum.salePaymentMethods.cash then model.depositCash = sale.totalPrice
-          when Wings.Enum.salePaymentMethods.debit then model.depositCash = 0
-        updateFields.push('depositCash')
+    if _.contains(updateFields, 'selectConversion')
+      if branchPrice = Schema.BranchPrice.findOne({branchProduct: sale.selectBranchProduct, conversion: model.selectConversion})
+        model.price = branchPrice.price; updateFields.push('price')
+      else
+        return {valid: false, error: 'conversion not found!'}
 
-      if _.contains(updateFields, 'depositCash')
-        model.finalPrice = sale.totalPrice - model.depositCash; updateFields.push('finalPrice')
+    if _.contains(updateFields, 'paymentMethod')
+      switch model.paymentMethod
+        when Wings.Enum.salePaymentMethods.cash then model.depositCash = sale.totalPrice
+        when Wings.Enum.salePaymentMethods.debit then model.depositCash = 0
+      updateFields.push('depositCash')
 
-      Wings.IRUS.update(Schema.Sale, sale._id, model, updateFields, Wings.Validators.saleUpdate)
+    if _.contains(updateFields, 'depositCash')
+      model.finalPrice = sale.totalPrice - model.depositCash; updateFields.push('finalPrice')
+
+    result = Wings.IRUS.update(Schema.Sale, sale._id, model, updateFields, Wings.Validators.saleUpdate)
+    return result
 
   removeSale: (saleId)->
-    if sale = Schema.Sale.findOne({_id: saleId, status: {$ne: "submit"}})
-      result = Wings.IRUS.remove(Schema.Sale, sale._id)
-      Schema.SaleDetail.find({sale: sale._id}).forEach( (saleDetail)-> Schema.SaleDetail.remove saleDetail._id ) if result.valid
-      return result
+    sale = Schema.Sale.findOne({_id: saleId, status: {$ne: "submit"}})
+    return {valid: false, error: 'saleId is not valid!'} if !sale
+
+    result = Wings.IRUS.remove(Schema.Sale, sale._id)
+    if result.valid
+      Schema.SaleDetail.find({sale: sale._id}).forEach( (saleDetail)-> Schema.SaleDetail.remove saleDetail._id )
+    return result
 
   submitSale: (saleId)->
-    if sale = Schema.Sale.findOne({ _id: saleId, status: {$ne: "submit"} })
-      saleDetails    = Schema.SaleDetail.find({sale: sale._id}).fetch()
-      branchProducts = Schema.BranchProduct.find({_id: {$in: _.uniq(_.pluck(saleDetails, 'branchProduct'))} }).fetch()
+    sale = Schema.Sale.findOne({ _id: saleId, status: {$ne: "submit"} })
+    return {valid: false, error: 'saleId is not valid!'} if !sale
 
-      if branchProducts.length > 0
-        result = checkProductInStockQuality(saleDetails, branchProducts)
-        return result if !result.valid
+    saleDetails    = Schema.SaleDetail.find({sale: sale._id}).fetch()
+    branchProducts = Schema.BranchProduct.find({_id: {$in: _.uniq(_.pluck(saleDetails, 'branchProduct'))} }).fetch()
 
-      for saleDetail in saleDetails
-        importDetails = []
-        Schema.BranchPrice.find({branchProduct: saleDetail.branchProduct}).forEach(
-          (branchPrice) ->
-            details = Schema.ImportDetail.find({branchPrice: branchPrice._id, availableQuality: {$gt: 0}}
-              {sort: {'version.createdAt': 1}}).fetch()
+    if branchProducts.length > 0
+      result = checkProductInStockQuality(saleDetails, branchProducts)
+      return result if !result.valid
 
-            importDetails.push detail for detail in details
-        )
-        if subtractQualityOnSales(importDetails, saleDetail)
-          Schema.Sale.update sale._id, $set: {status: "submit", submitAt: new Date()}
+    for saleDetail in saleDetails
+      importDetails = []
+      Schema.BranchPrice.find({branchProduct: saleDetail.branchProduct}).forEach(
+        (branchPrice) ->
+          details = Schema.ImportDetail.find({branchPrice: branchPrice._id, availableQuality: {$gt: 0}}
+            {sort: {'version.createdAt': 1}}).fetch()
 
-          if !Schema.Sale.findOne({status: {$ne: "submit"} })
-            Model.Sale.insert(null, sale.buyer, sale.seller)
+          importDetails.push detail for detail in details
+      )
+      if subtractQualityOnSales(importDetails, saleDetail)
+        Schema.Sale.update sale._id, $set: {status: "submit", submitAt: new Date()}
+
+        if !Schema.Sale.findOne({status: {$ne: "submit"} })
+          Model.Sale.insert(null, sale.buyer, sale.seller)
 
 checkProductInStockQuality = (saleDetails, branchProducts)->
   details = _.chain(saleDetails)

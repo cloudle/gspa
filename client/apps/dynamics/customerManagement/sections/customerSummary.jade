@@ -1,0 +1,38 @@
+template(name="customerSummary")
+  .customerSummary
+    //.avatar(style="background-image:url('{{avatarImg}}')")
+    .content Tên: {{name}}
+    .content Ghi chú: {{description}}
+    .sale-meta
+      span.owner-alias {{creatorName}}
+      span.time-stamp {{formatHour createAt}}
+    .action: span.showDetail(style="cursor: pointer") Thông tin chi tiết
+    .content --------------------------
+
+template(name="customerDetail")
+  .customerDetail
+    .header
+      //.avatar(style="background-image:url('{{avatarImg}}')")
+      .content Tên: {{name}}
+      .content Ghi chú: {{description}}
+      .sale-meta
+        span.owner-alias {{creatorName}}
+        span.time-stamp {{formatHour createAt}}
+      .content --------------------------
+
+    .body
+      .content Thông tin bán hàng
+      .customerSaleSummary
+        table(style="width:100%; text-align: right")
+          tr
+            th(style="width:auto; text-align: left") MÃ HÓA ĐƠN
+            th(style="width:100px; text-align: left") NGÀY MUA
+            th(style="width:100px; text-align: left") NGƯỜI BÁN
+            th(style="width:130px; text-align: left") TỔNG TIỀN
+
+          each historySales
+            tr.detail-row
+              td(style="text-align: left") {{_id}}
+              td {{unitName}}
+              td {{creatorName}}
+              td {{totalPrice}} VND

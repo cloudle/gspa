@@ -17,4 +17,10 @@ Template.registerHelper 'brackets', (source) -> "{#{source}}"
 Template.registerHelper 'formatHour', (source) -> moment(source).format('h:mm a')
 
 Template.registerHelper 'staffDisplayName', -> @profile?.name ? @username
-Template.registerHelper 'unitName', -> if @unit then Schema.Unit.findOne(@unit)?.name else 'KO CÓ'
+Template.registerHelper 'unitName', (unit) ->
+  if unit then unitId = unit else (unitId = @unit if @unit)
+  if unitId then Schema.Unit.findOne(unitId)?.name else 'KO CÓ'
+
+Template.registerHelper 'creatorName', (creator) ->
+  if creator then userId = creator else (userId = @creator if @creator)
+  Meteor.users.findOne(userId)?.profile?.name

@@ -1,9 +1,11 @@
 #----BranchProduct----->
 Meteor.methods
   updateBranchPrice: (branchPriceId, model, fields)->
-    if Schema.BranchPrice.findOne(branchPriceId)
-      result = Wings.Validators.checkExistField(fields, "branchPriceUpdateFields")
-      if result.valid then updateFields = result.data else return result
+    branchPrice = Schema.BranchPrice.findOne(branchPriceId)
+    return {valid: false, error: 'branchPriceId is not valid!'} if !branchPrice
 
-      updateResult = Wings.IRUS.update(Schema.BranchPrice, branchPriceId, model, updateFields, Wings.Validators.branchPriceUpdate)
-      return updateResult
+    result = Wings.Validators.checkExistField(fields, "branchPriceUpdateFields")
+    if result.valid then updateFields = result.data else return result
+
+    updateResult = Wings.IRUS.update(Schema.BranchPrice, branchPriceId, model, updateFields, Wings.Validators.branchPriceUpdate)
+    return updateResult

@@ -2,7 +2,6 @@ scope = logics.home
 
 Wings.defineWidget 'productSummaries',
   managedProducts: -> Schema.Product.find()
-  creatorName    : -> Meteor.users.findOne(@creator)?.profile.name if @creator
   isBranchProduct: -> _.contains(@branch ? [], Session.get('mySession')?.branch)
   isDeleteProduct: -> @branch.length is 0
 
@@ -28,5 +27,4 @@ Wings.defineWidget 'productSummaries',
       branchProduct = Schema.BranchProduct.findOne({product: @_id, branch: branchId}) if branchId
       Meteor.call('removeBranchProduct', branchProduct._id, (err, result) -> console.log result) if branchProduct
 
-    "click .deleteProduct" : ->
-      Meteor.call('removeProduct', @_id, (err, result) -> console.log result) if @allowDelete
+    "click .deleteProduct" : -> Meteor.call('removeProduct', @_id, (err, result) -> console.log result) if @allowDelete

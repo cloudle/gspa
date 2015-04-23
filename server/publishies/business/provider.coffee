@@ -1,12 +1,3 @@
-Schema.Provider.before.insert (userId, provider) ->
-  provider.creator = userId if userId
-  provider.createdAt = new Date()
-
-Schema.Provider.before.update (userId, provider, fieldNames, modifier, options) ->
-  modifier.$set = modifier.$set || {}
-  modifier.$set.updateAt = new Date()
-
-
 Schema.Provider.after.remove (userId, provider) ->
   Schema.Import.find({provider: provider._id}).forEach(
     (currentImport) ->
