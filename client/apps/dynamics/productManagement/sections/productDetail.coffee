@@ -39,7 +39,7 @@ Wings.defineWidget 'productDetail',
 
   events:
     "click .createConversion"  : (event, template) -> scope.conversionCreate(template)
-    "click .destroyConversion" : (event, template) -> scope.conversionDestroy(@); event.stopPropagation()
+    "click .destroyConversion" : (event, template) -> scope.conversionDestroy(@_id); event.stopPropagation()
     "change .select-basicUnit" : (event, template) -> scope.productUpdateBasicUnit(template)
 
     "click td.barcode"    : -> scope.setConversionEditField(@_id, 'barcode')

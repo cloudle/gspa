@@ -5,6 +5,7 @@ Module 'Wings.Validators',
     'description'
     'depositCash'
     'selectProduct'
+    'selectBranchProduct'
     'selectConversion'
     'price'
     'quality'

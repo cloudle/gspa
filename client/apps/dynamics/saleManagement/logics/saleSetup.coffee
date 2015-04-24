@@ -1,39 +1,22 @@
 setups.homeInits.push (scope) ->
-  scope.saleUpdateFieldBySelect = (field, value)->
-    if sale = Session.get("currentSale")
-      switch field
-        when 'seller'
-          model = {seller: value}
-        when 'buyer'
-          model = {buyer: value}
-        when 'selectProduct'
-          model = {selectProduct: value}
-        when 'selectConversion'
-          model = {selectConversion: value}
-        when 'paymentDelivery'
-          model = {paymentDelivery: Convert.toNumber(value)}
-        when 'paymentMethod'
-          model = {paymentMethod: Convert.toNumber(value)}
+  scope.saleUpdateFieldBySelect = (saleId, field, value)->
+    if _.contains(Wings.Validators.saleUpdateFields, field)
+      model = {}; model[field] = value
+      if _.keys(model).length > 0
+        Meteor.call('updateSale', saleId, model, field, (err, result) -> console.log result)
+    else
+      console.log("update fail !")
 
-      if model
-        Meteor.call 'updateSale', sale._id, model, field, (err, result) -> console.log result
 
-  scope.saleUpdateFieldByInput = (field, value, timeOut = null)->
-    if sale = Session.get("currentSale")
-      switch field
-        when 'quality'
-          model = {quality: Convert.toNumberAsb(value)}
-        when 'price'
-          model = {price: Convert.toNumberAsb(value)}
-        when 'depositCash'
-          model = {depositCash: Convert.toNumberAsb(value)}
-        when 'description'
-          model = {description: value}
-
-      Wings.Helper.DeferredAction ->
-        if !sale[field] or sale[field] isnt model[field]
-          Meteor.call 'updateSale', sale._id, model, field, (err, result) -> console.log result
-      , "updateSaleField#{field}"
+  scope.saleUpdateFieldByInput = (saleId, field, value, timeOut = null)->
+    if _.contains(Wings.Validators.saleUpdateFields, field)
+      model = {}; model[field] = value
+      if _.keys(model).length > 0
+        Wings.Helper.DeferredAction ->
+          Meteor.call('updateSale', saleId, model, field, (err, result) -> console.log result)
+        , "updateSaleField#{field}"
+    else
+      console.log("update fail !")
 
   scope.saleDetailCreate = ->
     saleId        = Session.get("currentSale")?._id

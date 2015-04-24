@@ -16,13 +16,13 @@ template(name="customerDetail")
       .panel-heading
         //+avatarImageComponent(avatar=avatarUrl alias=firstName)
 
-        .content: input.editable(value="{{name}}" maxlength="100" placeholder="tên")
-        .content: input.editable(value="{{phone}}" maxlength="100" placeholder="số điện thoại")
-        .content: input.editable(value="{{address}}" maxlength="100" placeholder="đia chỉ")
+        .content: input.customerName(value="{{name}}" placeholder="tên")
+        .content: input.customerPhone(value="{{phone}}" placeholder="số điện thoại")
+        .content: input.customerAddress(value="{{address}}" placeholder="đia chỉ")
 
       .panel-footer
-        .content: input.editable(value="{{email}}" maxlength="100" placeholder="email")
-        .content: input.editable(value="{{description}}" maxlength="100" placeholder="ghi chú")
+        .content: input.customerEmail(value="{{email}}" placeholder="email")
+        .content: input.customerDescription(value="{{description}}" placeholder="ghi chú")
 
     .section
       .panel-heading

@@ -2,12 +2,12 @@ scope = logics.home
 
 Wings.defineWidget 'productManagement',
   searchFilter            : -> Session.get("productManagementSearchFilter") ? ""
+  isActiveHome            : -> scope.getActiveLayout("productManagement", "home")
   isActiveProductSummaries: -> scope.getActiveLayout("productManagement", "home")
   isActiveProductDetail   : -> scope.getActiveLayout("productManagement", "productDetail")
 
   events:
-    "click .productManagement .home"          : -> scope.setActiveLayout("productManagement", "home")
-    "click .productManagement .productDetail" : -> scope.setActiveLayout("productManagement", "productDetail")
+    "click li.productHome": -> scope.setActiveLayout("productManagement", "home")
     "input .search-filter": (event, template) ->
       Wings.Helper.DeferredAction ->
         textSearch = template.find("[name=searchFilter]").value

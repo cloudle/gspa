@@ -25,14 +25,29 @@ Meteor.methods
     if _.contains(updateFields, 'buyer')
       return {valid: false, error: 'customer not found!'} if !Schema.Customer.findOne(model.buyer)
 
-    if _.contains(updateFields, 'selectProduct')
-      return {valid: false, error: 'product not found!'} if !Schema.Product.findOne(model.selectProduct)
-
     if _.contains(updateFields, 'selectConversion')
-      if branchPrice = Schema.BranchPrice.findOne({branchProduct: sale.selectBranchProduct, conversion: model.selectConversion})
+      branchPrice = Schema.BranchPrice.findOne({branchProduct: sale.selectBranchProduct, conversion: model.selectConversion})
+      if branchPrice
         model.price = branchPrice.price; updateFields.push('price')
       else
         return {valid: false, error: 'conversion not found!'}
+
+    if _.contains(updateFields, 'selectProduct')
+      return {valid: false, error: 'product not found!'} if !Schema.Product.findOne(model.selectProduct)
+
+    if _.contains(updateFields, 'selectBranchProduct')
+      branchProduct = Schema.BranchProduct.findOne(model.selectBranchProduct)
+      return {valid: false, error: 'branchProduct not found!'} if !branchProduct
+
+      conversion = Schema.Conversion.findOne({product: branchProduct.product})
+      return {valid: false, error: 'conversion not found!'} if !conversion
+
+      branchPrice = Schema.BranchPrice.findOne({branchProduct: branchProduct._id, conversion: conversion._id})
+      return {valid: false, error: 'branchPrice not found!'} if !branchPrice
+
+      model.selectProduct = branchProduct.product; updateFields.push('selectProduct')
+      model.selectConversion = conversion._id; updateFields.push('selectConversion')
+      model.price = branchPrice.price; updateFields.push('price')
 
     if _.contains(updateFields, 'paymentMethod')
       switch model.paymentMethod
@@ -109,9 +124,6 @@ subtractQualityOnSales = (importDetails, saleDetail) ->
   for importDetail in importDetails
     requiredQuality = saleDetail.basicQuality - transactionQuality
     takenQuality = if importDetail.availableQuality > requiredQuality then requiredQuality else importDetail.availableQuality
-
-    console.log takenQuality
-    console.log importDetail
 
     updateProduct = {availableQuality: -takenQuality, inStockQuality: -takenQuality, saleQuality: takenQuality}
     Schema.Product.update importDetail.product, $inc: updateProduct

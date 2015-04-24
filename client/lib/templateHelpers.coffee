@@ -20,5 +20,5 @@ Template.registerHelper 'momentFormat', (date, format) -> moment(date.toJSON()).
 Template.registerHelper 'momentCalendar', (date) -> moment(date).calendar()
 
 Template.registerHelper 'staffDisplayName', -> @profile?.name ? @username
-Template.registerHelper 'unitName', (unitId = @unit) -> if unitId then Schema.Unit.findOne(unitId)?.name else 'KO CÓ'
+Template.registerHelper 'unitName', (unitId = @unit) -> if unitId then Schema.Unit.findOne(unitId)?.name else 'mặc định'
 Template.registerHelper 'creatorName', (userId = @creator) -> if userId then Meteor.users.findOne(userId)?.profile?.name

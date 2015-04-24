@@ -16,7 +16,7 @@ setups.homeInits.push (scope) ->
 
 
 setups.homeReactives.push (scope) ->
-  Session.set("mySession", Schema.UserSession.findOne {user: Meteor.userId()} ) if Meteor.userId()
+  Session.set("mySession", Schema.UserSession.findOne({user: Meteor.userId()}) ) if Meteor.userId()
 
   if activeLayout = Session.get("activeLayout")
     if activeLayout.layout is "saleManagement"

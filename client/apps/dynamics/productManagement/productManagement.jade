@@ -1,14 +1,13 @@
 template(name="productManagement")
   .productManagement
     .productManagement-header
-      ul(style="padding-left: 0; list-style: none;")
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-tag.productSummaryLayout Tổng Quan
-        li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-edit.productDetailLayout Chi Tiết
-
-      if isActiveProductSummariesLayout
+      if isActiveHome
         .search-filter
           input(name='searchFilter' type="text" value="{{searchFilter.textSearch}}")
           i.icon-search-8
+      else
+        ul(style="padding-left: 0; list-style: none;")
+          li(style="display: inline-block; cursor: pointer; padding-left: 5px").icon-left-open-big.productHome Chi Tiết
 
     .productManagement-body
       if isActiveProductSummaries

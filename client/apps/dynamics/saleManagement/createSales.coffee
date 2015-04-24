@@ -24,14 +24,74 @@ Wings.defineWidget 'createSale',
     "click .deleteDetail": (event, template) -> Meteor.call('removeSaleDetail', @_id, (err, result) -> console.log result); event.stopPropagation()
     "click .saleSubmit"  : (event, template) -> Meteor.call('submitSale', Session.get("currentSale")?._id, (err, result) -> console.log result)
 
-    "change .staffs"         : (event, template) -> scope.saleUpdateFieldBySelect('seller'          , template.find('.staffs').value)
-    "change .customers"      : (event, template) -> scope.saleUpdateFieldBySelect('buyer'           , template.find('.customers').value)
-    "change .branchProducts" : (event, template) -> scope.saleUpdateFieldBySelect('selectProduct'   , template.find('.products').value)
-    "change .conversions"    : (event, template) -> scope.saleUpdateFieldBySelect('selectConversion', template.find('.conversions').value)
-    "change .paymentDelivery": (event, template) -> scope.saleUpdateFieldBySelect('paymentDelivery' , template.find('.paymentDelivery').value)
-    "change .paymentMethod"  : (event, template) -> scope.saleUpdateFieldBySelect('paymentMethod'   , template.find('.paymentMethod').value)
 
-    "keyup input.saleDetailQuality": (event, template) -> scope.saleUpdateFieldByInput('quality'     , template.find('.saleDetailQuality').value)
-    "keyup input.saleDetailPrice"  : (event, template) -> scope.saleUpdateFieldByInput('price'       , template.find('.saleDetailPrice').value)
-    "keyup input.saleDeposit"      : (event, template) -> scope.saleUpdateFieldByInput('depositCash' , template.find('.saleDeposit').value)
-    "keyup input.saleDescription"  : (event, template) -> scope.saleUpdateFieldByInput('description' , template.find('.saleDescription').value)
+    "change .staffs"         : (event, template) ->
+      scope.saleUpdateFieldBySelect(
+        Session.get("currentSale")._id
+        'seller'
+        template.find('.staffs').value
+      )
+
+    "change .customers"      : (event, template) ->
+      scope.saleUpdateFieldBySelect(
+        Session.get("currentSale")._id
+        'buyer'
+        template.find('.customers').value
+      )
+
+    "change .branchProducts" : (event, template) ->
+      scope.saleUpdateFieldBySelect(
+        Session.get("currentSale")._id,
+        'selectBranchProduct'
+        template.find('.branchProducts').value
+      )
+
+    "change .conversions"    : (event, template) ->
+      scope.saleUpdateFieldBySelect(
+        Session.get("currentSale")._id
+        'selectConversion'
+        template.find('.conversions').value
+      )
+
+    "change .paymentDelivery": (event, template) ->
+      scope.saleUpdateFieldBySelect(
+        Session.get("currentSale")._id
+        'paymentDelivery'
+        Convert.toNumber(template.find('.paymentDelivery').value)
+      )
+
+    "change .paymentMethod"  : (event, template) ->
+      scope.saleUpdateFieldBySelect(
+        Session.get("currentSale")._id
+        'paymentMethod'
+        Convert.toNumber(template.find('.paymentMethod').value)
+      )
+
+
+    "keyup input.saleDetailQuality": (event, template) ->
+      scope.saleUpdateFieldByInput(
+        Session.get("currentSale")._id
+        'quality'
+        Convert.toNumberAsb(template.find('.saleDetailQuality').value)
+      )
+
+    "keyup input.saleDetailPrice": (event, template) ->
+      scope.saleUpdateFieldByInput(
+        Session.get("currentSale")._id
+        'price'
+        Convert.toNumberAsb(template.find('.saleDetailPrice').value)
+      )
+
+    "keyup input.saleDeposit": (event, template) ->
+      scope.saleUpdateFieldByInput(
+        Session.get("currentSale")._id
+        'depositCash'
+        Convert.toNumberAsb(template.find('.saleDeposit').value)
+      )
+
+    "keyup input.saleDescription": (event, template) ->
+      scope.saleUpdateFieldByInput(
+        Session.get("currentSale")._id
+        'description'
+        Convert.toNumberAsb(template.find('.saleDescription').value)
+      )

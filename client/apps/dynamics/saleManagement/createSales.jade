@@ -60,7 +60,7 @@ template(name="createSale")
     .editor-wrapper(style="float:left")
       select.conversions
         each conversions
-          option(value="{{_id}}") {{findUnit.name}}
+          option(value="{{_id}}") {{unitName}}
     .editor-wrapper(style="float:left"): input.saleDetailQuality(style="width:50px" value="{{sale.quality}}")
     .editor-wrapper(style="float:left"): input.saleDetailPrice(style="width:50px" value="{{sale.price}}")
     .editor-wrapper(style="float:right"): button.addDetail Add

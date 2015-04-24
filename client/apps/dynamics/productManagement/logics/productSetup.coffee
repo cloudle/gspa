@@ -30,7 +30,7 @@ setups.homeInits.push (scope) ->
       else Session.set("branchPriceEditingRow")
 
   scope.productUpdateBasicUnit = (template)->
-    model = {basicUnit: template.find('.basicUnit').value}
+    model = {basicUnit: template.find('.select-basicUnit').value}
     Meteor.call 'updateProduct', Session.get("currentProduct")._id, model, 'basicUnit', (err, result) -> console.log result
 
   scope.conversionCreate = (template)->
@@ -41,5 +41,5 @@ setups.homeInits.push (scope) ->
 
     Meteor.call 'insertConversion', productId, unitId, conversion, barcode, (err, result) -> console.log result
 
-  scope.conversionDestroy = (conversion) ->
-    Meteor.call('removeConversion', conversion._id, (err, result) -> console.log result) if conversion.allowDelete
+  scope.conversionDestroy = (conversionId) ->
+    Meteor.call('removeConversion', conversionId, (err, result) -> console.log result) if conversion.allowDelete
