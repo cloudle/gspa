@@ -1,3 +1,8 @@
 scope = logics.home
 Wings.defineWidget 'customerDetail',
-  historySales: -> Schema.Sale.find({buyer: @_id, status: "submit"})
+  customerHistorySales: -> Schema.Sale.find({buyer: @_id, status: "submit"})
+  currentCollection: -> Schema.Customer
+  finalDebtBalance: ->
+     finalDebt =  @debtCash + @loadCash - @paidCash
+     if isNaN(finalDebt) then 0 else finalDebt
+

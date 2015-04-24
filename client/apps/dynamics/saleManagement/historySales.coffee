@@ -1,6 +1,6 @@
 scope = logics.home
 
-Wings.defineWidget 'historySales',
+Wings.defineWidget 'historySale',
   avatarImg: -> "avatars/#{@creator}.jpg"
   mySales: -> Schema.Sale.find({status: "submit"})
   title: ->

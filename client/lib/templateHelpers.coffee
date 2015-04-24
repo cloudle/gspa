@@ -16,11 +16,9 @@ Template.registerHelper 'reactiveVar', (source) -> source?.get()
 Template.registerHelper 'brackets', (source) -> "{#{source}}"
 Template.registerHelper 'formatHour', (source) -> moment(source).format('h:mm a')
 
-Template.registerHelper 'staffDisplayName', -> @profile?.name ? @username
-Template.registerHelper 'unitName', (unit) ->
-  if unit then unitId = unit else (unitId = @unit if @unit)
-  if unitId then Schema.Unit.findOne(unitId)?.name else 'KO CÓ'
+Template.registerHelper 'momentFormat', (date, format) -> moment(date.toJSON()).format(if typeof format is 'string' then format else 'L')
+Template.registerHelper 'momentCalendar', (date) -> moment(date).calendar()
 
-Template.registerHelper 'creatorName', (creator) ->
-  if creator then userId = creator else (userId = @creator if @creator)
-  Meteor.users.findOne(userId)?.profile?.name
+Template.registerHelper 'staffDisplayName', -> @profile?.name ? @username
+Template.registerHelper 'unitName', (unitId = @unit) -> if unitId then Schema.Unit.findOne(unitId)?.name else 'KO CÓ'
+Template.registerHelper 'creatorName', (userId = @creator) -> if userId then Meteor.users.findOne(userId)?.profile?.name

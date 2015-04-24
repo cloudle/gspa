@@ -11,28 +11,37 @@ template(name="customerSummary")
 
 template(name="customerDetail")
   .customerDetail
-    .header
-      //.avatar(style="background-image:url('{{avatarImg}}')")
-      .content Tên: {{name}}
-      .content Ghi chú: {{description}}
-      .sale-meta
-        span.owner-alias {{creatorName}}
-        span.time-stamp {{formatHour createAt}}
-      .content --------------------------
+    .section
+      //input.hidden.avatarFile(type="file")
+      .panel-heading
+        //+avatarImageComponent(avatar=avatarUrl alias=firstName)
 
-    .body
-      .content Thông tin bán hàng
-      .customerSaleSummary
-        table(style="width:100%; text-align: right")
-          tr
-            th(style="width:auto; text-align: left") MÃ HÓA ĐƠN
-            th(style="width:100px; text-align: left") NGÀY MUA
-            th(style="width:100px; text-align: left") NGƯỜI BÁN
-            th(style="width:130px; text-align: left") TỔNG TIỀN
+        .content: input.editable(value="{{name}}" maxlength="100" placeholder="tên")
+        .content: input.editable(value="{{phone}}" maxlength="100" placeholder="số điện thoại")
+        .content: input.editable(value="{{address}}" maxlength="100" placeholder="đia chỉ")
 
-          each historySales
-            tr.detail-row
-              td(style="text-align: left") {{_id}}
-              td {{unitName}}
-              td {{creatorName}}
-              td {{totalPrice}} VND
+      .panel-footer
+        .content: input.editable(value="{{email}}" maxlength="100" placeholder="email")
+        .content: input.editable(value="{{description}}" maxlength="100" placeholder="ghi chú")
+
+    .section
+      .panel-heading
+        .customerSaleSummary
+          table(style="width:100%; text-align: right")
+            tr
+              th(style="width:auto; text-align: left") MÃ HÓA ĐƠN
+              th(style="width:100px") NGÀY BÁN
+              th(style="width:100px") NGƯỜI BÁN
+              th(style="width:130px") TỔNG TIỀN
+
+            each customerHistorySales
+              tr.detail-row
+                td(style="text-align: left") {{_id}}
+                td {{momentFormat createAt}}
+                td {{creatorName}}
+                td {{totalPrice}} VND
+
+      .panel-footer
+        .right-float
+          span.s5 TỔNG NỢ:
+          span.s3 <b>{{finalDebtBalance}}</b> VNĐ
